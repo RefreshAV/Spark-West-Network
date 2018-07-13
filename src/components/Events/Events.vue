@@ -40,7 +40,8 @@
       </div>
     </div>
     <div class="text-center">
-      <router-link to="/events/list" tag="button" class="btn btn-dark">Check Out All Events!</router-link>
+      <router-link to="/Events/NewEvent" tag="button" class="btn btn-primary my-2">Create an Event!</router-link>
+      <router-link to="/events/list" tag="button" class="btn btn-secondary my-2">All Events!</router-link>
     </div>
   </div>
 </template>
