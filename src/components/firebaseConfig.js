@@ -6,3 +6,4 @@ export default {
     storageBucket: "spark-west.appspot.com",
     messagingSenderId: "13136403971"
 }
+

@@ -37,12 +37,26 @@
 </template>
 
 <script>
-  export default {
+import db from "/home/max/Documents/WebProjects/sparkwest/src/components/firebaseInit.js";
+export default {
+  data(){
+    return {
+      
+    }
+  },
 
+  created(){
+    db.collection('events').get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        console.log(doc)
+        const data = {
+
+        }
+      })
+    })    
   }
-
+};
 </script>
 
 <style>
-
 </style>
