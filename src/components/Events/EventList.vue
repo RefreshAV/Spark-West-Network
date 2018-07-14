@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>All Event Listings</h2>
+    <!-- <h2>All Event Listings</h2>
     <p>et, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean </p>
     <table class="table table-hover">
       <thead class="thead-dark">
@@ -31,7 +31,19 @@
         <td>Wolfville</td>
       </tr>
       </tbody>
-    </table>
+    </table> -->
+
+    <ul class="list-group">
+      <div class="list-group-item-heading"><h2>Events:</h2></div>
+      <div v-for="event in events" v-bind:key="event.id" class="list-group-item">
+        <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}">
+          <h4>{{event.date}}</h4>
+          <h5>{{event.title}}</h5>
+          <p>{{ event.time }}</p>
+        </router-link>
+      </div>
+    </ul>
+
   </div>
 
 </template>
@@ -40,25 +52,29 @@
 import db from "/home/max/Documents/WebProjects/sparkwest/src/components/firebaseInit.js";
 export default {
   data() {
-    return {};
+    return {
+      events: []
+    };
   },
 
+  //generates array of event data objects from firebase when the component is created
   created() {
     db
       .collection("events")
+      .orderBy("event.date").limit(10)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           const data = {
-            'id': doc.id,
-            'event_id': doc.data().event.event_id,
-            'title': doc.data().event.title,
-            'date': doc.data().event.date,
-            'time': doc.data().event.time,
-            'email': doc.data().event.email,
-            'desc': doc.data().event.description
+            id: doc.id,
+            title: doc.data().event.title,
+            date: doc.data().event.date,
+            time: doc.data().event.time,
+            email: doc.data().event.email,
+            desc: doc.data().event.description
           };
           console.log(data);
+          this.events.push(data)
         });
       });
   }

@@ -10,7 +10,7 @@ export const routes = [
   { path: '/', component: Home },
   { path: '/about', component: About },
   { path: '/events', component: Events },
-  { path: '/events/:id/detail', component: EventDetail },
+  { path: '/events/event/:id', name: 'event-detail', component: EventDetail },
   { path: '/events/list', component: EventList },
   { path: '/contact', component: Contact },
   { path: '/Events/NewEvent', component: NewEvent }
