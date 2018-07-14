@@ -39,21 +39,28 @@
 <script>
 import db from "/home/max/Documents/WebProjects/sparkwest/src/components/firebaseInit.js";
 export default {
-  data(){
-    return {
-      
-    }
+  data() {
+    return {};
   },
 
-  created(){
-    db.collection('events').get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        console.log(doc)
-        const data = {
-
-        }
-      })
-    })    
+  created() {
+    db
+      .collection("events")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          const data = {
+            'id': doc.id,
+            'event_id': doc.data().event.event_id,
+            'title': doc.data().event.title,
+            'date': doc.data().event.date,
+            'time': doc.data().event.time,
+            'email': doc.data().event.email,
+            'desc': doc.data().event.description
+          };
+          console.log(data);
+        });
+      });
   }
 };
 </script>
