@@ -12,7 +12,7 @@
           <router-link to="/FAQ" tag="li" active-class="nav-item"><a class="nav-link">FAQ</a></router-link>
           <router-link to="/contact" tag="li" active-class="nav-item"><a class="nav-link">Contact</a></router-link>
           <router-link to="/events" tag="li" active-class="nav-item"><a class="nav-link">Events</a></router-link>
-          <router-link to="/auth" tag="li" active-class="nav-item"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button></router-link>
+          <router-link to="/SignUp" tag="li" active-class="nav-item"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button></router-link>
 
         </ul>
       </div>

@@ -14,16 +14,16 @@
           <h4><strong>Get in Touch</strong></h4>
           <form>
             <div class="form-group">
-              <input type="text" class="form-control" name="" value="" placeholder="Name">
+              <input type="text" class="form-control" name="" value="" placeholder="Name" v-model="contactRequest.name">
             </div>
             <div class="form-group">
-              <input type="email" class="form-control" name="" value="" placeholder="E-mail">
+              <input type="email" class="form-control" name="" value="" placeholder="E-mail" v-model="contactRequest.email">
             </div>
             <div class="form-group">
-              <input type="tel" class="form-control" name="" value="" placeholder="Phone">
+              <input type="tel" class="form-control" name="" value="" placeholder="Phone" v-model="contactRequest.phone">
             </div>
             <div class="form-group">
-              <textarea class="form-control" name="" rows="3" placeholder="Message"></textarea>
+              <textarea class="form-control" name="" rows="3" placeholder="Message" v-model="contactRequest.message"></textarea>
             </div>
             <button class="btn btn-default" type="submit" name="button">
               <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit
@@ -38,7 +38,16 @@
 
 <script>
   export default {
-
+    data: function () {
+      return {
+        contactRequest: {
+          name: '',
+          email: '',
+          phone: '',
+          message: ''
+        }
+      }
+    }
   }
 </script>
 
