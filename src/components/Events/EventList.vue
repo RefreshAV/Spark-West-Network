@@ -39,11 +39,11 @@
         <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}">
           <h4>{{event.date}}</h4>
           <h5>{{event.title}}</h5>
-          <p>{{ event.time }}</p>
+          <p>{{event.time}}</p>
         </router-link>
       </div>
     </ul>
-
+      <router-link to="/events/NewEvent" class="btn btn-primary my-2">New Event</router-link>
   </div>
 
 </template>
@@ -60,8 +60,7 @@ export default {
   //generates array of event data objects from firebase when the component is created
   created() {
     db
-      .collection("events")
-      .orderBy("event.date").limit(10)
+      .collection("events").limit(7)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -71,7 +70,8 @@ export default {
             date: doc.data().event.date,
             time: doc.data().event.time,
             email: doc.data().event.email,
-            desc: doc.data().event.description
+            desc: doc.data().event.description,
+            imageKey: doc.data().event.imageKey
           };
           console.log(data);
           this.events.push(data)

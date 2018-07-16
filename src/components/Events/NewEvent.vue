@@ -7,23 +7,23 @@
 
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" class="form-control" autocomplete="off" v-model.lazy="eventData.title">
+            <input type="text" id="title" class="form-control" autocomplete="off" v-model="event.title">
           </div>
           <div class="form-group">
             <label for="eventDate">Event Date</label>
-            <input id="eventDate" type="text" class="form-control" v-model.lazy="eventData.date">
+            <input id="eventDate" type="text" class="form-control" v-model="event.date">
           </div>
           <div class="form-group">
             <label for="eventTime">Event Time</label>
-            <input type="text" id="eventTime" class="form-control" autocomplete="off" v-model.lazy="eventData.time">
+            <input type="text" id="eventTime" class="form-control" autocomplete="off" v-model="event.time">
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" autocomplete="off" v-model.lazy="eventData.email">
+            <input type="email" id="email" class="form-control" autocomplete="off" v-model="event.email">
           </div>
           <label for="message">Description</label><br>
           <!-- Interpolation between <textarea>{{ test }}</textarea> doesn't work!-->
-          <textarea id="message" rows="5" class="form-control" maxlength="500" v-model="eventData.description"></textarea>
+          <textarea id="message" rows="5" class="form-control" maxlength="500" v-model="event.description"></textarea>
           <p class="counter">Characters: <span class="cNum">{{ characters }}</span></p>
         </div>
         <div class="col-md-6">
@@ -41,9 +41,7 @@
       <hr>
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-          <button type="button" class="btn btn-danger" @click="clear">
-              Clear
-            </button>
+          <router-link to="/events/list" class="btn btn-danger">Cancle</router-link>
           <button type="button" class="btn btn-info" @click="saveExit">
               Save & Exit
             </button>
@@ -53,43 +51,41 @@
         </div>
       </div>
     </form>
+    <hr>
     </div>
 </template>
 
 <script>
+import db from "/home/max/Documents/WebProjects/sparkwest/src/components/firebaseInit.js";
+import firebase from 'firebase'
+import 'firebase/firestore'
+import pushid from 'pushid'
 export default {
   data() {
     return {
-      eStat: "",
-      loggedIn: false,
-      eventData: {
+      event: {
         title: "",
         date: "",
         time: "",
         email: "",
-        description: ""
+        description: "",
+        imageKey: ""
       },
       isSubmitted: false,
       characters: 500,
       preImg: "http://via.placeholder.com/300x300",
-      image: "http://via.placeholder.com/300x300",
-      account: {
-        user: "",
-        pass: ""
-      }
+      image: '',
     };
   },
   computed: {
     message() {
-      return this.eventData.description;
+      return this.event.description;
     }
   },
 
   watch: {
     message() {
-      console.log("counting characters");
-
-      var char = this.eventData.description.length;
+      var char = this.event.description.length;
       var maxChar = 500;
       this.characters = maxChar - char;
 
@@ -97,118 +93,32 @@ export default {
     }
   },
 
+  created() {
+    var key = pushid()
+    console.log(key)
+  },
+
   methods: {
-    signUp() {
-      const user = this.account.user;
-      const pass = this.account.pass;
-
-      var email;
-
-      auth()
-        .createUserWithEmailAndPassword(user, pass)
-        .catch(function(error) {})
-        .then(
-          function() {
-            email = true;
-          },
-          function(error) {
-            console.error("Sign up Error", error);
-            email = false;
-          }
-        );
-
-      if (email) {
-        this.eStat = "";
-      } else {
-        this.eStat = "email in use!";
-      }
-    },
-    logIn() {
-      const user = this.account.user;
-      const pass = this.account.pass;
-      var userRef = auth().currentUser;
-      auth()
-        .signInWithEmailAndPassword(user, pass)
-        .catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ...
-        })
-        .then(
-          function() {
-            console.log("Logged in");
-          },
-          function(error) {
-            console.error("Log in error", error);
-          }
-        );
-      if (userRef) {
-        this.loggedIn = true;
-      } else {
-        this.loggedIn = false;
-      }
-    },
-    logOut() {
-      var log;
-      auth()
-        .signOut()
-        .then(
-          function() {
-            console.log("Signed Out");
-          },
-          function(error) {
-            console.error("Sign Out Error", error);
-          }
-        );
-
-      var user = auth().currentUser;
-
-      if (user) {
-        this.loggedIn = true;
-      } else {
-        this.loggedIn = false;
-      }
-    },
     submit() {
+      var key = pushid();
       this.isSubmitted = true;
+      this.event.imageKey = key;
       console.log("Submited to Firebase!");
-      eventRef.push({
-        eventData: this.eventData,
-        isSubmitted: this.isSubmitted
-      });
-
-      var file = this.image;
-      var ref = storage.ref("Images/Events/" + this.eventData.title);
-      var task = ref.put(file);
-
-      task.on(
-        "state_changed",
-        function progress(snapshot) {
-          var percentage =
-            snapshot.bytesTransferred / snapshot.totalBytes * 100;
-        },
-        function error(err) {},
-        function complete() {
-          console.log("Submited to firebase!");
-        }
-      );
+      db.collection('events').add({
+        event: {
+          title: this.event.title,
+          date: this.event.date,
+          time: this.event.time,
+          email: this.event.email,
+          description: this.event.description,
+          isSubmitted: this.isSubmitted,
+          imageKey: this.event.imageKey
+        } 
+      }).then(this.$router.push('/events/list'))
     },
     saveExit() {
       this.isSubmitted = false;
       console.log("Saved to Firebase!");
-      eventDataRef.push({
-        eventData: this.eventData,
-        isSubmitted: this.isSubmitted
-      });
-    },
-    clear() {
-      this.eventData.title = "";
-      this.eventData.date = "";
-      this.eventData.time = "";
-      this.eventData.email = "";
-      this.eventData.description = "";
-      this.eventData.image = "http://via.placeholder.com/300x300";
     },
     loadFile: function() {
       var input = document.querySelector(".bUp");

@@ -3,7 +3,8 @@
     <h1>{{title}}</h1>
     <h3>{{date}}</h3>
     <p>{{time}}</p>
-    <router-link class="btn btn-primary" to="/events/list">back</router-link>
+    <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
+    <button @click="deleteEvent" class="btn btn-danger">Delete</button>
     <hr>
   </div>
 
@@ -56,6 +57,17 @@ import 'firebase/firestore'
             this.desc = doc.data().event.description
           })
         })
+      },
+      deleteEvent () {
+        if(confirm('Are you sure?')){
+          db.collection('events').where(firebase.firestore.FieldPath.documentId(), '==', this.$route.params.id).get()
+          .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            doc.ref.delete();
+            this.$router.push('/events/list')
+          })
+        })
+        }
       }
     }
   }
