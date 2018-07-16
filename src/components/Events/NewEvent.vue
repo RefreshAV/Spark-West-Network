@@ -38,6 +38,7 @@
           </div>
         </div>
       </div>
+
       <hr>
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
@@ -57,9 +58,9 @@
 
 <script>
 import db from "/home/max/Documents/WebProjects/sparkwest/src/components/firebaseInit.js";
-import firebase from 'firebase'
-import 'firebase/firestore'
-import pushid from 'pushid'
+import firebase, { functions } from "firebase";
+import "firebase/firestore";
+import pushid from "pushid";
 export default {
   data() {
     return {
@@ -74,7 +75,8 @@ export default {
       isSubmitted: false,
       characters: 500,
       preImg: "http://via.placeholder.com/300x300",
-      image: '',
+      image: "",
+      uploaded: false
     };
   },
   computed: {
@@ -82,29 +84,36 @@ export default {
       return this.event.description;
     }
   },
-
   watch: {
     message() {
       var char = this.event.description.length;
       var maxChar = 500;
       this.characters = maxChar - char;
-
-      console.log(this.characters);
     }
   },
-
-  created() {
-    var key = pushid()
-    console.log(key)
-  },
-
   methods: {
     submit() {
       var key = pushid();
       this.isSubmitted = true;
       this.event.imageKey = key;
-      console.log("Submited to Firebase!");
-      db.collection('events').add({
+
+      var ref = firebase.storage().ref("events/" + this.event.imageKey);
+      var file = this.image;
+
+      var upload = ref.put(file);
+      var uploaded = false;
+
+      upload.on(
+        "state_changed",
+        function progress(snapshot) {
+          var percentage =
+            snapshot.bytesTransferred / snapshot.totalBytes * 100;
+        },
+        function error(err) {},
+        function complete() {}
+      );
+
+      db.collection("events").add({
         event: {
           title: this.event.title,
           date: this.event.date,
@@ -113,20 +122,33 @@ export default {
           description: this.event.description,
           isSubmitted: this.isSubmitted,
           imageKey: this.event.imageKey
-        } 
-      }).then(this.$router.push('/events/list'))
+        }
+      }).then(this.$router.push("/events/list"))
     },
     saveExit() {
+      var key = pushid();
       this.isSubmitted = false;
-      console.log("Saved to Firebase!");
+      this.event.imageKey = key;
+      db
+        .collection("events")
+        .add({
+          event: {
+            title: this.event.title,
+            date: this.event.date,
+            time: this.event.time,
+            email: this.event.email,
+            description: this.event.description,
+            isSubmitted: this.isSubmitted,
+            imageKey: this.event.imageKey
+          }
+        })
+        .then(this.$router.push("/events/list"));
     },
     loadFile: function() {
       var input = document.querySelector(".bUp");
       var preview = document.querySelector("#preview");
 
       var imgURL = window.URL.createObjectURL(input.files[0]);
-
-      console.log("File uploaded");
       this.preImg = imgURL;
       this.image = input.files[0];
     }
