@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import db from "/home/max/Documents/WebProjects/sparkwest/src/components/firebaseInit.js";
+import db from "../firebaseInit";
 export default {
   data() {
     return {

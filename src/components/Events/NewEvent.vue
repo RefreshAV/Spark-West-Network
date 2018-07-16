@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import db from "/home/max/Documents/WebProjects/sparkwest/src/components/firebaseInit.js";
+import db from "../firebaseInit";
 import firebase from 'firebase'
 import 'firebase/firestore'
 import pushid from 'pushid'
@@ -113,7 +113,7 @@ export default {
           description: this.event.description,
           isSubmitted: this.isSubmitted,
           imageKey: this.event.imageKey
-        } 
+        }
       }).then(this.$router.push('/events/list'))
     },
     saveExit() {

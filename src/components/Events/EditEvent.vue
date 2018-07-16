@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import db from "/home/max/Documents/WebProjects/sparkwest/src/components/firebaseInit.js";
+import db from "../firebaseInit";
 import firebase from "firebase";
 import "firebase/firestore";
 export default {
