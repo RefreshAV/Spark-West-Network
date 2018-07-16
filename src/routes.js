@@ -10,6 +10,7 @@ import Contact from './components/Contact/Contact.vue';
 export const routes = [
   { path: '/', component: Home },
   { path: '/about', component: About },
+  { path: '/FAQ', component: FAQ },
   { path: '/events', component: Events },
   { path: '/events/event/:id', name: 'event-detail', component: EventDetail },
   { path: '/events/list', component: EventList },
