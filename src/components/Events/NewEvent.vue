@@ -57,10 +57,17 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import db from "/home/max/Documents/WebProjects/sparkwest/src/components/firebaseInit.js";
 import firebase, { functions } from "firebase";
 import "firebase/firestore";
 import pushid from "pushid";
+=======
+import db from "../../Firebase/firebaseInit";
+import firebase from 'firebase'
+import 'firebase/firestore'
+import pushid from 'pushid'
+>>>>>>> 8556359e7b9fe5bd76d715e8e553a353ff72dac5
 export default {
   data() {
     return {
@@ -123,7 +130,11 @@ export default {
           isSubmitted: this.isSubmitted,
           imageKey: this.event.imageKey
         }
+<<<<<<< HEAD
       }).then(this.$router.push("/events/list"))
+=======
+      }).then(this.$router.push('/events/list'))
+>>>>>>> 8556359e7b9fe5bd76d715e8e553a353ff72dac5
     },
     saveExit() {
       var key = pushid();
