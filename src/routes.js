@@ -6,6 +6,7 @@ import EventList from './components/Events/EventList';
 import EditEvent from './components/Events/EditEvent';
 import NewEvent from './components/Events/NewEvent';
 import Contact from './components/Contact/Contact.vue';
+import FAQ from './components/FAQ/FAQ.vue';
 import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
 

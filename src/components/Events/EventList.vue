@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import db from "../firebaseInit";
+import db from "../../Firebase/firebaseInit";
 export default {
   data() {
     return {
