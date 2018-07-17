@@ -60,7 +60,7 @@ export default {
   //generates array of event data objects from firebase when the component is created
   created() {
     db
-      .collection("events").limit(7)
+      .collection("events").orderBy('event.date').limit(7)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
