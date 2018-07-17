@@ -73,7 +73,6 @@ export default {
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
           };
-          console.log(data);
           this.events.push(data)
         });
       });

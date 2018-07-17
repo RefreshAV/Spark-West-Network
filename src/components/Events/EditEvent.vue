@@ -68,6 +68,7 @@ export default {
       description: null,
       image: null,
       preImg: "http://via.placeholder.com/300x300",
+      imageKey: null,
       characters: null
     };
   },
@@ -79,43 +80,75 @@ export default {
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            console.log(doc.data());
             vm.id = doc.id;
             vm.title = doc.data().event.title;
             vm.date = doc.data().event.date;
             vm.time = doc.data().event.time;
             vm.email = doc.data().event.email;
             vm.description = doc.data().event.description;
+            vm.imageKey = doc.data().event.imageKey;
           });
         });
       });
   },
+  mounted() {
+    var ref;
+
+    db
+      .collection("events")
+      .where(
+        firebase.firestore.FieldPath.documentId(),
+        "==",
+        this.$route.params.id
+      )
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          (this.id = doc.id),
+            (this.title = doc.data().event.title),
+            (this.date = doc.data().event.date),
+            (this.time = doc.data().event.time),
+            (this.email = doc.data().event.email),
+            (this.desc = doc.data().event.description),
+            (this.imageKey = doc.data().event.imageKey);
+        });
+      });
+  },
   watch: {
-    $route: "fetchData"
+    id: "fetchImage"
   },
   methods: {
-    fetchData() {
-      db
-        .collection("events")
-        .where(
-          firebase.firestore.FieldPath.documentId(),
-          "==",
-          this.$route.params.id
-        )
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            console.log(doc.data());
-            (this.id = doc.id),
-              (this.title = doc.data().event.title),
-              (this.date = doc.data().event.date),
-              (this.time = doc.data().event.time),
-              (this.email = doc.data().event.email),
-              (this.description = doc.data().event.description);
-          });
-        });
+    fetchImage() {
+      var ref = firebase.storage().ref("events/" + this.imageKey);
+      var that = this;
+
+      var fetch = ref.getDownloadURL().then(function(url, a) {
+        that.preImg = url;
+      });
     },
     saveExit() {
+      console.log(this.imageKey)
+      var ref = firebase.storage().ref("events/" + this.imageKey);
+      var file = this.image;
+      var that = this;
+      
+
+      if (file != null) {
+        console.log("Updating file")
+        var upload = ref.put(file);
+
+        upload.on(
+          "state_changed",
+          function progress(snapshot) {
+            var percentage =
+              snapshot.bytesTransferred / snapshot.totalBytes * 100;
+          },
+          function error(err) {
+          },
+          function complete() {}
+        );
+      }
+
       db
         .collection("events")
         .where(
@@ -126,7 +159,6 @@ export default {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            console.log(doc.data());
             doc.ref.update({
               event: {
                 id: this.id,
@@ -134,11 +166,12 @@ export default {
                 date: this.date,
                 time: this.time,
                 email: this.email,
-                description: this.description
+                description: this.description,
+                imageKey: this.imageKey
               }
             });
           });
-        });
+        }).then(that.$router.push('/events/event/' + that.id))
     },
     loadFile: function() {
       var input = document.querySelector(".bUp");
@@ -146,7 +179,6 @@ export default {
 
       var imgURL = window.URL.createObjectURL(input.files[0]);
 
-      console.log("File uploaded");
       this.preImg = imgURL;
       this.image = input.files[0];
     }

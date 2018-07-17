@@ -3,7 +3,7 @@
     <h1>{{title}}</h1>
     <h3>{{date}}</h3>
     <p>{{time}}</p>
-    <img src="http://via.placeholder.com/300x300" id="eventImg" class="img-thumbnail">
+    <img :src="image" id="eventImg" class="img-thumbnail">
     <hr>
     <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
     <button @click="deleteEvent" class="btn btn-danger">Delete</button>
@@ -27,6 +27,7 @@ export default {
       time: null,
       email: null,
       desc: null,
+      image: null,
       imageKey: null,
     };
   },
@@ -62,7 +63,6 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          console.log(doc.data()),
             (this.id = doc.id),
             (this.title = doc.data().event.title),
             (this.date = doc.data().event.date),
@@ -78,14 +78,12 @@ export default {
   },
   methods: {
     fetchImage() {
-      var ref = firebase.storage().ref("events/" + this.imageKey);
+      var ref = firebase.storage().ref("events/" + this.imageKey)
+      var that = this;
 
-      var fetch = ref.getDownloadURL().then(function(url, a) {
-        var image = document.getElementById("eventImg")
-        image.src = url
+      var fetch = ref.getDownloadURL().then(function(url) {
+        that.image = url
       });
-      
-      //this.image = image
     },
     deleteEvent() {
       if (confirm("Are you sure?")) {
