@@ -67,7 +67,7 @@ export default {
       email: null,
       description: null,
       image: null,
-      preImg: "http://via.placeholder.com/300x300",
+      preImg: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
       imageKey: null,
       characters: null
     };

@@ -27,7 +27,7 @@ export default {
       time: null,
       email: null,
       desc: null,
-      image: null,
+      image: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif',
       imageKey: null,
     };
   },

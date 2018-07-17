@@ -35,6 +35,9 @@
 
     <ul class="list-group">
       <div class="list-group-item-heading"><h2>Events:</h2></div>
+      <div class="d-flex justify-content-center" v-if="events.length == 0">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" class="loading" style="width:50px; height: 50px;">
+      </div>
       <div v-for="event in events" v-bind:key="event.id" class="list-group-item">
         <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}">
           <h4>{{event.date}}</h4>
@@ -60,7 +63,9 @@ export default {
   //generates array of event data objects from firebase when the component is created
   created() {
     db
-      .collection("events").orderBy('event.date').limit(7)
+      .collection("events")
+      .orderBy("event.date")
+      .limit(7)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -73,7 +78,7 @@ export default {
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
           };
-          this.events.push(data)
+          this.events.push(data);
         });
       });
   }
