@@ -8,19 +8,26 @@
 
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" class="form-control" autocomplete="off" v-model="title">
+            <input type="text" id="title" class="form-control" autocomplete="off" v-model="title" required>
           </div>
           <div class="form-group">
             <label for="eventDate">Event Date</label>
-            <input id="eventDate" type="text" class="form-control" v-model="date">
+            <input id="eventDate" type="date" class="form-control" v-model="date" required>
           </div>
           <div class="form-group">
             <label for="eventTime">Event Time</label>
-            <input type="text" id="eventTime" class="form-control" autocomplete="off" v-model="time">
+            <div class ="row">
+            <div class="col-md-6">
+              <input type="time" id="eventTime" class="form-control" autocomplete="off" v-model="start" required>
+            </div>
+            <div class="col-md-6">
+              <input type="time" id="eventTime" class="form-control" autocomplete="off" v-model="end" required>
+            </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" autocomplete="off" v-model="email">
+            <input type="email" id="email" class="form-control" autocomplete="off" v-model="email" required>
           </div>
           <label for="message">Description</label><br>
           <!-- Interpolation between <textarea>{{ test }}</textarea> doesn't work!-->
@@ -43,9 +50,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
           <router-link v-bind:to="{name: 'event-detail', params: {id: id}}" class="btn btn-danger">Cancle</router-link>
-          <button type="button" class="btn btn-info" @click="saveExit">
-              Save & Exit
-            </button>
+            <input type="submit" class="btn btn-primary" @click.prevent="saveExit" value="Save & Exit">
         </div>
       </div>
     </form>
@@ -67,9 +72,12 @@ export default {
       email: null,
       description: null,
       image: null,
-      preImg: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
+      preImg:
+        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
       imageKey: null,
-      characters: null
+      characters: null,
+      start: null,
+      end: null
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -125,16 +133,23 @@ export default {
       var fetch = ref.getDownloadURL().then(function(url, a) {
         that.preImg = url;
       });
+
+      var time = this.time;
+      this.end = time.substring(6);
+      this.start = time.substring(0, 5);
     },
     saveExit() {
-      console.log(this.imageKey)
+      var start = this.start;
+      var end = this.end;
+
+      this.time = start + "-" + end;
+      
       var ref = firebase.storage().ref("events/" + this.imageKey);
       var file = this.image;
       var that = this;
-      
 
       if (file != null) {
-        console.log("Updating file")
+        console.log("Updating file");
         var upload = ref.put(file);
 
         upload.on(
@@ -143,8 +158,7 @@ export default {
             var percentage =
               snapshot.bytesTransferred / snapshot.totalBytes * 100;
           },
-          function error(err) {
-          },
+          function error(err) {},
           function complete() {}
         );
       }
@@ -171,7 +185,8 @@ export default {
               }
             });
           });
-        }).then(that.$router.push('/events/event/' + that.id))
+        })
+        .then(that.$router.push("/events/event/" + that.id));
     },
     loadFile: function() {
       var input = document.querySelector(".bUp");

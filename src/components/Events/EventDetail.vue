@@ -2,8 +2,9 @@
   <div class="container">
     <h1>{{title}}</h1>
     <h3>{{date}}</h3>
-    <p>{{time}}</p>
+    <h5>{{time}}</h5>
     <img :src="image" id="eventImg" class="img-thumbnail">
+    <p>Submitted: {{submitDate}}</p>
     <hr>
     <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
     <button @click="deleteEvent" class="btn btn-danger">Delete</button>
@@ -27,8 +28,10 @@ export default {
       time: null,
       email: null,
       desc: null,
-      image: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif',
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
       imageKey: null,
+      submitDate: "not found"
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -46,6 +49,7 @@ export default {
             vm.email = doc.data().event.email;
             vm.desc = doc.data().event.description;
             vm.imageKey = doc.data().event.imageKey;
+            vm.submitDate = doc.data().event.submitDate;
           });
         });
       });
@@ -63,13 +67,14 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-            (this.id = doc.id),
+          (this.id = doc.id),
             (this.title = doc.data().event.title),
             (this.date = doc.data().event.date),
             (this.time = doc.data().event.time),
             (this.email = doc.data().event.email),
             (this.desc = doc.data().event.description),
-            (this.imageKey = doc.data().event.imageKey);
+            (this.imageKey = doc.data().event.imageKey),
+            (this.submitDate = doc.data().event.submitDate);
         });
       });
   },
@@ -78,15 +83,18 @@ export default {
   },
   methods: {
     fetchImage() {
-      var ref = firebase.storage().ref("events/" + this.imageKey)
+      var ref = firebase.storage().ref("events/" + this.imageKey);
       var that = this;
 
       var fetch = ref.getDownloadURL().then(function(url) {
-        that.image = url
+        that.image = url;
       });
     },
     deleteEvent() {
       if (confirm("Are you sure?")) {
+        var ref = firebase.storage().ref("events/" + this.imageKey);
+        ref.delete()
+        
         db
           .collection("events")
           .where(
