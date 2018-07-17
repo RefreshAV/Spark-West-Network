@@ -7,6 +7,7 @@
     <p>{{name}}</p>
     <p>{{email}}</p>
     <p>{{userId}}</p>
+    <p>{{token}}</p>
     <hr>
     <pre>{{user}}</pre>
   </div>
@@ -21,7 +22,8 @@
         userId: '',
         name: '',
         email: '',
-        user: {}
+        user: {},
+        token: ''
       }
     },
     created() {
@@ -33,6 +35,7 @@
           vm.email = vm.user.email;
           vm.photo = vm.user.photoURL;
           vm.userId = vm.user.uid;
+          vm.token = vm.user.getToken();
         }
       });
     },

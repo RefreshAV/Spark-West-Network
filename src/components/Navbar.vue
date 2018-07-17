@@ -8,12 +8,13 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
+          <!--Do this in for loop-->
           <router-link :to="{name: 'about'}" tag="li" active-class="nav-item"><a class="nav-link">About</a></router-link>
           <router-link :to="{name: 'faq'}" tag="li" active-class="nav-item"><a class="nav-link">FAQ</a></router-link>
           <router-link :to="{name: 'contact'}" tag="li" active-class="nav-item"><a class="nav-link">Contact</a></router-link>
           <router-link :to="{name: 'events'}" tag="li" active-class="nav-item"><a class="nav-link">Events</a></router-link>
-          <router-link :to="{name: 'sign-up'}" tag="li" active-class="nav-item"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button></router-link>
-          <router-link :to="{name: 'log-out'}" tag="li" active-class="nav-item"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button></router-link>
+          <router-link :to="{name: 'sign-up'}" tag="li" active-class="nav-item" v-if="!isLoggedIn"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button></router-link>
+          <router-link :to="{name: 'log-out'}" tag="li" active-class="nav-item" v-if="isLoggedIn"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button></router-link>
 
         </ul>
       </div>
@@ -22,8 +23,20 @@
 </template>
 
 <script>
+  import firebase from 'firebase'
+  // show logout button if user is logged in if not, don't
   export default {
-
+    computed: {
+      isLoggedIn: function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            return true
+          } else {
+            return false
+          }
+        });
+      }
+    }
   }
 </script>
 
