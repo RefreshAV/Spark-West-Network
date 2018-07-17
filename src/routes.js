@@ -9,6 +9,7 @@ import Contact from './components/Contact/Contact.vue';
 import FAQ from './components/FAQ/FAQ.vue';
 import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
+import firebase from 'firebase'
 
 export const routes = [
   {
@@ -34,12 +35,18 @@ export const routes = [
   {
     path: '/events/event/:id',
     name: 'event-detail',
-    component: EventDetail
+    component: EventDetail,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/events/list',
     name: 'events-list',
-    component: EventList
+    component: EventList,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/contact',
@@ -49,23 +56,71 @@ export const routes = [
   {
     path: '/events/NewEvent',
     name: 'events-new-event',
-    component: NewEvent },
+    component: NewEvent ,
+    meta: {
+      requiresAuth: true,
+    }
+  },
   {
     path: '/events/EditEvent/:id',
     name:'EditEvent',
-    component: EditEvent
+    component: EditEvent,
+    meta: {
+      requiresAuth: true,
+    }
   },
   {
     path: '/SignUp',
     name: 'sign-up',
     component: SignUp,
     meta: {
-      requiresVisitor: true,
+      requiresGuest: true,
     }
   },
   {
     path: '/SignUpSuccess',
     name: 'sign-up-success',
-    component: SignUpSuccess
+    component: SignUpSuccess,
+    meta: {
+      requiresAuth: true,
+    }
   }
 ];
+
+
+// // Nav Guard
+// routes.beforeEach((to, from, next) => {
+//   //Check for requiredAuth guard
+//   if(to.match.some(record => record.meta.requiresAuth)) {
+//     //Check if not logged in
+//     if(!firebase.auth().currentUser) {
+//       // Go to login
+//       next({
+//         path: '/SignUp',
+//         query: {
+//           redirect: to.fullPath
+//         }
+//       });
+//     } else {
+//       // Proceed to route
+//       next();
+//     }
+//   } else if(to.match.some(record => record.meta.requiresGuest)){
+//     //Check if not logged in
+//     if(firebase.auth().currentUser) {
+//       // Go to login
+//       next({
+//         path: '/',
+//         query: {
+//           redirect: to.fullPath
+//         }
+//       });
+//     } else {
+//       // Proceed to route
+//       next();
+//     }
+//   } else {
+//     // Proceed to route
+//     next();
+//   }
+// });

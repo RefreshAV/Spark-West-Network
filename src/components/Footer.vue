@@ -1,15 +1,15 @@
 <template>
   <footer class="blog-footer">
-    <form action="" class="form-inline justify-content-center">
+    <form action="https://cuppajoeman.us18.list-manage.com/subscribe/post?u=c17c393bba103183d966bcc6a&amp;id=cdf9e59361" method="post" name="mc-embedded-subscribe-form" target="_blank" novalidate class="form-inline justify-content-center">
       <div class="form-group">
         <label class="sr-only">Name</label>
-        <input type="text" class="form-control" placeholder="Name">
+        <input type="text" value="" name="FNAME" class="form-control" placeholder="Name">
       </div>
       <div class="form-group">
         <label class="sr-only">Email</label>
-        <input type="text" class="form-control" placeholder="email">
+        <input type="email" value="" name="EMAIL" class="form-control" placeholder="email">
       </div>
-      <button type="submit" class="btn btn-dark ">Sign up for Newsletter!</button>
+      <button class="btn btn-dark ">Sign up for Newsletter!</button>
     </form>
     <p> <a href="https://google.com">Nova Obsido</a> by <a href="https://google.com">@ Callum & Max</a>.</p>
     <p>

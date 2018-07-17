@@ -21,7 +21,7 @@
         userId: '',
         name: '',
         email: '',
-        user: {}
+        user: {},
       }
     },
     created() {
