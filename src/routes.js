@@ -11,15 +11,61 @@ import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
 
 export const routes = [
-  { path: '/', component: Home },
-  { path: '/about', component: About },
-  { path: '/FAQ', component: FAQ },
-  { path: '/events', component: Events },
-  { path: '/events/event/:id', name: 'event-detail', component: EventDetail },
-  { path: '/events/list', component: EventList },
-  { path: '/contact', component: Contact },
-  { path: '/events/NewEvent', component: NewEvent },
-  { path: '/events/EditEvent/:id', name:'EditEvent', component: EditEvent },
-  { path: '/SignUp', component: SignUp },
-  { path: '/SignUpSuccess', component: SignUpSuccess }
+  {
+    path: '/',
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: About
+  },
+  {
+    path: '/FAQ',
+    name: 'faq',
+    component: FAQ
+  },
+  {
+    path: '/events',
+    name: 'events',
+    component: Events
+  },
+  {
+    path: '/events/event/:id',
+    name: 'event-detail',
+    component: EventDetail
+  },
+  {
+    path: '/events/list',
+    name: 'events-list',
+    component: EventList
+  },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: Contact
+  },
+  {
+    path: '/events/NewEvent',
+    name: 'events-new-event',
+    component: NewEvent },
+  {
+    path: '/events/EditEvent/:id',
+    name:'EditEvent',
+    component: EditEvent
+  },
+  {
+    path: '/SignUp',
+    name: 'signup',
+    component: SignUp,
+    meta: {
+      requiresVisitor: true,
+    }
+  },
+  {
+    path: '/SignUpSuccess',
+    name: 'sign-up-success',
+    component: SignUpSuccess
+  }
 ];
