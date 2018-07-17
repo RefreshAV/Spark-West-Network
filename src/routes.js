@@ -20,6 +20,6 @@ export const routes = [
   { path: '/contact', component: Contact },
   { path: '/events/NewEvent', component: NewEvent },
   { path: '/events/EditEvent/:id', name:'EditEvent', component: EditEvent },
-  { path: '/auth', component: SignUp },
-  { path: '/success', component: SignUpSuccess }
+  { path: '/SignUp', component: SignUp },
+  { path: '/SignUpSuccess', component: SignUpSuccess }
 ];

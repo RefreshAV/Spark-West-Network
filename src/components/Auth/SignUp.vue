@@ -8,7 +8,7 @@
 <script>
   import firebase from 'firebase/app';
   import firebaseui from 'firebaseui';
-  import { config } from '../../Firebase/firebaseConfig.js';
+  import config from '../../Firebase/firebaseConfig.js';
 
   export default {
     mounted() {
