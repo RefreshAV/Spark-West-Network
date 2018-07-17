@@ -57,7 +57,7 @@ export const routes = [
   },
   {
     path: '/SignUp',
-    name: 'signup',
+    name: 'sign-up',
     component: SignUp,
     meta: {
       requiresVisitor: true,
