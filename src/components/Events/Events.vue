@@ -21,7 +21,8 @@
             <router-link v-bind:to="{name: 'event-detail', params: {id: events[1].id}}" tag="a" active-class="nav-item">Continue reading...</router-link>
 
           </div>
-          <img class="card-img-right flex-auto d-none d-md-block" src="http://via.placeholder.com/200x250" alt="Card image cap">
+          <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length > 0" :src="images[1]" alt="Card image cap">
+          <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length == 0" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" alt="Card image cap">
         </div>
       </div>
       <div class="col-md-6">
@@ -35,7 +36,8 @@
             <p class="card-text mb-auto">{{events[2].desc}}</p>
             <router-link v-bind:to="{name: 'event-detail', params: {id: events[2].id}}" tag="a" active-class="nav-item">Continue reading...</router-link>
           </div>
-          <img class="card-img-right flex-auto d-none d-md-block" src="http://via.placeholder.com/200x250" alt="Card image cap">
+          <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length > 0" :src="images[2]" alt="Card image cap">
+          <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length == 0" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" alt="Card image cap">
         </div>
       </div>
     </div>
@@ -48,10 +50,12 @@
 
 <script>
 import db from "../../Firebase/firebaseInit";
+import firebase, { functions } from "firebase";
 export default {
   data() {
     return {
-      events: []
+      events: [],
+      images: []
     };
   },
   created() {
@@ -73,7 +77,73 @@ export default {
           };
           this.events.push(data);
         });
-      }).then(console.log(this.events))
+      });
+
+    // for (let i = 0; i < this.events.length; i++) {
+    //   var ref = firebase.storage().ref("events/" + that.events[i].imageKey);
+    //   var fetch = ref.getDownloadURL().then(function(url) {
+    //     console.log(url)
+    // });
+
+    // }
+  },
+  watch: {
+    events: "fetchImage"
+  },
+  methods: {
+    fetchImage() {
+      var that = this;
+      var images = [];
+      var sort = [];
+
+      var img0 = new Promise(function() {
+        var ref = firebase.storage().ref("events/" + that.events[0].imageKey);
+        var fetch = ref.getDownloadURL().then(function(url) {
+          that.images.push(url);
+        });
+      });
+      var img1 = new Promise(function() {
+        var ref = firebase.storage().ref("events/" + that.events[1].imageKey);
+        var fetch = ref.getDownloadURL().then(function(url) {
+          that.images.push(url);
+        });
+      });
+      var img2 = new Promise(function() {
+        var ref = firebase.storage().ref("events/" + that.events[2].imageKey);
+        var fetch = ref.getDownloadURL().then(function(url) {
+          that.images.push(url);
+        });
+      });
+
+      var sorter = new Promise(function() {
+        //sort images array
+        for (let i = 0; i < images.length; i++) {
+          var url = false;
+          var k = 0;
+          while (!url) {
+            if (images[k].substring(81, 152) == that.images[k].imageKey) {
+              sort.push(images[k]);
+              url = true;
+            } else {
+              url = false;
+              k++;
+            }
+          }
+        }
+      });
+
+      img0.then(img1).then(img2).then(console.log(that.images)).then(console.log(that.images[1]))
+      //create array of images
+      //Promise.all([img0, img1, img2]).then(console.log(images));
+
+      // Promise.all([img0, img1, img2]).then(function (values) {console.log(values)}).then("Images Fetched")
+      // // for (let i = 0; i < this.events.length; i++) {
+      // //   var ref = firebase.storage().ref("events/" + this.events[i].imageKey);
+      // //   var fetch = ref.getDownloadURL().then(function(url) {
+      // //     that.images.push(url)
+      // //   });
+      // // }
+    }
   }
 };
 </script>
