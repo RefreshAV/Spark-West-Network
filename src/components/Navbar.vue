@@ -13,9 +13,8 @@
           <router-link :to="{name: 'faq'}" tag="li" active-class="nav-item"><a class="nav-link">FAQ</a></router-link>
           <router-link :to="{name: 'contact'}" tag="li" active-class="nav-item"><a class="nav-link">Contact</a></router-link>
           <router-link :to="{name: 'events'}" tag="li" active-class="nav-item"><a class="nav-link">Events</a></router-link>
-          <router-link :to="{name: 'sign-up'}" tag="li" active-class="nav-item" v-if="!isLoggedIn"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button></router-link>
-          <router-link :to="{name: 'log-out'}" tag="li" active-class="nav-item" v-if="isLoggedIn"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button></router-link>
-
+          <router-link :to="{name: 'sign-up'}" tag="li" active-class="nav-item"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button></router-link>
+          <router-link to="/" tag="li" active-class="nav-item"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button></router-link>
         </ul>
       </div>
     </div>
@@ -23,19 +22,29 @@
 </template>
 
 <script>
-  import firebase from 'firebase'
+  import firebase from 'firebase/app'
   // show logout button if user is logged in if not, don't
   export default {
-    computed: {
-      isLoggedIn: function() {
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            return true
-          } else {
-            return false
-          }
-        });
+    data: function() {
+      return {
+        user: firebase.auth().currentUser
       }
+    },
+    methods: {
+      isLoggedIn: function() {
+        if (this.user != null){
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    logOut: function() {
+      firebase.auth()
+        .signOut()
+        .then(() => {
+          this.$router.go({path: this.$router.path });
+      });
     }
   }
 </script>
