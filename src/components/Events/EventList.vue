@@ -59,7 +59,7 @@
       <div class="d-flex justify-content-center" v-if="events.length == 0">
         <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" class="loading" style="width:50px; height: 50px;">
       </div>
-      <router-link v-for="(event, i) in events" v-bind:key="event.id" class="list-group-item card text-white bg-dark mb-3" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
+      <router-link v-for="(event) in events" v-bind:key="event.id" class="list-group-item card text-white bg-dark mb-3" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
         <h1 class="card-header">{{event.date}}</h1>
         <div class="card-body">
           <h5 class="card-title">{{event.title}}</h5>
