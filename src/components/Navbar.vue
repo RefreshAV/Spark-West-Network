@@ -13,6 +13,7 @@
           <router-link :to="{name: 'faq'}" tag="li" active-class="nav-item"><a class="nav-link">FAQ</a></router-link>
           <router-link :to="{name: 'contact'}" tag="li" active-class="nav-item"><a class="nav-link">Contact</a></router-link>
           <router-link :to="{name: 'events'}" tag="li" active-class="nav-item"><a class="nav-link">Events</a></router-link>
+          <router-link :to="{name: 'profile'}" tag="li" active-class="nav-item"><a class="nav-link">Profile</a></router-link>
           <router-link :to="{name: 'sign-up'}" tag="li" active-class="nav-item" v-if="!isLoggedIn"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button></router-link>
           <router-link to="/" tag="li" active-class="nav-item" v-if="isLoggedIn"><button @click="logOut" class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button></router-link>
         </ul>

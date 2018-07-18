@@ -9,7 +9,8 @@ import Contact from './components/Contact/Contact.vue';
 import FAQ from './components/FAQ/FAQ.vue';
 import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
-import LogOut from './components/Auth/LogOut.vue'
+import LogOut from './components/Auth/LogOut.vue';
+import Profile from './components/Profile/Profile.vue';
 import firebase from 'firebase'
 
 export const routes = [
@@ -114,6 +115,22 @@ export const routes = [
     path: '/LogOut',
     name: 'log-out',
     component: LogOut,
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: '/Profile',
+    name:'profile',
+    component: Profile,
+    beforeEnter: (to, from, next) => {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        next();
+      } else {
+        next(false);
+      }
+    },
     meta: {
       requiresAuth: true,
     }
