@@ -1,20 +1,18 @@
 <template>
-<h1>LOG OUT</h1>
+<h1 @click="test">LOG OUT</h1>
 </template>
 
 <script>
+  import firebase from 'firebase/app'
   export default {
     data: function () {
       return {
 
       }
     },
-    beforeRouteEnter(to, from, next) {
-      var user = firebase.auth().currentUser;
-      if (user) {
-        next();
-      } else {
-        next(false);
+    methods: {
+      test: function() {
+        console.log(firebase.auth().currentUser.uid);
       }
     }
   }

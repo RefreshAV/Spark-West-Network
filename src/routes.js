@@ -31,28 +31,12 @@ export const routes = [
   {
     path: '/events',
     name: 'events',
-    beforeEnter: (to, from, next) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-          next();
-        } else {
-          next(false);
-        }
-    },
     component: Events
   },
   {
     path: '/events/event/:id',
     name: 'event-detail',
     component: EventDetail,
-        beforeEnter: (to, from, next) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-          next();
-        } else {
-          next(false);
-        }
-    },
     meta: {
       requiresAuth: true
     }

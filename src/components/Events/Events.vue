@@ -42,8 +42,8 @@
       </div>
     </div>
     <div class="text-center">
-      <router-link to="/events/NewEvent" tag="button" class="btn btn-primary my-2">Create an Event!</router-link>
-      <router-link to="/events/list" tag="button" class="btn btn-secondary my-2">All Events!</router-link>
+      <router-link to="/events/NewEvent" tag="button" class="btn btn-primary my-2" v-if="isLoggedIn">Create an Event!</router-link>
+      <router-link to="/events/list" tag="button" class="btn btn-secondary my-2" v-if="isLoggedIn">All Events!</router-link>
     </div>
   </div>
 </template>
@@ -55,7 +55,8 @@ export default {
   data() {
     return {
       events: [],
-      images: []
+      images: [],
+      isLoggedIn: false
     };
   },
   created() {
@@ -77,6 +78,14 @@ export default {
           };
           this.events.push(data);
         });
+      });
+      var vm = this
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          vm.isLoggedIn = true;
+        } else {
+          vm.isLoggedIn = false;
+        }
       });
 
     // for (let i = 0; i < this.events.length; i++) {
