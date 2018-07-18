@@ -1,10 +1,14 @@
 <template>
   <div class="container">
-    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+    <div class="d-flex justify-content-center" v-if="events.length == 0">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" class="loading" style="width:50px; height: 50px;">
+    </div>
+    <div v-if="events.length != 0">
+      <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
       <div class="col-md-6 px-0">
         <h1 class="display-4">{{events[0].title}}</h1>
         <p class="lead my-3">{{events[0].desc}}</p>
-        <p class="lead mb-0"><router-link v-bind:to="{name: 'event-detail', params: {id: events[0].id}}" tag="a" class="text-white font-weight-bold">Continue reading...</router-link></p>
+        <p class="lead mb-0"><router-link v-bind:to="{name: 'event-detail', params: {id: events[0].id}}" tag="a" class="text-white font-weight-bold">Find out more...</router-link></p>
       </div>
     </div>
 
@@ -14,11 +18,11 @@
           <div class="card-body d-flex flex-column align-items-start">
             <strong class="d-inline-block mb-2 text-primary">Event 1</strong>
             <h3 class="mb-0">
-              <a class="text-dark" href="#">{{events[1].title}}</a>
+              {{events[1].title}}
             </h3>
             <div class="mb-1 text-muted">{{events[1].date}}</div>
             <p class="card-text mb-auto">{{events[1].desc}}</p>
-            <router-link v-bind:to="{name: 'event-detail', params: {id: events[1].id}}" tag="a" active-class="nav-item">Continue reading...</router-link>
+            <router-link v-bind:to="{name: 'event-detail', params: {id: events[1].id}}" tag="a" active-class="nav-item">Find out more...</router-link>
 
           </div>
           <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length > 0" :src="images[1]" alt="Card image cap">
@@ -30,11 +34,11 @@
           <div class="card-body d-flex flex-column align-items-start">
             <strong class="d-inline-block mb-2 text-success">Event 2</strong>
             <h3 class="mb-0">
-              <a class="text-dark" href="#">{{events[2].title}}</a>
+              {{events[2].title}}
             </h3>
             <div class="mb-1 text-muted">{{events[2].date}}</div>
             <p class="card-text mb-auto">{{events[2].desc}}</p>
-            <router-link v-bind:to="{name: 'event-detail', params: {id: events[2].id}}" tag="a" active-class="nav-item">Continue reading...</router-link>
+            <router-link v-bind:to="{name: 'event-detail', params: {id: events[2].id}}" tag="a" active-class="nav-item">Find out more...</router-link>
           </div>
           <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length > 0" :src="images[2]" alt="Card image cap">
           <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length == 0" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" alt="Card image cap">
@@ -44,6 +48,7 @@
     <div class="text-center">
       <router-link to="/events/NewEvent" tag="button" class="btn btn-primary my-2" v-if="isLoggedIn">Create an Event!</router-link>
       <router-link to="/events/list" tag="button" class="btn btn-secondary my-2" v-if="isLoggedIn">All Events!</router-link>
+    </div>
     </div>
   </div>
 </template>
@@ -79,22 +84,14 @@ export default {
           this.events.push(data);
         });
       });
-      var vm = this
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          vm.isLoggedIn = true;
-        } else {
-          vm.isLoggedIn = false;
-        }
-      });
-
-    // for (let i = 0; i < this.events.length; i++) {
-    //   var ref = firebase.storage().ref("events/" + that.events[i].imageKey);
-    //   var fetch = ref.getDownloadURL().then(function(url) {
-    //     console.log(url)
-    // });
-
-    // }
+    var vm = this;
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        vm.isLoggedIn = true;
+      } else {
+        vm.isLoggedIn = false;
+      }
+    });
   },
   watch: {
     events: "fetchImage"
@@ -103,11 +100,14 @@ export default {
     fetchImage() {
       var images = [];
 
-      for(var i = 0; i < this.events.length; i++){
-        var url =  'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' + this.events[i].imageKey + '?alt=media&token'
-        images.push(url)
+      for (var i = 0; i < this.events.length; i++) {
+        var url =
+          "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
+          this.events[i].imageKey +
+          "?alt=media&token";
+        images.push(url);
       }
-      this.images = images
+      this.images = images;
     }
   }
 };
