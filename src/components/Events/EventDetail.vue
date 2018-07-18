@@ -7,8 +7,8 @@
     <p>Submitted: {{submitDate}}</p>
     <hr>
     <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
-    <button @click="deleteEvent" class="btn btn-danger">Delete</button>
-    <router-link v-bind:to="{name: 'EditEvent', params: {id: id}}" class="btn btn-primary">Edit</router-link>
+    <button @click="deleteEvent" class="btn btn-danger" v-if="isAuthenticated">Delete</button>
+    <router-link v-bind:to="{name: 'EditEvent', params: {id: id}}" class="btn btn-primary" v-if="isAuthenticated">Edit</router-link>
     <hr>
   </div>
 
@@ -31,7 +31,9 @@ export default {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
       imageKey: null,
-      submitDate: "not found"
+      submitDate: "not found",
+      UserUID: null,
+      isAuthenticated: false
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -50,6 +52,7 @@ export default {
             vm.desc = doc.data().event.description;
             vm.imageKey = doc.data().event.imageKey;
             vm.submitDate = doc.data().event.SubmitDate;
+            vm.UserUID = doc.data().event.UserUID;
           });
         });
       });
@@ -74,9 +77,15 @@ export default {
             (this.email = doc.data().event.email),
             (this.desc = doc.data().event.description),
             (this.imageKey = doc.data().event.imageKey),
-            (this.submitDate = doc.data().event.submitDate);
+            (this.submitDate = doc.data().event.submitDate),
+            (this.UserUID = doc.data().event.UserUID);
         });
       });
+  },
+  updated() {
+    if(firebase.auth().currentUser.uid == this.UserUID) {
+      this.isAuthenticated = true;
+    }
   },
   watch: {
     title: "fetchImage"
@@ -110,7 +119,7 @@ export default {
             });
           });
       }
-    }
+    },
   }
 };
 </script>

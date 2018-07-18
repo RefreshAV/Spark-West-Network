@@ -24,7 +24,7 @@
             <router-link v-bind:to="{name: 'event-detail', params: {id: events[1].id}}" tag="a" active-class="nav-item">Find out more...</router-link>
 
           </div>
-          <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length > 0" :src="images[1]" alt="Card image cap">
+          <img class="card-img-right flex-auto d-none d-md-block"  v-if="images.length > 0" :src="images[1]" alt="Card image cap">
           <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length == 0" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" alt="Card image cap">
         </div>
       </div>
@@ -202,6 +202,7 @@ export default {
 
 .card-img-right {
   height: 100%;
+  width: 50%;
   border-radius: 0 3px 3px 0;
 }
 
