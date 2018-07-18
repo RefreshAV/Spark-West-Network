@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-center" v-if="events.length == 0">
       <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" class="loading" style="width:50px; height: 50px;">
     </div>
-    <div v-if="events.length != 0">
+    <!-- <div v-if="events.length != 0">
       <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
       <div class="col-md-6 px-0">
         <h1 class="display-4">{{events[0].title}}</h1>
@@ -16,7 +16,6 @@
       <div class="col-md-6">
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
           <div class="card-body d-flex flex-column align-items-start">
-            <strong class="d-inline-block mb-2 text-primary">Event 1</strong>
             <h3 class="mb-0">
               {{events[1].title}}
             </h3>
@@ -32,7 +31,6 @@
       <div class="col-md-6">
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
           <div class="card-body d-flex flex-column align-items-start">
-            <strong class="d-inline-block mb-2 text-success">Event 2</strong>
             <h3 class="mb-0">
               {{events[2].title}}
             </h3>
@@ -45,11 +43,41 @@
         </div>
       </div>
     </div>
-    <div class="text-center">
-      <router-link to="/events/NewEvent" tag="button" class="btn btn-primary my-2" v-if="isLoggedIn">Create an Event!</router-link>
-      <router-link to="/events/list" tag="button" class="btn btn-secondary my-2" v-if="isLoggedIn">All Events!</router-link>
+    </div> -->
+
+    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+      <div class="col-md-6 px-0">
+        <h1 class="display-4">{{events[0].title}}</h1>
+        <p class="lead my-3">{{events[0].desc}}</p>
+        <p class="lead mb-0"><router-link v-bind:to="{name: 'event-detail', params: {id: events[0].id}}" tag="a" class="text-white font-weight-bold">Find out more...</router-link></p>
+      </div>
     </div>
-    </div>
+
+    
+
+<div class="card-deck">
+        <div class="card flex-md-row mb-4 box-shadow h-md-250" v-for="(event,i) in events.slice(1)" v-bind:key="event.id" style="min-width:30rem;">
+          <div class="card-body" style="min-width:50%;">
+            <h3 class="mb-0">
+              {{event.title}}
+            </h3>
+            <div class="mb-1 text-muted">{{event.date}}</div>
+            <p class="card-text mb-auto">{{event.desc}}</p>
+            <router-link v-bind:to="{name: 'event-detail', params: {id: events.id}}" tag="a" active-class="nav-item">Find out more...</router-link>
+
+          </div>
+          <div id="eventImg">
+            <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length > 0" :src="images[i]" alt="Card image cap">
+          <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length == 0" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" alt="Card image cap">
+          </div>
+        </div>     
+</div>
+
+
+    <div class="text-center mb-3">
+      <router-link to="/events/NewEvent" tag="button" class="btn btn-primary" v-if="isLoggedIn">Create an Event!</router-link>
+      <router-link to="/events/list" tag="button" class="btn btn-secondary" v-if="isLoggedIn">All Events!</router-link>
+    </div> 
   </div>
 </template>
 
@@ -68,7 +96,7 @@ export default {
     db
       .collection("events")
       .orderBy("event.date")
-      .limit(3)
+      .limit(7)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -116,6 +144,13 @@ export default {
 <style scoped>
 /* stylelint-disable selector-list-comma-newline-after */
 
+#eventImg {
+  overflow: hidden;
+}
+#eventImg img{
+  min-height: 100%;
+}
+
 .blog-header {
   line-height: 1;
   border-bottom: 1px solid #e5e5e5;
@@ -127,14 +162,6 @@ export default {
 
 .blog-header-logo:hover {
   text-decoration: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
 }
 
 .display-4 {

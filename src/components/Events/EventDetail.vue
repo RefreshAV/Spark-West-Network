@@ -93,7 +93,7 @@ export default {
     deleteEvent() {
       if (confirm("Are you sure?")) {
         var ref = firebase.storage().ref("events/" + this.imageKey);
-        ref.delete()
+        ref.delete();
 
         db
           .collection("events")
