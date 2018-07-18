@@ -33,12 +33,12 @@
       </tbody>
     </table> -->
 
-    <ul class="list-group">
+    <!-- <ul class="list-group">
       <div class="list-group-item-heading"><h2>Events:</h2></div>
       <div class="d-flex justify-content-center" v-if="events.length == 0">
         <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" class="loading" style="width:50px; height: 50px;">
       </div>
-      <div v-for="(event, i) in events" v-bind:key="event.id" class="list-group-item">
+      <div v-for="(event, i) in events" v-bind:key="event.id" class="list-group-item ">
         <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}"> 
           <div class="row">
           <div class="col-md-6">
@@ -52,8 +52,22 @@
           </div>
         </router-link>
       </div>
+    </ul> -->
+
+    <ul class="list-group">
+      <h1 class="list-group-header d-flex justify-content-center">June</h1>
+      <div class="d-flex justify-content-center" v-if="events.length == 0">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" class="loading" style="width:50px; height: 50px;">
+      </div>
+      <router-link v-for="(event, i) in events" v-bind:key="event.id" class="list-group-item card text-white bg-dark mb-3" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
+        <h1 class="card-header">{{event.date}}</h1>
+        <div class="card-body">
+          <h5 class="card-title">{{event.title}}</h5>
+          <p class="card-text">{{event.desc}}</p>
+        </div>
+      </router-link>
     </ul>
-      <router-link to="/events/NewEvent" class="btn btn-primary my-2">New Event</router-link>
+      <router-link to="/events/NewEvent" class="btn btn-primary btn-circular mb-3"><i class="fa fa-plus"></i></router-link>
   </div>
 
 </template>
@@ -77,10 +91,11 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
+          var date = doc.data().event.date.toString().substring(8) ;
           const data = {
             id: doc.id,
             title: doc.data().event.title,
-            date: doc.data().event.date,
+            date: date,
             time: doc.data().event.time,
             email: doc.data().event.email,
             desc: doc.data().event.description,
@@ -91,24 +106,36 @@ export default {
       });
   },
   watch: {
-    events: 'fetchImages'
+    events: "fetchImages"
   },
-  methods:{
+  methods: {
     fetchImages() {
       var images = [];
 
-      for(var i = 0; i < this.events.length; i++){
-        var url =  'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' + this.events[i].imageKey + '?alt=media&token'
-        images.push(url)
+      for (var i = 0; i < this.events.length; i++) {
+        var url =
+          "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
+          this.events[i].imageKey +
+          "?alt=media&token";
+        images.push(url);
       }
-      this.images = images
+      this.images = images;
     }
   }
 };
 </script>
 
 <style>
-img{
+img {
   height: 150px;
+}
+
+.btn-circular {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 40px;
+  line-height: 1.33;
 }
 </style>
