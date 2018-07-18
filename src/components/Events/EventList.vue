@@ -38,8 +38,8 @@
       <div class="d-flex justify-content-center" v-if="events.length == 0">
         <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" class="loading" style="width:50px; height: 50px;">
       </div>
-      <div v-for="(event, i) in events" v-bind:key="event.id" class="list-group-item ">
-        <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}"> 
+      <div v-for="(event, i) in events" v-bind:key="event.id" class="list-group-item">
+        <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}">
           <div class="row">
           <div class="col-md-6">
             <h4>{{event.date}}</h4>
@@ -125,8 +125,8 @@ export default {
 };
 </script>
 
-<style>
-img {
+<style scope>
+img{
   height: 150px;
 }
 

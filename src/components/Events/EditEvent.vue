@@ -143,7 +143,7 @@ export default {
       var end = this.end;
 
       this.time = start + "-" + end;
-      
+
       var ref = firebase.storage().ref("events/" + this.imageKey);
       var file = this.image;
       var that = this;
@@ -201,7 +201,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .dUp {
   position: relative;
   overflow: hidden;

@@ -94,7 +94,7 @@ export default {
       if (confirm("Are you sure?")) {
         var ref = firebase.storage().ref("events/" + this.imageKey);
         ref.delete()
-        
+
         db
           .collection("events")
           .where(
@@ -115,7 +115,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 img {
   width: 300px;
   height: 300px;

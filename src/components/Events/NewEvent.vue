@@ -75,7 +75,8 @@ export default {
         time: "",
         email: "",
         description: "",
-        imageKey: ""
+        imageKey: "",
+        UserUID: firebase.auth().currentUser.uid
       },
       isSubmitted: false,
       characters: 500,
@@ -139,7 +140,8 @@ export default {
             description: this.event.description,
             isSubmitted: this.isSubmitted,
             SubmitDate: date,
-            imageKey: this.event.imageKey
+            imageKey: this.event.imageKey,
+            UserUID: this.event.UserUID
           }
         })
         .then(this.$router.push("/events/list"));
@@ -158,7 +160,8 @@ export default {
             email: this.event.email,
             description: this.event.description,
             isSubmitted: this.isSubmitted,
-            imageKey: this.event.imageKey
+            imageKey: this.event.imageKey,
+            UserUID: this.event.UserUID
           }
         })
         .then(this.$router.push("/events/list"));
@@ -181,7 +184,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #preImg {
   width: 500px;
   height: 500px;
