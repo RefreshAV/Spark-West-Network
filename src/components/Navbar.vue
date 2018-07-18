@@ -13,8 +13,8 @@
           <router-link :to="{name: 'faq'}" tag="li" active-class="nav-item"><a class="nav-link">FAQ</a></router-link>
           <router-link :to="{name: 'contact'}" tag="li" active-class="nav-item"><a class="nav-link">Contact</a></router-link>
           <router-link :to="{name: 'events'}" tag="li" active-class="nav-item"><a class="nav-link">Events</a></router-link>
-          <router-link :to="{name: 'sign-up'}" tag="li" active-class="nav-item"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button></router-link>
-          <router-link to="/" tag="li" active-class="nav-item"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button></router-link>
+          <router-link :to="{name: 'sign-up'}" tag="li" active-class="nav-item" v-if="!isLoggedIn"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button></router-link>
+          <router-link to="/" tag="li" active-class="nav-item" v-if="isLoggedIn"><button @click="logOut" class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button></router-link>
         </ul>
       </div>
     </div>
@@ -23,29 +23,31 @@
 
 <script>
   import firebase from 'firebase/app'
-  // show logout button if user is logged in if not, don't
   export default {
-    data: function() {
+    data(){
       return {
-        user: firebase.auth().currentUser
+        isLoggedIn: false
       }
+    },
+    created() {
+      var vm = this
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          vm.isLoggedIn = true;
+        } else {
+          vm.isLoggedIn = false;
+        }
+      });
     },
     methods: {
-      isLoggedIn: function() {
-        if (this.user != null){
-          return true
-        } else {
-          return false
-        }
-      }
+      logOut() {
+        firebase.auth().signOut().then(function() {
+          console.log('Signed Out');
+        }, function(error) {
+          console.error('Sign Out Error', error);
+        });
+      },
     },
-    logOut: function() {
-      firebase.auth()
-        .signOut()
-        .then(() => {
-          this.$router.go({path: this.$router.path });
-      });
-    }
   }
 </script>
 

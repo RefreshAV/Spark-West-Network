@@ -9,6 +9,7 @@ import Contact from './components/Contact/Contact.vue';
 import FAQ from './components/FAQ/FAQ.vue';
 import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
+import LogOut from './components/Auth/LogOut.vue'
 import firebase from 'firebase'
 
 export const routes = [
@@ -30,12 +31,28 @@ export const routes = [
   {
     path: '/events',
     name: 'events',
+    beforeEnter: (to, from, next) => {
+        var user = firebase.auth().currentUser;
+        if (user) {
+          next();
+        } else {
+          next(false);
+        }
+    },
     component: Events
   },
   {
     path: '/events/event/:id',
     name: 'event-detail',
     component: EventDetail,
+        beforeEnter: (to, from, next) => {
+        var user = firebase.auth().currentUser;
+        if (user) {
+          next();
+        } else {
+          next(false);
+        }
+    },
     meta: {
       requiresAuth: true
     }
@@ -44,6 +61,14 @@ export const routes = [
     path: '/events/list',
     name: 'events-list',
     component: EventList,
+        beforeEnter: (to, from, next) => {
+        var user = firebase.auth().currentUser;
+        if (user) {
+          next();
+        } else {
+          next(false);
+        }
+    },
     meta: {
       requiresAuth: true
     }
@@ -57,6 +82,14 @@ export const routes = [
     path: '/events/NewEvent',
     name: 'events-new-event',
     component: NewEvent ,
+        beforeEnter: (to, from, next) => {
+        var user = firebase.auth().currentUser;
+        if (user) {
+          next();
+        } else {
+          next(false);
+        }
+    },
     meta: {
       requiresAuth: true,
     }
@@ -65,6 +98,14 @@ export const routes = [
     path: '/events/EditEvent/:id',
     name:'EditEvent',
     component: EditEvent,
+        beforeEnter: (to, from, next) => {
+        var user = firebase.auth().currentUser;
+        if (user) {
+          next();
+        } else {
+          next(false);
+        }
+    },
     meta: {
       requiresAuth: true,
     }
@@ -81,6 +122,14 @@ export const routes = [
     path: '/SignUpSuccess',
     name: 'sign-up-success',
     component: SignUpSuccess,
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: '/LogOut',
+    name: 'log-out',
+    component: LogOut,
     meta: {
       requiresAuth: true,
     }

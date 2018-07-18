@@ -181,7 +181,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #preImg {
   width: 500px;
   height: 500px;

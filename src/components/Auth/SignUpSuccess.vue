@@ -40,6 +40,6 @@
       logOut() {
         firebase.auth().signOut();
       }
-    },
+    }
   };
 </script>
