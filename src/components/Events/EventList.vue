@@ -38,11 +38,18 @@
       <div class="d-flex justify-content-center" v-if="events.length == 0">
         <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" class="loading" style="width:50px; height: 50px;">
       </div>
-      <div v-for="event in events" v-bind:key="event.id" class="list-group-item">
-        <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}">
-          <h4>{{event.date}}</h4>
-          <h5>{{event.title}}</h5>
-          <p>{{event.time}}</p>
+      <div v-for="(event, i) in events" v-bind:key="event.id" class="list-group-item">
+        <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}"> 
+          <div class="row">
+          <div class="col-md-6">
+            <h4>{{event.date}}</h4>
+            <h5>{{event.title}}</h5>
+            <p>{{event.time}}</p>
+          </div>
+          <div class="col-md-6 float-md-right">
+            <img :src="images[i]">
+          </div>
+          </div>
         </router-link>
       </div>
     </ul>
@@ -56,7 +63,8 @@ import db from "../../Firebase/firebaseInit";
 export default {
   data() {
     return {
-      events: []
+      events: [],
+      images: []
     };
   },
 
@@ -81,9 +89,26 @@ export default {
           this.events.push(data);
         });
       });
+  },
+  watch: {
+    events: 'fetchImages'
+  },
+  methods:{
+    fetchImages() {
+      var images = [];
+
+      for(var i = 0; i < this.events.length; i++){
+        var url =  'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' + this.events[i].imageKey + '?alt=media&token'
+        images.push(url)
+      }
+      this.images = images
+    }
   }
 };
 </script>
 
 <style>
+img{
+  height: 150px;
+}
 </style>

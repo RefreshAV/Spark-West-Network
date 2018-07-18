@@ -49,7 +49,7 @@ export default {
             vm.email = doc.data().event.email;
             vm.desc = doc.data().event.description;
             vm.imageKey = doc.data().event.imageKey;
-            vm.submitDate = doc.data().event.submitDate;
+            vm.submitDate = doc.data().event.SubmitDate;
           });
         });
       });

@@ -99,54 +99,6 @@ export default {
         images.push(url)
       }
       this.images = images
-
-      // var img0 = new Promise(function() {
-      //   var ref = firebase.storage().ref("events/" + that.events[0].imageKey);
-      //   var fetch = ref.getDownloadURL().then(function(url) {
-      //     that.images.push(url);
-      //   });
-      // });
-      // var img1 = new Promise(function() {
-      //   var ref = firebase.storage().ref("events/" + that.events[1].imageKey);
-      //   var fetch = ref.getDownloadURL().then(function(url) {
-      //     that.images.push(url);
-      //   });
-      // });
-      // var img2 = new Promise(function() {
-      //   var ref = firebase.storage().ref("events/" + that.events[2].imageKey);
-      //   var fetch = ref.getDownloadURL().then(function(url) {
-      //     that.images.push(url);
-      //   });
-      // });
-
-      // var sorter = new Promise(function() {
-      //   //sort images array
-      //   for (let i = 0; i < images.length; i++) {
-      //     var url = false;
-      //     var k = 0;
-      //     while (!url) {
-      //       if (images[k].substring(81, 152) == that.images[k].imageKey) {
-      //         sort.push(images[k]);
-      //         url = true;
-      //       } else {
-      //         url = false;
-      //         k++;
-      //       }
-      //     }
-      //   }
-      // });
-
-      // img0.then(img1).then(img2).then(console.log(that.images)).then(console.log(that.images[1]))
-      //create array of images
-      //Promise.all([img0, img1, img2]).then(console.log(images));
-
-      // Promise.all([img0, img1, img2]).then(function (values) {console.log(values)}).then("Images Fetched")
-      // // for (let i = 0; i < this.events.length; i++) {
-      // //   var ref = firebase.storage().ref("events/" + this.events[i].imageKey);
-      // //   var fetch = ref.getDownloadURL().then(function(url) {
-      // //     that.images.push(url)
-      // //   });
-      // // }
     }
   }
 };
