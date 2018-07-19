@@ -77,7 +77,7 @@
                 <td>
                   <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id dolor. Morbi venenatis lacinia rhoncus.
                 </td>
-              </tr>
+              <tr>
               <tr>
                 <td>
                   <span class="float-right font-weight-bold">9/4</span> Vestibulum tincidunt ullamcorper eros eget luctus.
@@ -183,19 +183,64 @@
         </div>
       </div>
       <div class="col-lg-4 order-lg-1 text-center">
-        <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
-        <h6 class="mt-2">Upload a different photo</h6>
-        <label class="custom-file">
-          <input type="file" id="file" class="custom-file-input">
-          <span class="custom-file-control">Choose file</span>
-        </label>
+        <img :src="preImg" class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm" id="preview" alt="avatar">
+        <div class="dUp file btn btn-primary">
+              <small>Change <i class="fa fa-camera"></i></small>
+              <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" />
+            </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
+export default {
+  data() {
+    return {
+      preImg: "http://via.placeholder.com/150x150",
+      image: null
+    };
+  },
+  methods: {
+    loadFile: function() {
+      var input = document.querySelector(".bUp");
+      var preview = document.querySelector("#preview");
 
+      var imgURL = window.URL.createObjectURL(input.files[0]);
+      this.preImg = imgURL;
+      this.image = input.files[0];
+    }
   }
+};
 </script>
+
+<style>
+.dUp {
+  position: relative;
+  overflow: hidden;
+}
+
+.bUp {
+  position: absolute;
+  font-size: 50px;
+  opacity: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.imgUp {
+  margin-top: 20px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  font-size: 15px;
+}
+
+#preview {
+  width:150px;
+  height:150px;
+  border-radius: 100%;
+}
+</style>
+
