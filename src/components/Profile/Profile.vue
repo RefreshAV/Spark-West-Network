@@ -15,7 +15,7 @@
         </ul>
         <div class="tab-content py-4">
           <div class="tab-pane active" id="profile">
-            <h5 class="mb-3">{{ name }}</h5>
+            <h5 class="mb-3">{{ user.name }}</h5>
             <div class="row">
               <div class="col-md-6">
                 <h6>About</h6>
@@ -74,9 +74,9 @@
                   <span class="float-right font-weight-bold">3 hrs ago</span> New Weekly events updated
                 </td>
               </tr>
-                <td>
-                  <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id dolor. Morbi venenatis lacinia rhoncus.
-                </td>
+              <td>
+                <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id dolor. Morbi venenatis lacinia rhoncus.
+              </td>
               <tr>
               <tr>
                 <td>
@@ -183,66 +183,88 @@
         </div>
       </div>
       <div class="col-lg-4 order-lg-1 text-center">
-        <img :src="preImg" class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm" id="preview" alt="avatar">
+        <img :src="user.photoUrl" class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm" id="preview" alt="avatar">
         <div class="dUp file btn btn-primary">
-              <small>Change <i class="fa fa-camera"></i></small>
-              <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" />
-            </div>
+          <small>Change <i class="fa fa-camera"></i></small>
+          <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" />
+        </div>
+        <button @click="test">test</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase/app'
-export default {
-  data() {
-    return {
-      preImg: firebase.auth().currentUser.photoURL,
-      image: null,
-      name: firebase.auth().currentUser.displayName
-    };
-  },
-  methods: {
-    loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var preview = document.querySelector("#preview");
+  import db from '../../Firebase/firebaseInit';
+  import firebase from 'firebase/app'
+  export default {
+    data() {
+      return {
+        preImg: firebase.auth().currentUser.photoURL,
+        image: null,
+        name: firebase.auth().currentUser.displayName,
+        user: {
+          name: '',
+          email: '',
+          photoUrl: ''
+        }
+      };
+    },
+    methods: {
+      loadFile: function() {
+        var input = document.querySelector(".bUp");
+        var preview = document.querySelector("#preview");
 
-      var imgURL = window.URL.createObjectURL(input.files[0]);
-      this.preImg = imgURL;
-      this.image = input.files[0];
+        var imgURL = window.URL.createObjectURL(input.files[0]);
+        this.preImg = imgURL;
+        this.image = input.files[0];
+      }
+    },
+    beforeRouteEnter(to, from, next) {
+      db
+        .collection("users")
+        .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            next(vm => {
+              vm.user.name = doc.data().user.name;
+              vm.user.email = doc.data().user.email;
+              vm.user.photoUrl = doc.data().user.photo;
+            });
+          });
+        });
     }
-  }
-};
+  };
 </script>
 
 <style>
-.dUp {
-  position: relative;
-  overflow: hidden;
-}
+  .dUp {
+    position: relative;
+    overflow: hidden;
+  }
 
-.bUp {
-  position: absolute;
-  font-size: 50px;
-  opacity: 0;
-  right: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
+  .bUp {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
 
-.imgUp {
-  margin-top: 20px;
-  margin-left: 5px;
-  margin-bottom: 5px;
-  font-size: 15px;
-}
+  .imgUp {
+    margin-top: 20px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
 
-#preview {
-  width:150px;
-  height:150px;
-  border-radius: 100%;
-}
+  #preview {
+    width:150px;
+    height:150px;
+    border-radius: 100%;
+  }
 </style>
 
