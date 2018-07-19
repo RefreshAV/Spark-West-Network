@@ -138,13 +138,18 @@ export default {
       var day = d.getUTCDay();
 
       var date = year + "-" + month + "-" + day;
+      console.log("Submitted: " + date)
 
       db
         .collection("events")
         .add({
           event: {
             title: this.event.title,
-            date: this.event.date,
+            date: {
+              year: this.event.date.substring(0,4),
+              month: this.event.date.substring(5,7),
+              day: this.event.date.substring(8)
+            },
             time: this.event.time,
             email: this.event.email,
             description: this.event.description,

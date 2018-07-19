@@ -4,7 +4,7 @@
       <h1>{{title}}</h1>
     </div>
     <div class="row">
-      <h3>{{date}}</h3>
+      <h3 v-if="date != null">{{date.year}}-{{date.month}}-{{date.day}}</h3>
     </div>
     <div class="row">
       <h5>{{time}}</h5>
@@ -93,7 +93,7 @@ export default {
       });
   },
   updated() {
-    if(firebase.auth().currentUser.uid == this.UserUID) {
+    if (firebase.auth().currentUser.uid == this.UserUID) {
       this.isAuthenticated = true;
     }
   },
@@ -129,7 +129,7 @@ export default {
             });
           });
       }
-    },
+    }
   }
 };
 </script>

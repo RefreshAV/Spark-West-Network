@@ -18,7 +18,7 @@
             <h3 class="mb-0">
               {{event.title}}
             </h3>
-            <div class="mb-1 text-muted">{{event.date}}</div>
+            <div class="mb-1 text-muted">{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</div>
             <p class="card-text mb-auto">{{event.desc}}</p>
             <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}" tag="a" active-class="nav-item">Find out more...</router-link>
 
