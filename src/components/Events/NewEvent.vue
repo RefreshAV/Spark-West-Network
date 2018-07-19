@@ -87,6 +87,16 @@ export default {
       end: null
     };
   },
+  mounted() {
+    var d = new Date();
+    var year = d.getUTCFullYear();
+    var month = d.getUTCMonth();
+    var day = d.getUTCDay();
+
+    var date = year + "-" + month + "-" + day;
+
+    console.log(date)
+  },
   computed: {
     message() {
       return this.event.description;
@@ -122,12 +132,12 @@ export default {
         function complete() {}
       );
 
-      var d = new Date
-      var year = d.getUTCFullYear
-      var month = d.getUTCMonth
-      var day = d.getUTCDay
+      var d = new Date();
+      var year = d.getUTCFullYear();
+      var month = d.getUTCMonth();
+      var day = d.getUTCDay();
 
-      var date = year + "/" + month + "/" + day
+      var date = year + "-" + month + "-" + day;
 
       db
         .collection("events")
@@ -175,10 +185,10 @@ export default {
       this.image = input.files[0];
     },
     time() {
-      var start = this.start
-      var end = this.end
+      var start = this.start;
+      var end = this.end;
 
-      this.event.time = start + "-" + end
+      this.event.time = start + "-" + end;
     }
   }
 };
