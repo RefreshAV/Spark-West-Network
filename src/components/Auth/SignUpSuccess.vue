@@ -52,7 +52,9 @@
               name: this.user.name,
               email: this.user.email,
               photo: this.user.photo,
-              UserUID: this.user.UserUID
+              UserUID: this.user.UserUID,
+              about: '',
+              website: ''
             }
           });
         this.$router.push("/");
