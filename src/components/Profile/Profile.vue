@@ -15,7 +15,7 @@
         </ul>
         <div class="tab-content py-4">
           <div class="tab-pane active" id="profile">
-            <h5 class="mb-3">User Profile</h5>
+            <h5 class="mb-3">{{ name }}</h5>
             <div class="row">
               <div class="col-md-6">
                 <h6>About</h6>
@@ -194,11 +194,13 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
 export default {
   data() {
     return {
-      preImg: "http://via.placeholder.com/150x150",
-      image: null
+      preImg: firebase.auth().currentUser.photoURL,
+      image: null,
+      name: firebase.auth().currentUser.displayName
     };
   },
   methods: {
