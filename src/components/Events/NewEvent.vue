@@ -1,7 +1,7 @@
 <template>
     <div id="newEvent" class="container">
         <h3>Create New Event</h3>
-    <form>
+    <form @submit.prevent="submit">
       <div class="row">
         <div class="col-md-6">
 
@@ -53,7 +53,7 @@
           <button type="button" class="btn btn-info" @click="saveExit">
               Save & Exit
             </button>
-          <input type="submit" class="btn btn-primary" @click.prevent="submit">
+          <input type="submit" class="btn btn-primary">
         </div>
       </div>
     </form>
@@ -200,6 +200,10 @@ export default {
 </script>
 
 <style scoped>
+input :invalid {
+  background-color: red
+}
+
 #preImg {
   width: 500px;
   height: 500px;

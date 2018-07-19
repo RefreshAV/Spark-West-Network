@@ -136,7 +136,7 @@ export default {
 
 <style scoped>
 img {
-  width: 300px;
+  width: auto;
   height: 300px;
   border: 5px, black, solid;
 }

@@ -77,7 +77,9 @@ export default {
       imageKey: null,
       characters: null,
       start: null,
-      end: null
+      end: null,
+      UID: null,
+      submitDate: null
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -95,6 +97,8 @@ export default {
             vm.email = doc.data().event.email;
             vm.description = doc.data().event.description;
             vm.imageKey = doc.data().event.imageKey;
+            vm.submitDate = doc.data().event.SubmitDate;
+            vm.UID = doc.data().event.UserUID;
           });
         });
       });
@@ -112,13 +116,16 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
+          var date = doc.data().event.date;
           (this.id = doc.id),
             (this.title = doc.data().event.title),
-            (this.date = doc.data().event.date),
+            (this.date = date.year + "-" + date.month + "-" + date.day),
             (this.time = doc.data().event.time),
             (this.email = doc.data().event.email),
             (this.desc = doc.data().event.description),
-            (this.imageKey = doc.data().event.imageKey);
+            (this.imageKey = doc.data().event.imageKey),
+            (this.submitDate = doc.data().event.SubmitDate),
+            (this.UID = doc.data().event.UserUID)
         });
       });
   },
@@ -175,13 +182,18 @@ export default {
           querySnapshot.forEach(doc => {
             doc.ref.update({
               event: {
-                id: this.id,
                 title: this.title,
-                date: this.date,
+                date: {
+                  year: this.date.substring(0,4),
+                  month: this.date.substring(5,7),
+                  day: this.date.substring(8)
+                },
                 time: this.time,
                 email: this.email,
                 description: this.description,
-                imageKey: this.imageKey
+                imageKey: this.imageKey,
+                SubmitDate: this.submitDate,
+                UserUID: this.UID
               }
             });
           });

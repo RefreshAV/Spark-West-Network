@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import db from "../../Firebase/firebaseInit";
 import firebase, { functions } from "firebase";
 export default {
