@@ -94,88 +94,32 @@
           <div class="tab-pane" id="edit">
             <form role="form">
               <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">First name</label>
+                <label class="col-lg-3 col-form-label form-control-label">Username</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="text" value="First Name">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Last name</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="Bishop">
+                  <input class="form-control" type="text" placeholder="username"  v-model="username">
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Email</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="email" value="email@gmail.com">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Company</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="">
+                  <input class="form-control" type="email" placeholder="email@gmail.com" v-model="email">
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Website</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="url" value="">
+                  <input class="form-control" type="url" value="" v-model="website">
                 </div>
               </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Address</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="" placeholder="Street">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label"></label>
-                <div class="col-lg-6">
-                  <input class="form-control" type="text" value="" placeholder="City">
-                </div>
-                <div class="col-lg-3">
-                  <input class="form-control" type="text" value="" placeholder="State">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Time Zone</label>
-                <div class="col-lg-9">
-                  <select id="user_time_zone" class="form-control" size="0">
-                    <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                    <option value="Alaska">(GMT-09:00) Alaska</option>
-                    <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-                    <option value="Arizona">(GMT-07:00) Arizona</option>
-                    <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
-                    <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
-                    <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
-                    <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Username</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="text" value="username">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Password</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="password" value="examplepass">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
-                <div class="col-lg-9">
-                  <input class="form-control" type="password" value="examplepass">
-                </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">About Yourself</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="about"></textarea>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label"></label>
                 <div class="col-lg-9">
                   <input type="reset" class="btn btn-secondary" value="Cancel">
-                  <input type="button" class="btn btn-dark" value="Save Changes">
+                  <input type="button" class="btn btn-dark" value="Save Changes" @click="writeUserData">
                 </div>
               </div>
             </form>
@@ -188,7 +132,6 @@
           <small>Change <i class="fa fa-camera"></i></small>
           <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" />
         </div>
-        <button @click="test">test</button>
       </div>
     </div>
   </div>
@@ -200,14 +143,15 @@
   export default {
     data() {
       return {
-        preImg: firebase.auth().currentUser.photoURL,
-        image: null,
-        name: firebase.auth().currentUser.displayName,
         user: {
           name: '',
           email: '',
           photoUrl: ''
-        }
+        },
+        username: '',
+        email: '',
+        website: '',
+        about: ''
       };
     },
     methods: {
@@ -218,6 +162,15 @@
         var imgURL = window.URL.createObjectURL(input.files[0]);
         this.preImg = imgURL;
         this.image = input.files[0];
+      },
+      writeUserData() {
+        console.log(this.about,this.website, this.email, this.username);
+        firebase.database().ref('users/36PgBFw5HSoQFuzqgcAH').set({
+          name: this.username,
+          email: this.email,
+          website: this.website,
+          about: this.about
+        });
       }
     },
     beforeRouteEnter(to, from, next) {
