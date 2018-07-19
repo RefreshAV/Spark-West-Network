@@ -2,13 +2,13 @@
     <div class="container">
         <h1>{{title}}</h1>
 
-        <form>
+        <form @submit.prevent="saveExit">
       <div class="row">
         <div class="col-md-6">
 
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" class="form-control" autocomplete="off" v-model="title" required>
+            <input type="text" id="title" placeholder="Event Title" class="form-control" autocomplete="off" v-model="title" required>
           </div>
           <div class="form-group">
             <label for="eventDate">Event Date</label>
@@ -30,14 +30,12 @@
             <input type="email" id="email" class="form-control" autocomplete="off" v-model="email" required>
           </div>
           <label for="message">Description</label><br>
-          <!-- Interpolation between <textarea>{{ test }}</textarea> doesn't work!-->
           <textarea id="message" rows="5" class="form-control" maxlength="500" v-model="description"></textarea>
           <p class="counter">Characters: <span class="cNum">{{ characters }}</span></p>
         </div>
         <div class="col-md-6">
-
           <!-- IMAGE UPLOAD -->
-          <img id="preview" v-bind:src="preImg" alt="" />
+          <img id="preview" v-bind:src="preImg" class="d-block mb-2 shadow-sm" alt="" />
           <div class="col-xs-12">
             <div class="dUp file btn btn-primary">
               Browse Images
@@ -50,7 +48,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
           <router-link v-bind:to="{name: 'event-detail', params: {id: id}}" class="btn btn-danger">Cancle</router-link>
-            <input type="submit" class="btn btn-primary" @click.prevent="saveExit" value="Save & Exit">
+            <input type="submit" class="btn btn-primary" value="Save & Exit">
         </div>
       </div>
     </form>
@@ -237,9 +235,9 @@ export default {
 }
 
 #preview {
-  border: 5px #383c42 solid;
   border-radius: 5px;
   margin-bottom: 10px;
   height: 300px;
+  width:auto;
 }
 </style>

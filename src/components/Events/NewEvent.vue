@@ -7,14 +7,14 @@
 
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" class="form-control" autocomplete="off" v-model="event.title" required>
+            <input type="text" placeholder="Event Title" id="title" class="form-control" autocomplete="off" v-model="event.title" required>
           </div>
           <div class="form-group">
             <label for="eventDate">Event Date</label>
             <input id="eventDate" type="date" class="form-control" v-model="event.date" required>
           </div>
           <div class="form-group">
-            <label for="eventTime">Event Time</label>
+            <label for="eventTime">Event Time <small class="badge badge-pill badge-warning">24 hour</small></label>
             <div class ="row">
             <div class="col-md-6">
               <input type="time" id="eventTime" class="form-control" autocomplete="off" v-model="start" required>
@@ -26,21 +26,21 @@
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" autocomplete="off" v-model="event.email" required>
+            <input type="email" id="email" placeholder="example@email.com" class="form-control" autocomplete="off" v-model="event.email" required>
           </div>
           <label for="message">Description</label><br>
           <!-- Interpolation between <textarea>{{ test }}</textarea> doesn't work!-->
-          <textarea id="message" rows="5" class="form-control" maxlength="500" v-model="event.description"></textarea>
+          <textarea id="message" placeholder="A description of your event..." rows="5" class="form-control" maxlength="500" v-model="event.description"></textarea>
           <p class="counter">Characters: <span class="cNum">{{ characters }}</span></p>
         </div>
         <div class="col-md-6">
 
           <!-- IMAGE UPLOAD -->
-          <img id="preview" v-bind:src="preImg" alt="" />
+          <img id="preview" class="d-block mb-2 shadow-sm" v-bind:src="preImg" alt="" />
           <div class="col-xs-12">
             <div class="dUp file btn btn-primary">
               Browse Images
-              <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" />
+              <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" required/>
             </div>
           </div>
         </div>
@@ -94,8 +94,6 @@ export default {
     var day = d.getUTCDay();
 
     var date = year + "-" + month + "-" + day;
-
-    console.log(date)
   },
   computed: {
     message() {
@@ -138,7 +136,6 @@ export default {
       var day = d.getUTCDay();
 
       var date = year + "-" + month + "-" + day;
-      console.log("Submitted: " + date)
 
       db
         .collection("events")
@@ -146,8 +143,8 @@ export default {
           event: {
             title: this.event.title,
             date: {
-              year: this.event.date.substring(0,4),
-              month: this.event.date.substring(5,7),
+              year: this.event.date.substring(0, 4),
+              month: this.event.date.substring(5, 7),
               day: this.event.date.substring(8)
             },
             time: this.event.time,
@@ -165,16 +162,45 @@ export default {
       var key = pushid();
       this.isSubmitted = false;
       this.event.imageKey = key;
+
+      var ref = firebase.storage().ref("events/" + this.event.imageKey);
+      var file = this.image;
+
+      var upload = ref.put(file);
+      var uploaded = false;
+
+      upload.on(
+        "state_changed",
+        function progress(snapshot) {
+          var percentage =
+            snapshot.bytesTransferred / snapshot.totalBytes * 100;
+        },
+        function error(err) {},
+        function complete() {}
+      );
+
+      var d = new Date();
+      var year = d.getUTCFullYear();
+      var month = d.getUTCMonth();
+      var day = d.getUTCDay();
+
+      var date = year + "-" + month + "-" + day;
+
       db
         .collection("events")
         .add({
           event: {
             title: this.event.title,
-            date: this.event.date,
+            date: {
+              year: this.event.date.substring(0, 4),
+              month: this.event.date.substring(5, 7),
+              day: this.event.date.substring(8)
+            },
             time: this.event.time,
             email: this.event.email,
             description: this.event.description,
             isSubmitted: this.isSubmitted,
+            SubmitDate: date,
             imageKey: this.event.imageKey,
             UserUID: this.event.UserUID
           }
@@ -200,8 +226,11 @@ export default {
 </script>
 
 <style scoped>
+textarea {
+  resize: none;
+}
 input :invalid {
-  background-color: red
+  background-color: red;
 }
 
 #preImg {
