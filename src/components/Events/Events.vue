@@ -13,7 +13,7 @@
     </div>
 
     <div class="card-deck mb-2">
-        <div class="card flex-md-row mb-4 box-shadow h-md-250" style="min-width:30rem;" v-for="(event, i) in events.slice(1)" v-bind:key="event.id">
+        <div class="card flex-md-row mb-4 box-shadow h-md-250" style="min-width:30rem;overflow:hidden;text-overflow: ellipsis;" v-for="(event, i) in events.slice(1)" v-bind:key="event.id">
           <div class="card-body d-flex flex-column align-items-start">
             <h3 class="mb-0">
               {{event.title}}
@@ -98,7 +98,7 @@ export default {
 /* stylelint-disable selector-list-comma-newline-after */
 
 p {
-  
+
 }
 
 .blog-header {
