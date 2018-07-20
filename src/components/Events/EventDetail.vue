@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase, { functions } from "firebase";
-import "firebase/firestore";
+import db from '../../Firebase/firebaseInit';
+import firebase, { functions } from 'firebase';
+import 'firebase/firestore';
 export default {
-  name: "event-detail",
+  name: 'event-detail',
   data() {
     return {
       id: null,
@@ -39,21 +39,20 @@ export default {
       email: null,
       desc: null,
       image:
-        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
+        'https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif',
       imageKey: null,
-      submitDate: "not found",
+      submitDate: 'not found',
       UserUID: null,
-      isAuthenticated: false
+      isAuthenticated: false,
     };
   },
   beforeRouteEnter(to, from, next) {
-    db
-      .collection("events")
-      .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
+    db.collection('events')
+      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          next(vm => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          next((vm) => {
             vm.id = doc.id;
             vm.title = doc.data().event.title;
             vm.date = doc.data().event.date;
@@ -70,16 +69,15 @@ export default {
   mounted() {
     var ref;
 
-    db
-      .collection("events")
+    db.collection('events')
       .where(
         firebase.firestore.FieldPath.documentId(),
-        "==",
-        this.$route.params.id
+        '==',
+        this.$route.params.id,
       )
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
           (this.id = doc.id),
             (this.title = doc.data().event.title),
             (this.date = doc.data().event.date),
@@ -98,11 +96,11 @@ export default {
     }
   },
   watch: {
-    title: "fetchImage"
+    title: 'fetchImage',
   },
   methods: {
     fetchImage() {
-      var ref = firebase.storage().ref("events/" + this.imageKey);
+      var ref = firebase.storage().ref('events/' + this.imageKey);
       var that = this;
 
       var fetch = ref.getDownloadURL().then(function(url) {
@@ -110,27 +108,26 @@ export default {
       });
     },
     deleteEvent() {
-      if (confirm("Are you sure?")) {
-        var ref = firebase.storage().ref("events/" + this.imageKey);
+      if (confirm('Are you sure?')) {
+        var ref = firebase.storage().ref('events/' + this.imageKey);
         ref.delete();
 
-        db
-          .collection("events")
+        db.collection('events')
           .where(
             firebase.firestore.FieldPath.documentId(),
-            "==",
-            this.$route.params.id
+            '==',
+            this.$route.params.id,
           )
           .get()
-          .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
               doc.ref.delete();
-              this.$router.push("/events/list");
+              this.$router.push('/events/list');
             });
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -141,4 +138,3 @@ img {
   border: 5px, black, solid;
 }
 </style>
-

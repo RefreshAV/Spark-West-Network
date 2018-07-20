@@ -12,49 +12,47 @@
 </template>
 
 <script>
-  import db from "../../Firebase/firebaseInit";
-  import firebase from 'firebase/app'
-  export default {
-    data(){
-      return {
-        user: {
-          photo: '',
-          UserUID: '',
-          name: '',
-          email: '',
-        }
+import db from '../../Firebase/firebaseInit';
+import firebase from 'firebase/app';
+export default {
+  data() {
+    return {
+      user: {
+        photo: '',
+        UserUID: '',
+        name: '',
+        email: '',
+      },
+    };
+  },
+  created() {
+    var vm = this;
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log(user.displayName);
+        vm.user.name = user.displayName;
+        vm.user.email = user.email;
+        vm.user.photo = user.photoURL;
+        vm.user.UserUID = user.uid;
       }
-    },
-    created() {
-      var vm = this
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          console.log(user.displayName);
-          vm.user.name = user.displayName;
-          vm.user.email = user.email;
-          vm.user.photo = user.photoURL;
-          vm.user.UserUID = user.uid;
-        }
-      });
-    },
-    mounted() {
-      var vm = this;
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          db
-            .collection("users")
-            .add({
-              user: {
-                name: vm.user.name,
-                email: vm.user.email,
-                photo: vm.user.photo,
-                UserUID: vm.user.UserUID,
-                about: null,
-                website: null
-              }
-            });
-        }
-      });
-    }
-  };
+    });
+  },
+  mounted() {
+    var vm = this;
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        db.collection('users').add({
+          user: {
+            name: vm.user.name,
+            email: vm.user.email,
+            photo: vm.user.photo,
+            UserUID: vm.user.UserUID,
+            about: null,
+            website: null,
+          },
+        });
+      }
+    });
+  },
+};
 </script>

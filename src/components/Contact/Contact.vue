@@ -26,7 +26,7 @@
               <textarea class="form-control" name="" rows="3" placeholder="Message" v-model="contactRequest.message"></textarea>
             </div>
             <button class="btn btn-default" type="submit" name="button">
-              <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit
+              Send
             </button>
           </form>
         </div>
@@ -37,48 +37,37 @@
 </template>
 
 <script>
-  export default {
-    data: function () {
-      return {
-        contactRequest: {
-          name: '',
-          email: '',
-          phone: '',
-          message: ''
-        }
-      }
-    }
-  }
+export default {
+  data: function() {
+    return {
+      contactRequest: {
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+      },
+    };
+  },
+};
 </script>
 
 <style>
-  #contact{
-    background-color:#f1f1f1;
-  }
+#contact {
+  background-color: #f1f1f1;
+}
 
-  #contact .well{
-    margin-top:30px;
-    border-radius:0;
-  }
+#contact .well {
+  margin-top: 30px;
+  border-radius: 0;
+}
 
-  #contact .form-control{
-    border-radius: 0;
-    border:2px solid #1e1e1e;
-  }
+#contact .row {
+  margin-bottom: 30px;
+}
 
-  #contact button{
-    border-radius:0;
-    border:2px solid #1e1e1e;
+@media (max-width: 768px) {
+  #contact iframe {
+    margin-bottom: 15px;
   }
-
-  #contact .row{
-    margin-bottom:30px;
-  }
-
-  @media (max-width: 768px) {
-    #contact iframe {
-      margin-bottom: 15px;
-    }
-
-  }
+}
 </style>

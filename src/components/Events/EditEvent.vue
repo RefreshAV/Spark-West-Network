@@ -57,9 +57,9 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
+import db from '../../Firebase/firebaseInit';
+import firebase from 'firebase';
+import 'firebase/firestore';
 export default {
   data() {
     return {
@@ -71,23 +71,22 @@ export default {
       description: null,
       image: null,
       preImg:
-        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
+        'https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif',
       imageKey: null,
       characters: null,
       start: null,
       end: null,
       UID: null,
-      submitDate: null
+      submitDate: null,
     };
   },
   beforeRouteEnter(to, from, next) {
-    db
-      .collection("events")
-      .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
+    db.collection('events')
+      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          next(vm => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          next((vm) => {
             vm.id = doc.id;
             vm.title = doc.data().event.title;
             vm.date = doc.data().event.date;
@@ -104,35 +103,34 @@ export default {
   mounted() {
     var ref;
 
-    db
-      .collection("events")
+    db.collection('events')
       .where(
         firebase.firestore.FieldPath.documentId(),
-        "==",
-        this.$route.params.id
+        '==',
+        this.$route.params.id,
       )
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
           var date = doc.data().event.date;
           (this.id = doc.id),
             (this.title = doc.data().event.title),
-            (this.date = date.year + "-" + date.month + "-" + date.day),
+            (this.date = date.year + '-' + date.month + '-' + date.day),
             (this.time = doc.data().event.time),
             (this.email = doc.data().event.email),
             (this.desc = doc.data().event.description),
             (this.imageKey = doc.data().event.imageKey),
             (this.submitDate = doc.data().event.SubmitDate),
-            (this.UID = doc.data().event.UserUID)
+            (this.UID = doc.data().event.UserUID);
         });
       });
   },
   watch: {
-    id: "fetchImage"
+    id: 'fetchImage',
   },
   methods: {
     fetchImage() {
-      var ref = firebase.storage().ref("events/" + this.imageKey);
+      var ref = firebase.storage().ref('events/' + this.imageKey);
       var that = this;
 
       var fetch = ref.getDownloadURL().then(function(url, a) {
@@ -147,67 +145,66 @@ export default {
       var start = this.start;
       var end = this.end;
 
-      this.time = start + "-" + end;
+      this.time = start + '-' + end;
 
-      var ref = firebase.storage().ref("events/" + this.imageKey);
+      var ref = firebase.storage().ref('events/' + this.imageKey);
       var file = this.image;
       var that = this;
 
       if (file != null) {
-        console.log("Updating file");
+        console.log('Updating file');
         var upload = ref.put(file);
 
         upload.on(
-          "state_changed",
+          'state_changed',
           function progress(snapshot) {
             var percentage =
-              snapshot.bytesTransferred / snapshot.totalBytes * 100;
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           },
           function error(err) {},
-          function complete() {}
+          function complete() {},
         );
       }
 
-      db
-        .collection("events")
+      db.collection('events')
         .where(
           firebase.firestore.FieldPath.documentId(),
-          "==",
-          this.$route.params.id
+          '==',
+          this.$route.params.id,
         )
         .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
             doc.ref.update({
               event: {
                 title: this.title,
                 date: {
-                  year: this.date.substring(0,4),
-                  month: this.date.substring(5,7),
-                  day: this.date.substring(8)
+                  year: this.date.substring(0, 4),
+                  month: this.date.substring(5, 7),
+                  day: this.date.substring(8),
                 },
                 time: this.time,
                 email: this.email,
                 description: this.description,
                 imageKey: this.imageKey,
                 SubmitDate: this.submitDate,
-                UserUID: this.UID
-              }
+                UserUID: this.UID,
+              },
             });
           });
         })
-        .then(that.$router.push("/events/event/" + that.id));
+        .then(that.$router.push('/events/event/' + that.id));
     },
     loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var preview = document.querySelector("#preview");
+      var input = document.querySelector('.bUp');
+      var preview = document.querySelector('#preview');
 
       var imgURL = window.URL.createObjectURL(input.files[0]);
 
       this.preImg = imgURL;
       this.image = input.files[0];
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -238,6 +235,6 @@ export default {
   border-radius: 5px;
   margin-bottom: 10px;
   height: 300px;
-  width:auto;
+  width: auto;
 }
 </style>

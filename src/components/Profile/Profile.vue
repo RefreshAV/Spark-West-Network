@@ -144,36 +144,35 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase/app";
+import db from '../../Firebase/firebaseInit';
+import firebase from 'firebase/app';
 export default {
   data() {
     return {
       user: {
-        name: "",
-        email: "",
-        photoUrl: "",
-        website: "",
-        about: ""
-      }
+        name: '',
+        email: '',
+        photoUrl: '',
+        website: '',
+        about: '',
+      },
     };
   },
   methods: {
     loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var preview = document.querySelector("#preview");
+      var input = document.querySelector('.bUp');
+      var preview = document.querySelector('#preview');
 
       var imgURL = window.URL.createObjectURL(input.files[0]);
       this.preImg = imgURL;
       this.image = input.files[0];
     },
     writeUserData() {
-      db
-        .collection("users")
-        .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+      db.collection('users')
+        .where('user.UserUID', '==', firebase.auth().currentUser.uid)
         .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
             doc.ref.update({
               user: {
                 name: this.user.name,
@@ -181,21 +180,20 @@ export default {
                 website: this.user.website,
                 about: this.user.about,
                 UserUID: firebase.auth().currentUser.uid,
-                photo: this.user.photoUrl
-              }
+                photo: this.user.photoUrl,
+              },
             });
           });
         });
-    }
+    },
   },
   beforeRouteEnter(to, from, next) {
-    db
-      .collection("users")
-      .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+    db.collection('users')
+      .where('user.UserUID', '==', firebase.auth().currentUser.uid)
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          next(vm => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          next((vm) => {
             vm.user.name = doc.data().user.name;
             vm.user.email = doc.data().user.email;
             vm.user.photoUrl = doc.data().user.photo;
@@ -204,7 +202,7 @@ export default {
           });
         });
       });
-  }
+  },
 };
 </script>
 
@@ -236,8 +234,7 @@ export default {
   height: 150px;
   border-radius: 100%;
 }
-.card p{
-  margin:0px
+.card p {
+  margin: 0px;
 }
 </style>
-

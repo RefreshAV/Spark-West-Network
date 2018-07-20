@@ -36,24 +36,23 @@
 </template>
 
 <script scoped>
-import db from "../../Firebase/firebaseInit";
-import firebase, { functions } from "firebase";
+import db from '../../Firebase/firebaseInit';
+import firebase, { functions } from 'firebase';
 export default {
   data() {
     return {
       events: [],
       images: [],
-      isLoggedIn: false
+      isLoggedIn: false,
     };
   },
   created() {
-    db
-      .collection("events")
-      .orderBy("event.date")
+    db.collection('events')
+      .orderBy('event.date')
       .limit(3)
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
           const data = {
             id: doc.id,
             title: doc.data().event.title,
@@ -61,7 +60,7 @@ export default {
             time: doc.data().event.time,
             email: doc.data().event.email,
             desc: doc.data().event.description,
-            imageKey: doc.data().event.imageKey
+            imageKey: doc.data().event.imageKey,
           };
           this.events.push(data);
         });
@@ -76,21 +75,21 @@ export default {
     });
   },
   watch: {
-    events: "fetchImage"
+    events: 'fetchImage',
   },
   methods: {
     fetchImage() {
       var images = [];
       for (var i = 0; i < this.events.length; i++) {
         var url =
-          "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
+          'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
           this.events[i].imageKey +
-          "?alt=media&token";
+          '?alt=media&token';
         images.push(url);
       }
       this.images = images;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -98,7 +97,6 @@ export default {
 /* stylelint-disable selector-list-comma-newline-after */
 
 p {
-
 }
 
 .blog-header {

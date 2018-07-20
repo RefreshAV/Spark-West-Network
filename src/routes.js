@@ -11,89 +11,89 @@ import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
 import LogOut from './components/Auth/LogOut.vue';
 import Profile from './components/Profile/Profile.vue';
-import firebase from 'firebase'
+import firebase from 'firebase';
 
 export const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
   },
   {
     path: '/about',
     name: 'about',
-    component: About
+    component: About,
   },
   {
     path: '/FAQ',
     name: 'faq',
-    component: FAQ
+    component: FAQ,
   },
   {
     path: '/events',
     name: 'events',
-    component: Events
+    component: Events,
   },
   {
     path: '/events/event/:id',
     name: 'event-detail',
     component: EventDetail,
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
     path: '/events/list',
     name: 'events-list',
     component: EventList,
-        beforeEnter: (to, from, next) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-          next();
-        } else {
-          next(false);
-        }
+    beforeEnter: (to, from, next) => {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        next();
+      } else {
+        next(false);
+      }
     },
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
     path: '/contact',
     name: 'contact',
-    component: Contact
+    component: Contact,
   },
   {
     path: '/events/NewEvent',
     name: 'events-new-event',
-    component: NewEvent ,
-        beforeEnter: (to, from, next) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-          next();
-        } else {
-          next(false);
-        }
+    component: NewEvent,
+    beforeEnter: (to, from, next) => {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        next();
+      } else {
+        next(false);
+      }
     },
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     path: '/events/EditEvent/:id',
-    name:'EditEvent',
+    name: 'EditEvent',
     component: EditEvent,
-        beforeEnter: (to, from, next) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-          next();
-        } else {
-          next(false);
-        }
+    beforeEnter: (to, from, next) => {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        next();
+      } else {
+        next(false);
+      }
     },
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     path: '/SignUp',
@@ -101,7 +101,7 @@ export const routes = [
     component: SignUp,
     meta: {
       requiresGuest: true,
-    }
+    },
   },
   {
     path: '/SignUpSuccess',
@@ -109,7 +109,7 @@ export const routes = [
     component: SignUpSuccess,
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     path: '/LogOut',
@@ -117,11 +117,11 @@ export const routes = [
     component: LogOut,
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     path: '/Profile',
-    name:'profile',
+    name: 'profile',
     component: Profile,
     beforeEnter: (to, from, next) => {
       var user = firebase.auth().currentUser;
@@ -133,10 +133,9 @@ export const routes = [
     },
     meta: {
       requiresAuth: true,
-    }
-  }
+    },
+  },
 ];
-
 
 // // Nav Guard
 // routes.beforeEach((to, from, next) => {

@@ -23,57 +23,63 @@
 </template>
 
 <script>
-  import firebase from 'firebase/app'
-  export default {
-    data(){
-      return {
-        isLoggedIn: false
+import firebase from 'firebase/app';
+export default {
+  data() {
+    return {
+      isLoggedIn: false,
+    };
+  },
+  created() {
+    var vm = this;
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        vm.isLoggedIn = true;
+      } else {
+        vm.isLoggedIn = false;
       }
+    });
+  },
+  methods: {
+    logOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(
+          function() {
+            console.log('Signed Out');
+          },
+          function(error) {
+            console.error('Sign Out Error', error);
+          },
+        );
     },
-    created() {
-      var vm = this
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          vm.isLoggedIn = true;
-        } else {
-          vm.isLoggedIn = false;
-        }
-      });
-    },
-    methods: {
-      logOut() {
-        firebase.auth().signOut().then(function() {
-          console.log('Signed Out');
-        }, function(error) {
-          console.error('Sign Out Error', error);
-        });
-      },
-    },
-  }
+  },
+};
 </script>
 
 <style scoped>
+body {
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
   body {
-    padding-top: 54px;
+    padding-top: 56px;
   }
+}
 
-  @media (min-width: 992px) {
-    body {
-      padding-top: 56px;
-    }
-  }
+.carousel-item {
+  height: 65vh;
+  min-height: 300px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
 
-  .carousel-item {
-    height: 65vh;
-    min-height: 300px;
-    background: no-repeat center center scroll;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-  }
-
-  .portfolio-item {
-    margin-bottom: 30px;
-  }
+.portfolio-item {
+  margin-bottom: 30px;
+}
 </style>

@@ -62,29 +62,29 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
-import pushid from "pushid";
+import db from '../../Firebase/firebaseInit';
+import firebase from 'firebase';
+import 'firebase/firestore';
+import pushid from 'pushid';
 export default {
   data() {
     return {
       event: {
-        title: "",
-        date: "",
-        time: "",
-        email: "",
-        description: "",
-        imageKey: "",
-        UserUID: firebase.auth().currentUser.uid
+        title: '',
+        date: '',
+        time: '',
+        email: '',
+        description: '',
+        imageKey: '',
+        UserUID: firebase.auth().currentUser.uid,
       },
       isSubmitted: false,
       characters: 500,
-      preImg: "http://via.placeholder.com/300x300",
-      image: "",
+      preImg: 'http://via.placeholder.com/300x300',
+      image: '',
       uploaded: false,
       start: null,
-      end: null
+      end: null,
     };
   },
   mounted() {
@@ -93,12 +93,12 @@ export default {
     var month = d.getUTCMonth();
     var day = d.getUTCDay();
 
-    var date = year + "-" + month + "-" + day;
+    var date = year + '-' + month + '-' + day;
   },
   computed: {
     message() {
       return this.event.description;
-    }
+    },
   },
   watch: {
     message() {
@@ -106,7 +106,7 @@ export default {
       var maxChar = 500;
       this.characters = maxChar - char;
     },
-    end: "time"
+    end: 'time',
   },
   methods: {
     submit() {
@@ -114,20 +114,20 @@ export default {
       this.isSubmitted = true;
       this.event.imageKey = key;
 
-      var ref = firebase.storage().ref("events/" + this.event.imageKey);
+      var ref = firebase.storage().ref('events/' + this.event.imageKey);
       var file = this.image;
 
       var upload = ref.put(file);
       var uploaded = false;
 
       upload.on(
-        "state_changed",
+        'state_changed',
         function progress(snapshot) {
           var percentage =
-            snapshot.bytesTransferred / snapshot.totalBytes * 100;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
         function error(err) {},
-        function complete() {}
+        function complete() {},
       );
 
       var d = new Date();
@@ -135,17 +135,16 @@ export default {
       var month = d.getUTCMonth();
       var day = d.getUTCDay();
 
-      var date = year + "-" + month + "-" + day;
+      var date = year + '-' + month + '-' + day;
 
-      db
-        .collection("events")
+      db.collection('events')
         .add({
           event: {
             title: this.event.title,
             date: {
               year: this.event.date.substring(0, 4),
               month: this.event.date.substring(5, 7),
-              day: this.event.date.substring(8)
+              day: this.event.date.substring(8),
             },
             time: this.event.time,
             email: this.event.email,
@@ -153,30 +152,30 @@ export default {
             isSubmitted: this.isSubmitted,
             SubmitDate: date,
             imageKey: this.event.imageKey,
-            UserUID: this.event.UserUID
-          }
+            UserUID: this.event.UserUID,
+          },
         })
-        .then(this.$router.push("/events/list"));
+        .then(this.$router.push('/events/list'));
     },
     saveExit() {
       var key = pushid();
       this.isSubmitted = false;
       this.event.imageKey = key;
 
-      var ref = firebase.storage().ref("events/" + this.event.imageKey);
+      var ref = firebase.storage().ref('events/' + this.event.imageKey);
       var file = this.image;
 
       var upload = ref.put(file);
       var uploaded = false;
 
       upload.on(
-        "state_changed",
+        'state_changed',
         function progress(snapshot) {
           var percentage =
-            snapshot.bytesTransferred / snapshot.totalBytes * 100;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
         function error(err) {},
-        function complete() {}
+        function complete() {},
       );
 
       var d = new Date();
@@ -184,17 +183,16 @@ export default {
       var month = d.getUTCMonth();
       var day = d.getUTCDay();
 
-      var date = year + "-" + month + "-" + day;
+      var date = year + '-' + month + '-' + day;
 
-      db
-        .collection("events")
+      db.collection('events')
         .add({
           event: {
             title: this.event.title,
             date: {
               year: this.event.date.substring(0, 4),
               month: this.event.date.substring(5, 7),
-              day: this.event.date.substring(8)
+              day: this.event.date.substring(8),
             },
             time: this.event.time,
             email: this.event.email,
@@ -202,14 +200,14 @@ export default {
             isSubmitted: this.isSubmitted,
             SubmitDate: date,
             imageKey: this.event.imageKey,
-            UserUID: this.event.UserUID
-          }
+            UserUID: this.event.UserUID,
+          },
         })
-        .then(this.$router.push("/events/list"));
+        .then(this.$router.push('/events/list'));
     },
     loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var preview = document.querySelector("#preview");
+      var input = document.querySelector('.bUp');
+      var preview = document.querySelector('#preview');
 
       var imgURL = window.URL.createObjectURL(input.files[0]);
       this.preImg = imgURL;
@@ -219,9 +217,9 @@ export default {
       var start = this.start;
       var end = this.end;
 
-      this.event.time = start + "-" + end;
-    }
-  }
+      this.event.time = start + '-' + end;
+    },
+  },
 };
 </script>
 
@@ -268,5 +266,3 @@ input :invalid {
   height: 300px;
 }
 </style>
-
-

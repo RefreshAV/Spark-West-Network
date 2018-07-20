@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
+import db from '../../Firebase/firebaseInit';
 export default {
   data() {
     return {
@@ -51,7 +51,7 @@ export default {
       monthNum: null,
       weekStart: null,
       weekEnd: null,
-      display: true
+      display: true,
     };
   },
 
@@ -59,18 +59,18 @@ export default {
   created() {
     //get date
     var months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
 
     var d = new Date();
@@ -93,17 +93,17 @@ export default {
     if (this.monthNum > 9) {
       month = this.monthNum;
     } else {
-      month = "0" + (this.monthNum + 1);
+      month = '0' + (this.monthNum + 1);
     }
 
     console.log(month);
 
-    db
-      .collection("events")
-      .orderBy("event.date.month").orderBy("event.date.day")
+    db.collection('events')
+      .orderBy('event.date.month')
+      .orderBy('event.date.day')
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
           var date = doc
             .data()
             .event.date.toString()
@@ -115,14 +115,14 @@ export default {
             time: doc.data().event.time,
             email: doc.data().event.email,
             desc: doc.data().event.description,
-            imageKey: doc.data().event.imageKey
+            imageKey: doc.data().event.imageKey,
           };
           this.events.push(data);
         });
       });
   },
   watch: {
-    events: "fetchImages"
+    events: 'fetchImages',
   },
   methods: {
     fetchImages() {
@@ -130,9 +130,9 @@ export default {
 
       for (var i = 0; i < this.events.length; i++) {
         var url =
-          "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
+          'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
           this.events[i].imageKey +
-          "?alt=media&token";
+          '?alt=media&token';
         images.push(url);
       }
       this.images = images;
@@ -143,18 +143,18 @@ export default {
       var daysInMonth = new Date(year, month + 1, 0).getDate();
 
       var months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
       ];
 
       if (this.weekStart + 7 > daysInMonth) {
@@ -186,7 +186,7 @@ export default {
       this.month = months[month];
     },
     lastWeek() {
-      console.log("Not Implemented");
+      console.log('Not Implemented');
       // var year = this.year;
       // var month = this.monthNum;
       // var daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -221,8 +221,8 @@ export default {
       // } else {
       //   //Last Week
       // }
-    }
-  }
+    },
+  },
 };
 </script>
 
