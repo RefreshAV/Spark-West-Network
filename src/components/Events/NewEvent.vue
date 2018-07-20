@@ -91,7 +91,7 @@ export default {
     var d = new Date();
     var year = d.getUTCFullYear();
     var month = d.getUTCMonth();
-    var day = d.getUTCDay();
+    var day = d.getUTCDate();
 
     var date = year + "-" + month + "-" + day;
   },
@@ -133,7 +133,7 @@ export default {
       var d = new Date();
       var year = d.getUTCFullYear();
       var month = d.getUTCMonth();
-      var day = d.getUTCDay();
+      var day = d.getUTCDate();
 
       var date = year + "-" + month + "-" + day;
 
@@ -182,7 +182,7 @@ export default {
       var d = new Date();
       var year = d.getUTCFullYear();
       var month = d.getUTCMonth();
-      var day = d.getUTCDay();
+      var day = d.getUTCDate();
 
       var date = year + "-" + month + "-" + day;
 
