@@ -1,34 +1,88 @@
 <template>
   <header>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
+      <ol class="carousel-indicators carousel-indicators-round">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="3" v-if="events.length > 0"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="4" v-if="events.length > 1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="5" v-if="events.length > 2"></li>
       </ol>
-      <div class="carousel-inner" role="listbox">
+      <div class="carousel-inner" data-interval="false" role="listbox">
         <!-- Slide One - Set the background image for this slide in the line below -->
         <div class="carousel-item active" style="background-image: url('http://placehold.it/1900x1080')">
           <div class="carousel-caption d-none d-md-block">
-            <h3>First Slide</h3>
-            <p>This is a description for the first slide.</p>
+            <h3>First Image Slide</h3>
+            <p>This is a description for the first image.</p>
           </div>
         </div>
-        <!-- Slide Two - Set the background image for this slide in the line below -->
-        <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
-          <div class="carousel-caption d-none d-md-block">
-            <h3>Second Slide</h3>
-            <p>This is a description for the second slide.</p>
+
+        <!-- Event 1 -->
+        <div v-if="events.length > 0" class="carousel-item" style="background:#CBCBCB">
+          <div class="d-flex justify-content-center align-items-center" style="height:100%">
+            <router-link v-bind:to="{name: 'event-detail', params: {id: events[0].id}}" class="list-group-item card text-white bg-secondary mb-3" style="width:80%">
+              <div class="card-header display-4">{{events[0].date}}</div>
+              <div class="media card-body">
+                <img class="mr-3" v-bind:src="images[0]" alt="Generic placeholder image">
+                <div class="media-body">
+                  <h3 class="mt-0">{{events[0].title}}</h3>
+                  {{events[0].desc}}
+                </div>
+              </div>
+            </router-link>
           </div>
         </div>
-        <!-- Slide Three - Set the background image for this slide in the line below -->
+
         <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
           <div class="carousel-caption d-none d-md-block">
-            <h3>Third Slide</h3>
-            <p>This is a description for the third slide.</p>
+            <h3>Second Image Slide</h3>
+            <p>This is a description for the second image.</p>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div v-if="events.length > 1" class="carousel-item" style="background:#CBCBCB">
+          <div class="d-flex justify-content-center align-items-center" style="height:100%">
+            <router-link v-bind:to="{name: 'event-detail', params: {id: events[1].id}}" class="list-group-item card text-white bg-secondary mb-3" style="width:80%">
+              <div class="card-header display-4">{{events[1].date}}</div>
+              <div class="media card-body">
+                <img class="mr-3" v-bind:src="images[1]" alt="Generic placeholder image">
+                <div class="media-body">
+                  <h3 class="mt-0">{{events[1].title}}</h3>
+                  {{events[1].desc}}
+                </div>
+              </div>
+            </router-link>
+          </div>
+        </div>
+
+        <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Third Image Slide</h3>
+            <p>This is a description for the third image.</p>
+          </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div v-if="events.length > 2" class="carousel-item" style="background:#CBCBCB">
+          <div class="d-flex justify-content-center align-items-center" style="height:100%">
+            <router-link v-bind:to="{name: 'event-detail', params: {id: events[2].id}}" class="list-group-item card text-white bg-secondary mb-3" style="width:80%">
+              <div class="card-header display-4">{{events[2].date}}</div>
+              <div class="media card-body">
+                <img class="mr-3" v-bind:src="images[2]" alt="Generic placeholder image">
+                <div class="media-body">
+                  <h3 class="mt-0">{{events[2].title}}</h3>
+                  {{events[2].desc}}
+                </div>
+              </div>
+            </router-link>
           </div>
         </div>
       </div>
+
+      
+
       <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
@@ -59,10 +113,14 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
+          var day = doc.data().event.date.day;
+          var month = doc.data().event.date.month;
+          var year = doc.data().event.date.year;
+
           const data = {
             id: doc.id,
             title: doc.data().event.title,
-            date: doc.data().event.date,
+            date: year + "-" + month + "-" + day,
             time: doc.data().event.time,
             email: doc.data().event.email,
             desc: doc.data().event.description,
@@ -115,5 +173,20 @@ body {
 
 .portfolio-item {
   margin-bottom: 30px;
+}
+
+.carousel-indicators-round li {
+  border-radius: 10px;
+  margin: 1px 14px;
+  height: 18px;
+  max-width: 18px;
+  border: 1px solid #fff;
+  background-color: transparent;
+}
+.carousel-indicators .active {
+  background-color: #fff;
+  max-width: 20px;
+  margin: 0 14px;
+  height: 20px;
 }
 </style>
