@@ -53,8 +53,8 @@
               email: this.user.email,
               photo: this.user.photo,
               UserUID: this.user.UserUID,
-              about: '',
-              website: ''
+              about: null,
+              website: null
             }
           });
         this.$router.push("/");

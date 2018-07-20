@@ -92,7 +92,7 @@
             </table>
           </div>
           <div class="tab-pane" id="edit">
-            <form role="form">
+            <form role="form" @submit.prevent="writeUserData">
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Username</label>
                 <div class="col-lg-9">
@@ -119,7 +119,7 @@
                 <label class="col-lg-3 col-form-label form-control-label"></label>
                 <div class="col-lg-9">
                   <input type="reset" class="btn btn-secondary" value="Cancel">
-                  <input type="button" class="btn btn-dark" value="Save Changes" @click="writeUserData">
+                  <input type="submit" class="btn btn-dark" value="Save Changes">
                 </div>
               </div>
             </form>
@@ -138,86 +138,95 @@
 </template>
 
 <script>
-  import db from '../../Firebase/firebaseInit';
-  import firebase from 'firebase/app'
-  export default {
-    data() {
-      return {
-        user: {
-          name: '',
-          email: '',
-          photoUrl: ''
-        },
-        username: '',
-        email: '',
-        website: '',
-        about: ''
-      };
-    },
-    methods: {
-      loadFile: function() {
-        var input = document.querySelector(".bUp");
-        var preview = document.querySelector("#preview");
-
-        var imgURL = window.URL.createObjectURL(input.files[0]);
-        this.preImg = imgURL;
-        this.image = input.files[0];
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase/app";
+export default {
+  data() {
+    return {
+      user: {
+        name: "",
+        email: "",
+        photoUrl: ""
       },
-      writeUserData() {
-        console.log(this.about,this.website, this.email, this.username);
-        firebase.database().ref('users/36PgBFw5HSoQFuzqgcAH').set({
-          name: this.username,
-          email: this.email,
-          website: this.website,
-          about: this.about
-        });
-      }
+      username: "",
+      email: "",
+      website: "",
+      about: ""
+    };
+  },
+  methods: {
+    loadFile: function() {
+      var input = document.querySelector(".bUp");
+      var preview = document.querySelector("#preview");
+
+      var imgURL = window.URL.createObjectURL(input.files[0]);
+      this.preImg = imgURL;
+      this.image = input.files[0];
     },
-    beforeRouteEnter(to, from, next) {
+    writeUserData() {
       db
         .collection("users")
         .where("user.UserUID", "==", firebase.auth().currentUser.uid)
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            next(vm => {
-              vm.user.name = doc.data().user.name;
-              vm.user.email = doc.data().user.email;
-              vm.user.photoUrl = doc.data().user.photo;
+            doc.ref.update({
+              user: {
+                name: this.username,
+                email: this.email,
+                website: this.website,
+                about: this.about
+              }
             });
           });
         });
     }
-  };
+  },
+  beforeRouteEnter(to, from, next) {
+    db
+      .collection("users")
+      .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          next(vm => {
+            vm.user.name = doc.data().user.name;
+            vm.user.email = doc.data().user.email;
+            vm.user.photoUrl = doc.data().user.photo;
+          });
+        });
+      });
+  }
+};
 </script>
 
 <style>
-  .dUp {
-    position: relative;
-    overflow: hidden;
-  }
+.dUp {
+  position: relative;
+  overflow: hidden;
+}
 
-  .bUp {
-    position: absolute;
-    font-size: 50px;
-    opacity: 0;
-    right: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
+.bUp {
+  position: absolute;
+  font-size: 50px;
+  opacity: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
 
-  .imgUp {
-    margin-top: 20px;
-    margin-left: 5px;
-    margin-bottom: 5px;
-    font-size: 15px;
-  }
+.imgUp {
+  margin-top: 20px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  font-size: 15px;
+}
 
-  #preview {
-    width:150px;
-    height:150px;
-    border-radius: 100%;
-  }
+#preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+}
 </style>
 

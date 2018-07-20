@@ -96,6 +96,11 @@ export default {
 
 <style scoped>
 /* stylelint-disable selector-list-comma-newline-after */
+
+p {
+  
+}
+
 .blog-header {
   line-height: 1;
   border-bottom: 1px solid #e5e5e5;
