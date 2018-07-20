@@ -175,7 +175,9 @@ export default {
                 name: this.username,
                 email: this.email,
                 website: this.website,
-                about: this.about
+                about: this.about,
+                UserUID: firebase.auth().currentUser.uid,
+                photo: this.user.photoUrl
               }
             });
           });
