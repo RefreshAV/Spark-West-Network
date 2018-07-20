@@ -15,16 +15,17 @@
         </ul>
         <div class="tab-content py-4">
           <div class="tab-pane active" id="profile">
-            <h5 class="mb-3">{{ user.name }}</h5>
+            <h2 class="mb-3">{{ user.name }}</h2>
+            <hr>
             <div class="row">
               <div class="col-md-6">
-                <h6>About</h6>
+                <strong>About</strong>
                 <p>
-                  A little bit about the user
+                  {{user.about}}
                 </p>
-                <h6>More info</h6>
+                <strong>More info</strong>
                 <p>
-                  Just some more info about what I do and
+                  Website: <a target="_blank" :href="user.website">{{user.website}}</a>
                 </p>
               </div>
               <div class="col-md-6">
@@ -39,26 +40,33 @@
                 <span class="badge badge-danger"><i class="fa fa-eye"></i> n Views</span>
               </div>
               <div class="col-md-12">
-                <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
-                <table class="table table-sm table-hover table-striped">
-                  <tbody>
-                  <tr>
-                    <td>
-                      <strong>Max </strong> created a new event in  <strong>Events</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Callum</strong> created a comment on  <strong>Event Title</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>User2</strong> deleted event in <strong>Events</strong>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
+
+                <hr>
+                <h5 class="mt-2"><i class="fa fa-calendar float-right"></i>{{user.name}}'s Events:</h5>
+
+                <ul class="list-group">
+                  <router-link to="/" class="list-group-item card text-white bg-dark mb-1">
+                  <div>
+                    <h5>A Test Event</h5>
+                    <p>2018-07-19</p>
+                  </div>
+                  </router-link>
+
+                  <router-link to="/" class="list-group-item card text-white bg-dark mb-1">
+                  <div>
+                    <h5>Another Test Event</h5>
+                    <p>2018-07-20</p>
+                  </div>
+                  </router-link>
+
+                  <router-link to="/" class="list-group-item card text-white bg-dark mb-1">
+                  <div>
+                    <h5>Yet Another Test Event</h5>
+                    <p>2018-07-21</p>
+                  </div>
+                  </router-link>
+                </ul>
+
               </div>
             </div>
             <!--/row-->
@@ -96,30 +104,28 @@
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Username</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="text" placeholder="username"  v-model="username">
+                  <input class="form-control" type="text" placeholder="username"  v-model="user.name" required>
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Email</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="email" placeholder="email@gmail.com" v-model="email">
+                  <input class="form-control" type="email" placeholder="email@gmail.com" v-model="user.email" required>
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Website</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="url" value="" v-model="website">
+                  <input class="form-control" type="url" value="" v-model="user.website">
                 </div>
               </div>
               <div class="form-group">
                 <label for="exampleFormControlTextarea1">About Yourself</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="about"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="user.about"></textarea>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label"></label>
                 <div class="col-lg-9">
-                  <input type="reset" class="btn btn-secondary" value="Cancel">
-                  <input type="submit" class="btn btn-dark" value="Save Changes">
+                  <input type="submit" class="btn btn-primary" value="Save Changes">
                 </div>
               </div>
             </form>
@@ -146,12 +152,10 @@ export default {
       user: {
         name: "",
         email: "",
-        photoUrl: ""
-      },
-      username: "",
-      email: "",
-      website: "",
-      about: ""
+        photoUrl: "",
+        website: "",
+        about: ""
+      }
     };
   },
   methods: {
@@ -172,10 +176,10 @@ export default {
           querySnapshot.forEach(doc => {
             doc.ref.update({
               user: {
-                name: this.username,
-                email: this.email,
-                website: this.website,
-                about: this.about,
+                name: this.user.name,
+                email: this.user.email,
+                website: this.user.website,
+                about: this.user.about,
                 UserUID: firebase.auth().currentUser.uid,
                 photo: this.user.photoUrl
               }
@@ -195,6 +199,8 @@ export default {
             vm.user.name = doc.data().user.name;
             vm.user.email = doc.data().user.email;
             vm.user.photoUrl = doc.data().user.photo;
+            vm.user.website = doc.data().user.website;
+            vm.user.about = doc.data().user.about;
           });
         });
       });
@@ -229,6 +235,9 @@ export default {
   width: 150px;
   height: 150px;
   border-radius: 100%;
+}
+.card p{
+  margin:0px
 }
 </style>
 
