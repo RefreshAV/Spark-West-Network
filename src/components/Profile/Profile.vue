@@ -42,32 +42,20 @@
               <div class="col-md-12">
 
                 <hr>
-                <h5 class="mt-2"><i class="fa fa-calendar float-right"></i>{{user.name}}'s Events:</h5>
+                <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill">{{events.length}}</span>{{user.name}}'s Events:</h5>
 
                 <ul class="list-group">
-                  <router-link to="/" class="list-group-item card text-white bg-dark mb-1">
+                  <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in events" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
                   <div>
-                    <h5>A Test Event</h5>
-                    <p>2018-07-19</p>
-                  </div>
-                  </router-link>
-
-                  <router-link to="/" class="list-group-item card text-white bg-dark mb-1">
-                  <div>
-                    <h5>Another Test Event</h5>
-                    <p>2018-07-20</p>
-                  </div>
-                  </router-link>
-
-                  <router-link to="/" class="list-group-item card text-white bg-dark mb-1">
-                  <div>
-                    <h5>Yet Another Test Event</h5>
-                    <p>2018-07-21</p>
+                    <h5>{{event.title}}</h5>
+                    <p>{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</p>
                   </div>
                   </router-link>
                 </ul>
 
+                
               </div>
+              <router-link to="/events/NewEvent" class="btn btn-primary btn-circular-lg mb-3"><i class="fa fa-plus"></i></router-link>
             </div>
             <!--/row-->
           </div>
@@ -155,7 +143,8 @@ export default {
         photoUrl: "",
         website: "",
         about: ""
-      }
+      },
+      events: []
     };
   },
   methods: {
@@ -171,6 +160,8 @@ export default {
       db
         .collection("users")
         .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+        .orderBy("event.date.month")
+        .orderBy("event.date.day")
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -202,6 +193,30 @@ export default {
             vm.user.website = doc.data().user.website;
             vm.user.about = doc.data().user.about;
           });
+        });
+      });
+  },
+  created() {
+    db
+      .collection("events")
+      .where("event.UserUID", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          var date = doc
+            .data()
+            .event.date.toString()
+            .substring(8);
+          const data = {
+            id: doc.id,
+            title: doc.data().event.title,
+            date: doc.data().event.date,
+            time: doc.data().event.time,
+            email: doc.data().event.email,
+            desc: doc.data().event.description,
+            imageKey: doc.data().event.imageKey
+          };
+          this.events.push(data);
         });
       });
   }
@@ -236,8 +251,18 @@ export default {
   height: 150px;
   border-radius: 100%;
 }
-.card p{
-  margin:0px
+.card p {
+  margin: 0px;
+}
+
+.btn-circular-lg {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 40px;
+  line-height: 1.33;
+  margin-top: 5px
 }
 </style>
 
