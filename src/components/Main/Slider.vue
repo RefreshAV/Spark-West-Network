@@ -19,7 +19,7 @@
         </div>
 
         <!-- Event 1 -->
-        <div v-if="events.length > 0" class="carousel-item" style="background:#CBCBCB">
+        <div v-if="events.length > 0" class="carousel-item event" v-bind:style="{'background-image': 'url(' + images[0] + ')'}">
           <div class="d-flex justify-content-center align-items-center" style="height:100%">
             <router-link v-bind:to="{name: 'event-detail', params: {id: events[0].id}}" class="list-group-item card text-white bg-secondary mb-3" style="width:80%">
               <div class="card-header display-4">{{events[0].date}}</div>
@@ -42,7 +42,7 @@
         </div>
 
         <!-- Event 2 -->
-        <div v-if="events.length > 1" class="carousel-item" style="background:#CBCBCB">
+        <div v-if="events.length > 1" class="carousel-item event" v-bind:style="{'background-image': 'url(' + images[1] + ')'}">
           <div class="d-flex justify-content-center align-items-center" style="height:100%">
             <router-link v-bind:to="{name: 'event-detail', params: {id: events[1].id}}" class="list-group-item card text-white bg-secondary mb-3" style="width:80%">
               <div class="card-header display-4">{{events[1].date}}</div>
@@ -65,7 +65,7 @@
         </div>
 
         <!-- Event 3 -->
-        <div v-if="events.length > 2" class="carousel-item" style="background:#CBCBCB">
+        <div v-if="events.length > 2" class="carousel-item event" v-bind:style="{'background-image': 'url(' + images[2] + ')'}">
           <div class="d-flex justify-content-center align-items-center" style="height:100%">
             <router-link v-bind:to="{name: 'event-detail', params: {id: events[2].id}}" class="list-group-item card text-white bg-secondary mb-3" style="width:80%">
               <div class="card-header display-4">{{events[2].date}}</div>
@@ -102,7 +102,8 @@ export default {
   data() {
     return {
       events: [],
-      images: []
+      images: [],
+      backgrounds: []
     };
   },
   created() {
@@ -145,6 +146,11 @@ export default {
         images.push(url);
       }
       this.images = images;
+
+      for (let j = 0; j < this.images.length; j++) {
+        var url = "url('" + this.images[j] + "')";
+        this.backgrounds.push(url);
+      }
     }
   }
 };
@@ -156,7 +162,7 @@ body {
 }
 
 .media img {
-  max-width:20%;
+  max-width: 20%;
 }
 
 .carousel-item {
