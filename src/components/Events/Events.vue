@@ -13,19 +13,18 @@
     </div>
 
     <div class="card-deck mb-2">
-        <div class="card flex-md-row mb-4 box-shadow h-md-250" style="min-width:30rem;overflow:hidden;text-overflow: ellipsis;" v-for="(event, i) in events.slice(1)" v-bind:key="event.id">
+        <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}" class="card flex-md-row mb-4 box-shadow h-md-250" style="min-width:30rem;overflow:hidden" v-for="(event, i) in events.slice(1)" v-bind:key="event.id" :id="event.id">
           <div class="card-body d-flex flex-column align-items-start">
             <h3 class="mb-0">
               {{event.title}}
             </h3>
             <div class="mb-1 text-muted">{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</div>
-            <p class="card-text mb-auto">{{event.desc}}</p>
-            <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}" tag="a" active-class="nav-item">Find out more...</router-link>
+            <div class="card-text mb-auto preText">{{event.desc}}</div>
 
           </div>
           <img class="card-img-right flex-auto d-none d-md-block"  v-if="images.length > 0" :src="images[i+1]" alt="Card image cap">
           <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length == 0" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" alt="Card image cap">
-        </div>
+        </router-link>
     </div>
     <div class="text-center">
       <router-link to="/events/NewEvent" tag="button" class="btn btn-primary my-2" v-if="isLoggedIn">Create an Event!</router-link>
@@ -38,6 +37,7 @@
 <script scoped>
 import db from "../../Firebase/firebaseInit";
 import firebase, { functions } from "firebase";
+import jquery from "jquery";
 export default {
   data() {
     return {
@@ -54,13 +54,23 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
+          //truncate description
+          var desc;
+          if (doc.data().event.description.length > 130 && this.events.length > 0) {
+            var trunc = doc.data().event.description
+            desc = trunc.substring(0,131) + " . . ."
+          } else {
+            desc = doc.data().event.description
+          }
+
+          //compile and push data as object
           const data = {
             id: doc.id,
             title: doc.data().event.title,
             date: doc.data().event.date,
             time: doc.data().event.time,
             email: doc.data().event.email,
-            desc: doc.data().event.description,
+            desc: desc,
             imageKey: doc.data().event.imageKey
           };
           this.events.push(data);
@@ -97,10 +107,6 @@ export default {
 <style scoped>
 /* stylelint-disable selector-list-comma-newline-after */
 
-p {
-
-}
-
 .blog-header {
   line-height: 1;
   border-bottom: 1px solid #e5e5e5;
@@ -110,13 +116,6 @@ p {
 }
 .blog-header-logo:hover {
   text-decoration: none;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
 }
 .display-4 {
   font-size: 2.5rem;
