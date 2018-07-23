@@ -58,10 +58,31 @@
       </div>
     </form>
     <hr>
+
+<!-- Modal -->
+<div class="modal fade" id="warning" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel">Warning</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 class="text-muted">Event size exceeds limit :(</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
 </template>
 
 <script>
+import jquery from "jquery";
 import db from "../../Firebase/firebaseInit";
 import firebase from "firebase";
 import "firebase/firestore";
@@ -110,102 +131,116 @@ export default {
   },
   methods: {
     submit() {
-      var key = pushid();
-      this.isSubmitted = true;
-      this.event.imageKey = key;
+      var desc = this.event.description;
+      var imgSize = this.image.size;
+      var warning = document.getElementById("warning")
 
-      var ref = firebase.storage().ref("events/" + this.event.imageKey);
-      var file = this.image;
+      if ((desc > 500) | (imgSize > 10000)) {
+        $("#warning").modal('toggle')
+      } else {
+        var key = pushid();
+        this.isSubmitted = true;
+        this.event.imageKey = key;
 
-      var upload = ref.put(file);
-      var uploaded = false;
+        var ref = firebase.storage().ref("events/" + this.event.imageKey);
+        var file = this.image;
 
-      upload.on(
-        "state_changed",
-        function progress(snapshot) {
-          var percentage =
-            snapshot.bytesTransferred / snapshot.totalBytes * 100;
-        },
-        function error(err) {},
-        function complete() {}
-      );
+        var upload = ref.put(file);
+        var uploaded = false;
 
-      var d = new Date();
-      var year = d.getUTCFullYear();
-      var month = d.getUTCMonth();
-      var day = d.getUTCDate();
+        upload.on(
+          "state_changed",
+          function progress(snapshot) {
+            var percentage =
+              snapshot.bytesTransferred / snapshot.totalBytes * 100;
+          },
+          function error(err) {},
+          function complete() {}
+        );
 
-      var date = year + "-" + month + "-" + day;
+        var d = new Date();
+        var year = d.getUTCFullYear();
+        var month = d.getUTCMonth();
+        var day = d.getUTCDate();
 
-      db
-        .collection("events")
-        .add({
-          event: {
-            title: this.event.title,
-            date: {
-              year: this.event.date.substring(0, 4),
-              month: this.event.date.substring(5, 7),
-              day: this.event.date.substring(8)
-            },
-            time: this.event.time,
-            email: this.event.email,
-            description: this.event.description,
-            isSubmitted: this.isSubmitted,
-            SubmitDate: date,
-            imageKey: this.event.imageKey,
-            UserUID: this.event.UserUID
-          }
-        })
-        .then(this.$router.push("/events/list"));
+        var date = year + "-" + month + "-" + day;
+
+        db
+          .collection("events")
+          .add({
+            event: {
+              title: this.event.title,
+              date: {
+                year: this.event.date.substring(0, 4),
+                month: this.event.date.substring(5, 7),
+                day: this.event.date.substring(8)
+              },
+              time: this.event.time,
+              email: this.event.email,
+              description: this.event.description,
+              isSubmitted: this.isSubmitted,
+              SubmitDate: date,
+              imageKey: this.event.imageKey,
+              UserUID: this.event.UserUID
+            }
+          })
+          .then(this.$router.push("/events/list"));
+      }
     },
     saveExit() {
-      var key = pushid();
-      this.isSubmitted = false;
-      this.event.imageKey = key;
+      var desc = this.characters.length;
+      var imgSize = this.image.size;
+      if ((desc > 500) | (imgSize > 10000)) {
+        alert("Event size exceeds limit!");
+      } else {
+        var key = pushid();
+        this.isSubmitted = false;
+        this.event.imageKey = key;
 
-      var ref = firebase.storage().ref("events/" + this.event.imageKey);
-      var file = this.image;
+        var ref = firebase.storage().ref("events/" + this.event.imageKey);
+        var file = this.image;
 
-      var upload = ref.put(file);
-      var uploaded = false;
+        var upload = ref.put(file);
+        var uploaded = false;
 
-      upload.on(
-        "state_changed",
-        function progress(snapshot) {
-          var percentage =
-            snapshot.bytesTransferred / snapshot.totalBytes * 100;
-        },
-        function error(err) {},
-        function complete() {}
-      );
+        upload.on(
+          "state_changed",
+          function progress(snapshot) {
+            var percentage =
+              snapshot.bytesTransferred / snapshot.totalBytes * 100;
+          },
+          function error(err) {},
+          function complete() {}
+        );
 
-      var d = new Date();
-      var year = d.getUTCFullYear();
-      var month = d.getUTCMonth();
-      var day = d.getUTCDate();
+        var d = new Date();
+        var year = d.getUTCFullYear();
+        var month = d.getUTCMonth();
+        var day = d.getUTCDate();
 
-      var date = year + "-" + month + "-" + day;
+        var date = year + "-" + month + "-" + day;
 
-      db
-        .collection("events")
-        .add({
-          event: {
-            title: this.event.title,
-            date: {
-              year: this.event.date.substring(0, 4),
-              month: this.event.date.substring(5, 7),
-              day: this.event.date.substring(8)
-            },
-            time: this.event.time,
-            email: this.event.email,
-            description: this.event.description,
-            isSubmitted: this.isSubmitted,
-            SubmitDate: date,
-            imageKey: this.event.imageKey,
-            UserUID: this.event.UserUID
-          }
-        })
-        .then(this.$router.push("/events/list"));
+        db
+          .collection("events")
+          .add({
+            event: {
+              title: this.event.title,
+              date: {
+                year: this.event.date.substring(0, 4),
+                month: this.event.date.substring(5, 7),
+                day: this.event.date.substring(8)
+              },
+              time: this.event.time,
+              email: this.event.email,
+              description: this.event.description,
+              isSubmitted: this.isSubmitted,
+              SubmitDate: date,
+              imageKey: this.event.imageKey,
+              UserUID: this.event.UserUID
+            }
+          })
+          .then(this.$router.push("/events/list"));
+      }
     },
     loadFile: function() {
       var input = document.querySelector(".bUp");

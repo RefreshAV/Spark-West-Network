@@ -79,7 +79,6 @@ export default {
     var daysInMonth = new Date(year, month + 1, 0).getDate();
     var week = d.getDate() - d.getDay();
 
-    console.log(daysInMonth);
     this.month = months[d.getMonth()];
     this.monthNum = month;
     this.weekStart = week;
@@ -95,8 +94,6 @@ export default {
     } else {
       month = "0" + (this.monthNum + 1);
     }
-
-    console.log(month);
 
     db
       .collection("events")
