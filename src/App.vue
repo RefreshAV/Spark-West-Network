@@ -22,6 +22,6 @@
 
 <style>
   body {
-    padding-top: 65px;
+    padding-top: 56px;
   }
 </style>

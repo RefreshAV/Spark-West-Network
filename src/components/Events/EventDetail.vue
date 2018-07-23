@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mt-3">
     <div class="row">
       <h1>{{title}}</h1>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row my-2">
+    <div class="row my-2 mt-5">
       <div class="col-lg-8 order-lg-2">
         <ul class="nav nav-tabs">
           <li class="nav-item">
