@@ -4,7 +4,7 @@
 
     <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3">About
-      <small>Nova Obsido</small>
+      <small>Spark West</small>
     </h1>
 
     <ol class="breadcrumb">
