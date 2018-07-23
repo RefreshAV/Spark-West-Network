@@ -11,7 +11,8 @@ import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
 import LogOut from './components/Auth/LogOut.vue';
 import Profile from './components/Profile/Profile.vue';
-import firebase from 'firebase'
+import EventMap from './components/Events/EventLocations.vue';
+import firebase from 'firebase';
 
 export const routes = [
   {
@@ -46,13 +47,13 @@ export const routes = [
     path: '/events/list',
     name: 'events-list',
     component: EventList,
-        beforeEnter: (to, from, next) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-          next();
-        } else {
-          next(false);
-        }
+    beforeEnter: (to, from, next) => {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        next();
+      } else {
+        next(false);
+      }
     },
     meta: {
       requiresAuth: true
@@ -67,13 +68,29 @@ export const routes = [
     path: '/events/NewEvent',
     name: 'events-new-event',
     component: NewEvent ,
-        beforeEnter: (to, from, next) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-          next();
-        } else {
-          next(false);
-        }
+    beforeEnter: (to, from, next) => {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        next();
+      } else {
+        next(false);
+      }
+    },
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: '/events/EventMap',
+    name: 'event-map',
+    component: EventMap ,
+    beforeEnter: (to, from, next) => {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        next();
+      } else {
+        next(false);
+      }
     },
     meta: {
       requiresAuth: true,
@@ -83,13 +100,13 @@ export const routes = [
     path: '/events/EditEvent/:id',
     name:'EditEvent',
     component: EditEvent,
-        beforeEnter: (to, from, next) => {
-        var user = firebase.auth().currentUser;
-        if (user) {
-          next();
-        } else {
-          next(false);
-        }
+    beforeEnter: (to, from, next) => {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        next();
+      } else {
+        next(false);
+      }
     },
     meta: {
       requiresAuth: true,
