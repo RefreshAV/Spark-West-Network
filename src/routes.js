@@ -11,7 +11,8 @@ import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
 import LogOut from './components/Auth/LogOut.vue';
 import Profile from './components/Profile/Profile.vue';
-import ProfileList from "./components/Profile/ProfileList.vue"
+import UserList from "./components/Profile/UserList.vue";
+import UserDetail from "./components/Profile/UserDetail.vue"
 import EventMap from './components/Events/EventLocations.vue';
 import firebase from 'firebase';
 
@@ -154,9 +155,14 @@ export const routes = [
     }
   },
   {
-    path: '/ProfileList/',
-    name: 'profileList',
-    component: ProfileList
+    path: '/Users/',
+    name: 'userList',
+    component: UserList
+  },
+  {
+    path: '/Users/user/:id',
+    name: 'userDetail',
+    component: UserDetail
   }
 ];
 

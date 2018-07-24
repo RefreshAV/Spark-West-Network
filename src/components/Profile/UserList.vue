@@ -2,7 +2,7 @@
     <div class="container">
         <h1 class="mt-3">Users:</h1>
         <div class="list-group list-group-flush mb-3">
-          <router-link v-for="profile in profiles" v-bind:key="profile.id" to="/" class="list-group-item list-group-item-action media ">
+          <router-link v-for="profile in profiles" v-bind:key="profile.id" v-bind:to="{name: 'userDetail', params: {id: profile.id}}" class="list-group-item list-group-item-action media ">
           <img class="align-self-center mr-3" :src="profile.img" alt="Generic placeholder image">
           <div class="media-body">
             <h5 class="mb-0">{{profile.name}}</h5>
