@@ -1,19 +1,32 @@
 <template>
   <div class="container mt-3">
-    <div class="row">
-      <h1>{{title}}</h1>
-    </div>
-    <div class="row">
-      <h3 v-if="date != null">{{date.year}}-{{date.month}}-{{date.day}}</h3>
-    </div>
-    <div class="row">
-      <h5>{{time}}</h5>
-    </div>
-    <div class="row">
-      <img :src="image" id="eventImg" class="img-thumbnail">
-    </div>
-    <div class="row">
-      <small>Submitted: {{submitDate}}</small>
+    <div>
+      <div class="row">
+        <h1>{{title}}</h1>
+      </div>
+      <div class="row">
+        <h3 v-if="date != null">{{date.year}}-{{date.month}}-{{date.day}}</h3>
+      </div>
+      <div class="row">
+        <h5>{{time}}</h5>
+      </div>
+      <div class="row">
+        <router-link to="/" class="media btn btn-light mb-3">
+          <img class="align-self-center mr-3" :src="author.img" alt="Generic placeholder image">
+          <div class="media-body">
+            <h5 class="mb-0">{{author.name}}</h5>
+            <p class="mb-0 text-muted">{{author.email}}</p>
+            <span class="badge badge-primary"><i class="fa fa-user"></i> n Followers</span>
+          </div>
+        </router-link>
+  
+      </div>
+      <div class="row">
+        <img :src="image" id="eventImg" class="img-thumbnail">
+      </div>
+      <div class="row">
+        <small>Submitted: {{submitDate}}</small>
+      </div>
     </div>
     <hr>
     <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
@@ -29,7 +42,7 @@
 import db from "../../Firebase/firebaseInit";
 import firebase, { functions } from "firebase";
 import "firebase/firestore";
-import Comments from './EventComments.vue';
+import Comments from "./EventComments.vue";
 export default {
   name: "event-detail",
   data() {
@@ -45,6 +58,12 @@ export default {
       imageKey: null,
       submitDate: "not found",
       UserUID: null,
+      author: {
+        name: null,
+        email: null,
+        img: null,
+        id: null
+      },
       isAuthenticated: false
     };
   },
@@ -100,7 +119,8 @@ export default {
     }
   },
   watch: {
-    title: "fetchImage"
+    title: "fetchImage",
+    UserUID: "getAuthor"
   },
   methods: {
     fetchImage() {
@@ -110,6 +130,20 @@ export default {
       var fetch = ref.getDownloadURL().then(function(url) {
         that.image = url;
       });
+    },
+    getAuthor() {
+      db
+        .collection("users")
+        .where("user.UserUID", "==", this.UserUID)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            this.author.id = doc.id
+            this.author.name = doc.data().user.name
+            this.author.img = doc.data().user.photo
+            this.author.email = doc.data().user.email
+          })
+        });
     },
     deleteEvent() {
       if (confirm("Are you sure?")) {
@@ -134,7 +168,7 @@ export default {
     }
   },
   components: {
-    'app-comments': Comments
+    "app-comments": Comments
   }
 };
 </script>
@@ -144,6 +178,12 @@ img {
   width: auto;
   height: 300px;
   border: 5px, black, solid;
+}
+
+.media img {
+  max-width: 84px;
+  max-height: 84px;
+  border-radius: 100%;
 }
 </style>
 
