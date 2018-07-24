@@ -33,8 +33,8 @@
                 </div>
                 <div class="col-md-12">
                   
-                  <!-- <hr>
-                  <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"></i> {{events.length}}</span>{{user.name}}'s Events:</h5>
+                  <hr>
+                  <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"></i> {{events.length}}</span>{{name}}'s Events:</h5>
     
                   <ul class="list-group">
                     <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in currentPage" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
@@ -47,17 +47,17 @@
                     <li v-if="events.length == 0" class="list-group-item d-flex justify-content-center align-items-center" style="height:400px">
                       <h3>Nothing Here!</h3>
                     </li>
-                  </ul> -->
+                  </ul>
     
                 </div>
     
-                <!-- <div class="col-md-12 d-flex justify-content-end">
+                <div class="col-md-12 d-flex justify-content-end">
                   <div class="btn-group">
                     <button class="btn btn-outline-primary" @click="lastPage"><i class="fa fa-angle-double-left"></i></button>
                     <input id="page" type="number" class="btn btn-outline-primary" v-model="page" style="max-width:4rem;" min="0" :max="pages.length" readonly>
                     <button class="btn btn-outline-primary" @click="nextPage"><i class="fa fa-angle-double-right"></i></button>
                   </div>
-                </div> -->
+                </div>
     
               </div>
               <!--/row-->
@@ -108,7 +108,12 @@ export default {
       img: null,
       about: null,
       website: null,
-      UserUID: null
+      UserUID: null,
+      events: [],
+      page: 1,
+      pages: [],
+      currentPage: [],
+      pageLength: 4
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -119,12 +124,12 @@ export default {
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.name = doc.data().user.name
-            vm.email = doc.data().user.email
-            vm.img = doc.data().user.photo
-            vm.about = doc.data().user.about
-            vm.website = doc.data().user.website
-            vm.UserUID = doc.data().user.UserUID
+            vm.name = doc.data().user.name;
+            vm.email = doc.data().user.email;
+            vm.img = doc.data().user.photo;
+            vm.about = doc.data().user.about;
+            vm.website = doc.data().user.website;
+            vm.UserUID = doc.data().user.UserUID;
           });
         });
       });
@@ -142,14 +147,80 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          this.name = doc.data().user.name
-          this.email = doc.data().user.email
-          this.img = doc.data().user.photo
-          this.about = doc.data().user.about
-          this.website = doc.data().user.website
-          this.UserUID = doc.data().user.UserUID
+          this.name = doc.data().user.name;
+          this.email = doc.data().user.email;
+          this.img = doc.data().user.photo;
+          this.about = doc.data().user.about;
+          this.website = doc.data().user.website;
+          this.UserUID = doc.data().user.UserUID;
         });
       });
+  },
+  watch: {
+    page: "updateCurrent",
+    UserUID: "getEvents",
+    events: "createPages"
+  },
+  methods: {
+    getEvents() {
+      db
+        .collection("events")
+        .where("event.UserUID", "==", this.UserUID)
+        .orderBy("event.date.year")
+        .orderBy("event.date.month")
+        .orderBy("event.date.day")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            var date = doc
+              .data()
+              .event.date.toString()
+              .substring(8);
+            const data = {
+              id: doc.id,
+              title: doc.data().event.title,
+              date: doc.data().event.date,
+              time: doc.data().event.time,
+              email: doc.data().event.email,
+              desc: doc.data().event.description,
+              imageKey: doc.data().event.imageKey
+            };
+            this.events.push(data);
+          });
+        });
+    },
+    nextPage() {
+      if (this.page < this.pages.length) {
+        this.page++;
+      }
+    },
+    lastPage() {
+      if (this.page > 1) {
+        this.page--;
+      }
+    },
+    createPages() {
+      var length = Math.ceil(this.events.length / this.pageLength);
+      for (var i = 0; i < length; i++) {
+        if (this.events.slice(i * 4) < 4) {
+          this.pages.push(this.events.slice(i * this.pageLength));
+        } else {
+          this.pages.push(
+            this.events.slice(
+              i * this.pageLength,
+              i * this.pageLength + this.pageLength
+            )
+          );
+        }
+      }
+      this.currentPage = this.pages[0];
+    },
+    updateCurrent() {
+      document.getElementById("page").readOnly = true;
+
+      this.currentPage = [];
+      this.currentPage = this.pages[this.page - 1];
+    }
   }
 };
 </script>
