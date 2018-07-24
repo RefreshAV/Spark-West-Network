@@ -3,7 +3,7 @@
     <app-slider></app-slider>
     <div class="container">
 
-      <h1 class="my-4">Welcome to Nova Obsido</h1>
+      <h1 class="my-4">Welcome to Spark West</h1>
 
       <!-- Marketing Icons Section -->
       <div class="row">
