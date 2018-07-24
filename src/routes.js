@@ -11,6 +11,7 @@ import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
 import LogOut from './components/Auth/LogOut.vue';
 import Profile from './components/Profile/Profile.vue';
+import ProfileList from "./components/Profile/ProfileList.vue"
 import EventMap from './components/Events/EventLocations.vue';
 import firebase from 'firebase';
 
@@ -151,6 +152,11 @@ export const routes = [
     meta: {
       requiresAuth: true,
     }
+  },
+  {
+    path: '/ProfileList/',
+    name: 'profileList',
+    component: ProfileList
   }
 ];
 
