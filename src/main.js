@@ -3,7 +3,10 @@ import VueRouter from 'vue-router';
 import App from './App.vue'
 import { routes } from './routes';
 import * as VueGoogleMaps from "vue2-google-maps";
+import VueDisqus from 'vue-disqus'
 import firebase from 'firebase';
+
+Vue.use(VueDisqus);
 
 Vue.use(VueGoogleMaps, {
   load: {

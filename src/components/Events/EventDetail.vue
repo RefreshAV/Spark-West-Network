@@ -20,6 +20,7 @@
     <button @click="deleteEvent" class="btn btn-danger" v-if="isAuthenticated">Delete</button>
     <router-link v-bind:to="{name: 'EditEvent', params: {id: id}}" class="btn btn-primary" v-if="isAuthenticated">Edit</router-link>
     <hr>
+    <app-comments></app-comments>
   </div>
 
 </template>
@@ -28,6 +29,7 @@
 import db from "../../Firebase/firebaseInit";
 import firebase, { functions } from "firebase";
 import "firebase/firestore";
+import Comments from './EventComments.vue';
 export default {
   name: "event-detail",
   data() {
@@ -130,6 +132,9 @@ export default {
           });
       }
     }
+  },
+  components: {
+    'app-comments': Comments
   }
 };
 </script>

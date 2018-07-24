@@ -17,6 +17,7 @@
     "popper.js": "^1.14.3",
     "pushid": "^1.0.0",
     "vue": "^2.5.11",
+    "vue-disqus": "^3.0.3",
     "vue-router": "^3.0.1",
     "vue2-google-maps": "^0.10.0"
   },
