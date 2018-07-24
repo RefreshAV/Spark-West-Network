@@ -1,6 +1,13 @@
 <template>
   <div class="container">
     <div class="row my-2 mt-5">
+      <div class="col-lg-4 order-lg-1 text-center">
+        <img :src="user.photoUrl" class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm" id="preview" alt="avatar">
+        <div class="dUp file btn btn-primary">
+          <small>Change <i class="fa fa-camera"></i></small>
+          <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" />
+        </div>
+      </div>
       <div class="col-lg-8 order-lg-2">
         <ul class="nav nav-tabs">
           <li class="nav-item">
@@ -42,19 +49,31 @@
               <div class="col-md-12">
 
                 <hr>
-                <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill">{{events.length}}</span>{{user.name}}'s Events:</h5>
+                <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"></i> {{events.length}}</span>{{user.name}}'s Events:</h5>
 
                 <ul class="list-group">
-                  <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in events" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
+                  <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in currentPage" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
                   <div>
                     <h5>{{event.title}}</h5>
                     <p>{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</p>
                   </div>
                   </router-link>
+
+                  <li v-if="events.length == 0" class="list-group-item d-flex justify-content-center align-items-center" style="height:400px">
+                    <h3>Nothing Here!</h3>
+                  </li>
                 </ul>
 
-                
               </div>
+
+              <div class="col-md-12 d-flex justify-content-end">
+                <div class="btn-group">
+                  <button class="btn btn-outline-primary" @click="lastPage"><i class="fa fa-angle-double-left"></i></button>
+                  <input id="page" type="number" class="btn btn-outline-primary" v-model="page" style="max-width:4rem;" min="0" :max="pages.length" readonly>
+                  <button class="btn btn-outline-primary" @click="nextPage"><i class="fa fa-angle-double-right"></i></button>
+                </div>
+              </div>
+
               <router-link to="/events/NewEvent" class="btn btn-primary btn-circular-lg mb-3"><i class="fa fa-plus"></i></router-link>
             </div>
             <!--/row-->
@@ -120,13 +139,6 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 order-lg-1 text-center">
-        <img :src="user.photoUrl" class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm" id="preview" alt="avatar">
-        <div class="dUp file btn btn-primary">
-          <small>Change <i class="fa fa-camera"></i></small>
-          <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" />
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -144,8 +156,16 @@ export default {
         website: "",
         about: ""
       },
-      events: []
+      events: [],
+      page: 1,
+      pages: [],
+      currentPage: [],
+      pageLength: 4
     };
+  },
+  watch: {
+    page: "updateCurrent",
+    events: "createPages"
   },
   methods: {
     loadFile: function() {
@@ -177,9 +197,42 @@ export default {
             });
           });
         });
+    },
+    nextPage() {
+      if (this.page < this.pages.length) {
+        this.page++;
+      }
+    },
+    lastPage() {
+      if (this.page > 1) {
+        this.page--;
+      }
+    },
+    createPages() {
+      var length = Math.ceil(this.events.length / this.pageLength);
+      for (var i = 0; i < length; i++) {
+        if (this.events.slice(i * 4) < 4) {
+          this.pages.push(this.events.slice(i * this.pageLength));
+        } else {
+          this.pages.push(
+            this.events.slice(
+              i * this.pageLength,
+              i * this.pageLength + this.pageLength
+            )
+          );
+        }
+      }
+      this.currentPage = this.pages[0];
+    },
+    updateCurrent() {
+      document.getElementById("page").readOnly = true;
+
+      this.currentPage = [];
+      this.currentPage = this.pages[this.page - 1];
     }
   },
   beforeRouteEnter(to, from, next) {
+    // Get user data
     db
       .collection("users")
       .where("user.UserUID", "==", firebase.auth().currentUser.uid)
@@ -197,9 +250,13 @@ export default {
       });
   },
   created() {
+    //get events created by user
     db
       .collection("events")
       .where("event.UserUID", "==", firebase.auth().currentUser.uid)
+      .orderBy("event.date.year")
+      .orderBy("event.date.month")
+      .orderBy("event.date.day")
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -262,7 +319,18 @@ export default {
   border-radius: 35px;
   font-size: 40px;
   line-height: 1.33;
-  margin-top: 5px
+  margin-top: 5px;
+}
+
+.btn-group input {
+  max-width: 5rem;
+  align-content: center;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
 

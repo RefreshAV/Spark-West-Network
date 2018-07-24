@@ -97,7 +97,9 @@ export default {
 
     db
       .collection("events")
-      .orderBy("event.date.month").orderBy("event.date.day")
+      .orderBy("event.date.year")
+      .orderBy("event.date.month")
+      .orderBy("event.date.day")
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
