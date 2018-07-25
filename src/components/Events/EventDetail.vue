@@ -35,11 +35,11 @@
       </div>
     </div>
     <hr>
-    <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
-    <button @click="deleteEvent" class="btn btn-danger" v-if="isAuthenticated">Delete</button>
-    <router-link v-bind:to="{name: 'EditEvent', params: {id: id}}" class="btn btn-primary" v-if="isAuthenticated">Edit</router-link>
+    <router-link class="btn btn-secondary animated flipInX" to="/events/list">Back</router-link>
+    <button @click="deleteEvent" class="btn btn-danger animated flipInX" v-if="isAuthenticated">Delete</button>
+    <router-link v-bind:to="{name: 'EditEvent', params: {id: id}}" class="btn btn-primary animated flipInX" v-if="isAuthenticated">Edit</router-link>
     <hr>
-    <app-comments></app-comments>
+    <app-comments class="mb-3"></app-comments>
   </div>
 
 </template>
@@ -151,12 +151,12 @@ export default {
         button.classList.add("text-light");
         button.classList.remove("text-danger");
         button.classList.add("btn-danger");
-        button.classList.add("animated", "pulse");
+        button.classList.add("animated", "bounceIn");
       } else {
         button.classList.remove("text-light");
         button.classList.remove("btn-danger");
         button.classList.add("text-danger");
-        button.classList.remove("animated", "pulse");
+        button.classList.remove("animated", "bounceIn");
       }
     }
   },

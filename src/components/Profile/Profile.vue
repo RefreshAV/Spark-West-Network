@@ -14,7 +14,7 @@
             <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
           </li>
           <li class="nav-item">
-            <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Messages</a>
+            <a href="" data-target="#likes" data-toggle="tab" class="nav-link">Likes</a>
           </li>
           <li class="nav-item">
             <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
@@ -78,33 +78,35 @@
             </div>
             <!--/row-->
           </div>
-          <div class="tab-pane" id="messages">
-            <div class="alert alert-info alert-dismissable">
-              <a class="panel-close close" data-dismiss="alert">×</a> This is an example bootstrap <strong>.alert</strong> Put Important message here.
-            </div>
-            <table class="table table-hover table-striped">
-              <tbody>
-              <tr>
-                <td>
-                  <span class="float-right font-weight-bold">3 hrs ago</span> New Weekly events updated
-                </td>
-              </tr>
-              <td>
-                <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id dolor. Morbi venenatis lacinia rhoncus.
-              </td>
-              <tr>
-              <tr>
-                <td>
-                  <span class="float-right font-weight-bold">9/4</span> Vestibulum tincidunt ullamcorper eros eget luctus.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="float-right font-weight-bold">9/4</span> Maxamillion ais the fix for tibulum tincidunt ullamcorper eros.
-                </td>
-              </tr>
-              </tbody>
-            </table>
+
+
+          <div class="tab-pane" id="likes">
+            <div class="col-md-12">
+                <hr>
+                <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"></i> {{likedEvents.length}}</span>{{user.name}}'s Liked Events:</h5>
+
+                <ul class="list-group">
+                  <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in currentLikePage" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
+                  <div>
+                    <h5>{{event.title}}</h5>
+                    <p>{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</p>
+                  </div>
+                  </router-link>
+
+                  <li v-if="likedEvents.length == 0" class="list-group-item d-flex justify-content-center align-items-center" style="height:400px">
+                    <h3>Nothing Here!</h3>
+                  </li>
+                </ul>
+
+              </div>
+
+              <div class="col-md-12 d-flex justify-content-end">
+                <div class="btn-group">
+                  <button class="btn btn-outline-primary" @click="lastPage"><i class="fa fa-angle-double-left"></i></button>
+                  <input id="page" type="number" class="btn btn-outline-primary" v-model="page" style="max-width:4rem;" min="0" :max="pages.length" readonly>
+                  <button class="btn btn-outline-primary" @click="nextPage"><i class="fa fa-angle-double-right"></i></button>
+                </div>
+              </div>
           </div>
           <div class="tab-pane" id="edit">
             <form role="form" @submit.prevent="writeUserData">
@@ -157,10 +159,15 @@ export default {
         about: ""
       },
       events: [],
+      likedEvents: [],
       page: 1,
+      likePage: 1,
       pages: [],
+      likePages: [],
       currentPage: [],
-      pageLength: 4
+      currentLikePage: [],
+      pageLength: 4,
+      likePageLength: 4
     };
   },
   watch: {
@@ -206,6 +213,16 @@ export default {
     lastPage() {
       if (this.page > 1) {
         this.page--;
+      }
+    },
+    nextPageL() {
+      if (this.likePage < this.likePages.length) {
+        this.likePage++;
+      }
+    },
+    lastPageL() {
+      if (this.likePage > 1) {
+        this.likePage--;
       }
     },
     createPages() {

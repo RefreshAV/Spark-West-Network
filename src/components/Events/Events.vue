@@ -50,7 +50,7 @@
     created() {
       db
         .collection("events")
-        .orderBy("likes")
+        .orderBy("likes", "desc")
         .limit(3)
         .get()
         .then(querySnapshot => {
