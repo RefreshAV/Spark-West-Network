@@ -44,7 +44,7 @@
         minZoom: 2,
         zoom: 8
       });
-      L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      L.tileLayer( 'https://api.mapbox.com/styles/v1/cuppajoeman/cjk16g5rv28ug2sl6ucetr52a/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY3VwcGFqb2VtYW4iLCJhIjoiY2prMTY5MHJrMGU5ejNycXFvdXpnMG84aSJ9.s6Pvs5N-dITfrDFAgEWbng', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a','b','c']
       }).addTo( map );
