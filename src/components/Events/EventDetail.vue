@@ -74,6 +74,7 @@ export default {
       },
       liked: false,
       likes: 0,
+      likedBy: [],
       isAuthenticated: false
     };
   },
@@ -94,13 +95,15 @@ export default {
             vm.imageKey = doc.data().event.imageKey;
             vm.submitDate = doc.data().event.SubmitDate;
             vm.UserUID = doc.data().event.UserUID;
-            vm.likes = doc.data().event.likes;
+            vm.likes = doc.data().likes;
+            vm.likedBy = doc.data().likedBy;
           });
         });
       });
   },
   mounted() {
     var ref;
+    var that = this;
 
     db
       .collection("events")
@@ -121,8 +124,16 @@ export default {
             (this.imageKey = doc.data().event.imageKey),
             (this.submitDate = doc.data().event.SubmitDate),
             (this.UserUID = doc.data().event.UserUID),
-            (this.likes = doc.data().likes);
+            (this.likes = doc.data().likes),
+            (this.likedBy = doc.data().likedBy);
         });
+      })
+      .then(function() {
+        if (that.likedBy.includes(firebase.auth().currentUser.uid)) {
+          that.liked = true;
+        } else {
+          that.liked = false;
+        }
       });
   },
   updated() {
@@ -132,7 +143,22 @@ export default {
   },
   watch: {
     title: "fetchImage",
-    UserUID: "getAuthor"
+    UserUID: "getAuthor",
+    liked: function() {
+      var button = document.getElementById("like");
+
+      if (this.liked) {
+        button.classList.add("text-light");
+        button.classList.remove("text-danger");
+        button.classList.add("btn-danger");
+        button.classList.add("animated", "pulse");
+      } else {
+        button.classList.remove("text-light");
+        button.classList.remove("btn-danger");
+        button.classList.add("text-danger");
+        button.classList.remove("animated", "pulse");
+      }
+    }
   },
   methods: {
     fetchImage() {
@@ -179,36 +205,42 @@ export default {
       }
     },
     likeEvent() {
-      var button = document.getElementById("like");
+      if (this.likedBy == null) {
+        this.likedBy = [];
+      }
+      if (this.likes == null) {
+        this.likes = 0;
+      }
+
       if (this.liked) {
         //remove like
         this.liked = false;
-        this.likes--
-        button.classList.remove("text-light");
-        button.classList.remove("btn-danger");
-        button.classList.add("text-danger");
-        button.classList.remove("animated", "pulse");
+        this.likes--;
+
+        var remove = this.likedBy.filter(
+          uid => uid != firebase.auth().currentUser.uid
+        );
+        this.likedBy = remove;
 
         db
           .collection("events")
           .doc(this.id)
           .update({
-            likes: this.likes
+            likes: this.likes,
+            likedBy: this.likedBy
           });
       } else {
         //add like
         this.liked = true;
-        this.likes++
-        button.classList.add("text-light");
-        button.classList.remove("text-danger");
-        button.classList.add("btn-danger");
-        button.classList.add("animated", "pulse");
+        this.likes++;
+        this.likedBy.push(firebase.auth().currentUser.uid);
 
         db
           .collection("events")
           .doc(this.id)
           .update({
-            likes: this.likes
+            likes: this.likes,
+            likedBy: this.likedBy
           });
       }
     }
