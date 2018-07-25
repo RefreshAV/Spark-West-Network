@@ -131,12 +131,14 @@ export default {
   },
   methods: {
     submit() {
-      var desc = this.event.description;
+      var desc = this.event.description.length;
       var imgSize = this.image.size;
       var warning = document.getElementById("warning")
 
-      if ((desc > 500) | (imgSize > 10000)) {
+      if ((desc > 500) || (imgSize > 1000000)) {
         $("#warning").modal('toggle')
+        console.log(desc)
+        console.log(imgSize)
       } else {
         var key = pushid();
         this.isSubmitted = true;
@@ -190,7 +192,7 @@ export default {
     saveExit() {
       var desc = this.characters.length;
       var imgSize = this.image.size;
-      if ((desc > 500) | (imgSize > 10000)) {
+      if ((desc > 500) || (imgSize > 1000000)) {
         alert("Event size exceeds limit!");
       } else {
         var key = pushid();
