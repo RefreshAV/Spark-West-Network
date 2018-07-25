@@ -3,9 +3,14 @@
 </template>
 
 <script>
+  import db from "../../Firebase/firebaseInit";
+  import firebase from "firebase/app";
   export default {
     data() {
       return {
+        locationData: [
+
+        ],
         markers: [
           {
             id: 0,
@@ -38,6 +43,47 @@
         ]
       }
     },
+    created() {
+      db
+        .collection("events")
+        .where("event.UserUID", "==", firebase.auth().currentUser.uid)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const data = {
+              title: doc.data().event.title,
+              lat: doc.data().event.location.lat,
+              lng: doc.data().event.location.lng,
+              url: 'https://google.com'
+            };
+            this.locationData.push(data);
+          });
+        });
+    },
+    // beforeRouteEnter(to, from, next) {
+    //   // Get user data
+    //   db
+    //     .collection("events")
+    //     .where("event.UserUID", "==", firebase.auth().currentUser.uid)
+    //     .get()
+    //     .then(querySnapshot => {
+    //       querySnapshot.forEach(doc => {
+    //         next(vm => {
+    //           // vm.user.name = doc.data().user.name;
+    //           // vm.user.email = doc.data().user.email;
+    //           // vm.user.photoUrl = doc.data().user.photo;
+    //           // vm.user.website = doc.data().user.website;
+    //           // vm.user.about = doc.data().user.about;
+    //           vm.locationData.push({
+    //             title: doc.data().event.title,
+    //             lat: doc.data().event.location.lat,
+    //             lng: doc.data().event.location.lng,
+    //             url: 'https://google.com'
+    //           });
+    //         });
+    //       });
+    //     });
+    // },
     mounted() {
       var map = L.map( 'map', {
         center: [45,-64],
@@ -50,9 +96,9 @@
       }).addTo( map );
       this.markers.forEach(place => {
         L.marker([place.lat,place.lng])
-          .bindPopup('<a href="' + place.url + '" target="_blank">' + place.name + '</a>')
+          .bindPopup('<a href="' + place.url + '" target="_blank">' + place.title + '</a>')
           .addTo(map);
-      })
+      });
     }
   }
 </script>
