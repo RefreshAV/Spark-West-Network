@@ -118,9 +118,6 @@
         location: null
       };
     },
-    components: {
-      'app-location-picker': LocationPicker
-    },
     mounted() {
       var d = new Date();
       var year = d.getUTCFullYear();
