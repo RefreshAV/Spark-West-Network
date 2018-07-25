@@ -36,8 +36,8 @@
     </div>
     <hr>
     <router-link class="btn btn-secondary animated flipInX" to="/events/list">Back</router-link>
-    <button @click="deleteEvent" class="btn btn-danger animated flipInX" v-if="isAuthenticated">Delete</button>
-    <router-link v-bind:to="{name: 'EditEvent', params: {id: id}}" class="btn btn-primary animated flipInX" v-if="isAuthenticated">Edit</router-link>
+    <button @click="deleteEvent" class="btn btn-danger animated flipInX" v-if="isAuthenticated || isAdmin">Delete</button>
+    <router-link v-bind:to="{name: 'EditEvent', params: {id: id}}" class="btn btn-primary animated flipInX" v-if="isAuthenticated || isAdmin">Edit</router-link>
     <hr>
     <app-comments class="mb-3"></app-comments>
   </div>
@@ -75,7 +75,8 @@ export default {
       liked: false,
       likes: 0,
       likedBy: [],
-      isAuthenticated: false
+      isAuthenticated: false,
+      isAdmin: false
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -104,6 +105,12 @@ export default {
   mounted() {
     var ref;
     var that = this;
+
+    if(firebase.auth().currentUser.uid == "ZgI7pcwABkZXi4bMa1xBXi2KHv22" || firebase.auth().currentUser.uid == "0jqATDnHD0Twd9MWmN5SAr2HuEv2"){
+      this.isAdmin = true
+    } else {
+      this.isAdmin = false
+    }
 
     db
       .collection("events")
