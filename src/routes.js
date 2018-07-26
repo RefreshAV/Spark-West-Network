@@ -11,6 +11,9 @@ import SignUp from './components/Auth/SignUp.vue';
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue';
 import LogOut from './components/Auth/LogOut.vue';
 import Profile from './components/Profile/Profile.vue';
+import OrganizationsList from './components/Profile/OrganizationsList';
+import OrganizationProfileDetail from './components/Profile/OrganizationProfileDetail';
+import NewOrganizationProfile from './components/Profile/NewOrganizationProfile.vue'
 import UserList from "./components/Profile/UserList.vue";
 import UserDetail from "./components/Profile/UserDetail.vue"
 import EventMap from './components/Events/EventLocations.vue';
@@ -163,6 +166,21 @@ export const routes = [
     path: '/Users/user/:id',
     name: 'userDetail',
     component: UserDetail
+  },
+  {
+    path: '/Users/organizations',
+    name: 'organizationList',
+    component: OrganizationsList
+  },
+  {
+    path: '/Organization/detail/:id',
+    name: 'organizationProfileDetail',
+    component: OrganizationProfileDetail
+  },
+  {
+    path: '/Organization/New',
+    name: 'newOrganizationProfile',
+    component: NewOrganizationProfile
   }
 ];
 

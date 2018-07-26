@@ -22,7 +22,17 @@
         </ul>
         <div class="tab-content py-4">
           <div class="tab-pane active" id="profile">
-            <h2 class="mb-3">{{ user.name }}</h2>
+            <div class="row no-gutters">
+              <div class="col">
+                <h2>{{user.name}}</h2>
+              </div>
+              <div class="col mr-3">
+                <div class="btn-group float-right">
+                  <router-link id="organBtn" class="btn btn-info btn-sm" to="/Organization/New" data-toggle="tooltip" data-placement="top" title="Create new organization"><span id="organBtnCont"><i class="fa fa-building"></i></span></router-link>
+                  <button class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Add existing organization"><i class="fa fa-plus"></i></button>
+                </div>
+              </div>
+            </div>
             <hr>
             <div class="row">
               <div class="col-md-6">
