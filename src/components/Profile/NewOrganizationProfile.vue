@@ -21,48 +21,48 @@
             </div>
           </div>
           <div class="col">
-            <h4>Banner Picture</h4>
+            <h4>Banner</h4>
             <div id="banner" class="rounded shadow-sm mb-3">
               <div id="preBadge" class="badge badge-secondary badge-pill shadow-sm">preview</div>
-              <img id="bannerImg" src="https://picsum.photos/1900/500/?random" alt="Banner Image" class="img-fluid">
+              <img id="bannerImg" :src="bannerPreImg" alt="Banner Image" class="img-fluid">
             </div>
 
             <div class="row">
               <div class="col">
                 <div class="row">
                   <div class="form-group col">
-                    <input class="form-control form-control-lg" type="text" placeholder="Organization Name" required>
+                    <input class="form-control form-control-lg" type="text" placeholder="Organization Name" v-model="name" required>
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <input type="url" class="form-control mb-2" placeholder="website">
+                    <input type="url" class="form-control mb-2" placeholder="website" v-model="website">
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col">
                     <label>Description</label>
-                    <textarea id="desc" rows="5" class="form-control" placeholder="A description of the organization"></textarea>
+                    <textarea id="desc" rows="5" class="form-control" placeholder="A description of the organization" v-model="description"></textarea>
                   </div>
                   <div class="col">
                     <div class="form-group">
-                      <label>Contact Info <span class="badge badge-warning badge-pill">Please fill in one or more</span></label>
-                      <input type="email" class="form-control mb-2" placeholder="email" required>
-                      <input type="text" class="form-control mb-2" placeholder="phone number">
-                      <input type="text" class="form-control mb" placeholder="other">
+                      <label>Contact Info</label>
+                      <input type="email" class="form-control mb-2" placeholder="email" v-model="email" required>
+                      <input type="text" class="form-control mb-2" placeholder="phone number" v-model="phone">
+                      <input type="text" class="form-control mb" placeholder="other" v-model="other">
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col">
                     <label>Location:</label>
-                    <input type="text" class="form-control mb-2" placeholder="Organization address">
+                    <input type="text" class="form-control mb-2" placeholder="Organization address" v-model="location">
                   </div>
                 </div>
                 <div class="row">
                   <div class="col">
                     <div class="card bg-light mb-3">
-                      <h3 class="card-header">Add People</h3>
+                      <h3 class="card-header">Add People to <span v-if="name == ''">Organization</span> {{name}}</h3>
                       <div class="card-body">
                         <ul class="list-group">
                           <!-- Current User -->
@@ -108,16 +108,43 @@
 </template>
 
 <script>
+import jquery from "jquery";
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase";
+import "firebase/firestore";
+import pushid from "pushid";
 export default {
   data() {
     return {
-      image: null,
+      bannerImg: "",
+      bannerPreImg: "https://picsum.photos/1900/500/?random",
+      image: "",
       preImg: "https://picsum.photos/150/150/?random",
+      name: "",
+      website: "",
+      description: "",
+      email: "",
+      phone: "",
+      other: "",
+      location: "",
+      users: [],
       user: {
         img: "https://picsum.photos/200/200/?random",
         name: "Current User"
       }
     };
+  },
+  mounted() {
+    db
+      .collection("users")
+      .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          this.user.name = doc.data().user.name;
+          this.user.img = doc.data().user.photo
+        });
+      });
   },
   methods: {
     submit() {
@@ -131,7 +158,7 @@ export default {
       this.image = input.files[0];
     },
     addUser() {
-      console.log("Add User")
+      console.log("Add User");
     }
   }
 };
@@ -189,7 +216,6 @@ export default {
 #preBadge {
   position: absolute;
   z-index: 100;
-  margin: 10px
+  margin: 10px;
 }
-
 </style>

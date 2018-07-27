@@ -180,7 +180,18 @@ export const routes = [
   {
     path: '/Organization/New',
     name: 'newOrganizationProfile',
-    component: NewOrganizationProfile
+    component: NewOrganizationProfile,
+    beforeEnter: (to, from, next) => {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        next();
+      } else {
+        next(false);
+      }
+    },
+    meta: {
+      requiresAuth: true,
+    }
   }
 ];
 
