@@ -23,8 +23,27 @@ const router = new VueRouter({
   mode: 'history'
 });
 
-new Vue({
-  el: '#app',
-  router,
-  render: h => h(App)
+// Router guard checks if AuthRequired
+router.beforeEach((to, from, next) => {
+  let currentUser = firebase.auth().currentUser;
+  let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !currentUser) next('SignUp')
+  else if (!requiresAuth && currentUser) next()
+  else next()
 })
+
+let app;
+
+//Initialize the app after Firebase has iniitalized
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (!app) {
+    app = new Vue({
+      el: '#app',
+      router,
+      render: h => h(App)
+    });
+  }
+})
+

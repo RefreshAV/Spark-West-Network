@@ -20,6 +20,10 @@ import EventMap from './components/Events/EventLocations.vue';
 import firebase from 'firebase';
 
 export const routes = [
+  // {
+  //   path: '*',
+  //
+  // },
   {
     path: '/',
     name: 'home',
@@ -52,14 +56,6 @@ export const routes = [
     path: '/events/list',
     name: 'events-list',
     component: EventList,
-    beforeEnter: (to, from, next) => {
-      var user = firebase.auth().currentUser;
-      if (user) {
-        next();
-      } else {
-        next(false);
-      }
-    },
     meta: {
       requiresAuth: true
     }
@@ -68,19 +64,12 @@ export const routes = [
     path: '/contact',
     name: 'contact',
     component: Contact
+
   },
   {
     path: '/events/NewEvent',
     name: 'events-new-event',
-    component: NewEvent ,
-    beforeEnter: (to, from, next) => {
-      var user = firebase.auth().currentUser;
-      if (user) {
-        next();
-      } else {
-        next(false);
-      }
-    },
+    component: NewEvent,
     meta: {
       requiresAuth: true,
     }
@@ -89,14 +78,6 @@ export const routes = [
     path: '/events/EventMap',
     name: 'event-map',
     component: EventMap ,
-    beforeEnter: (to, from, next) => {
-      var user = firebase.auth().currentUser;
-      if (user) {
-        next();
-      } else {
-        next(false);
-      }
-    },
     meta: {
       requiresAuth: true,
     }
@@ -105,14 +86,6 @@ export const routes = [
     path: '/events/EditEvent/:id',
     name:'EditEvent',
     component: EditEvent,
-    beforeEnter: (to, from, next) => {
-      var user = firebase.auth().currentUser;
-      if (user) {
-        next();
-      } else {
-        next(false);
-      }
-    },
     meta: {
       requiresAuth: true,
     }
@@ -121,9 +94,6 @@ export const routes = [
     path: '/SignUp',
     name: 'sign-up',
     component: SignUp,
-    meta: {
-      requiresGuest: true,
-    }
   },
   {
     path: '/SignUpSuccess',
@@ -145,14 +115,6 @@ export const routes = [
     path: '/Profile',
     name:'profile',
     component: Profile,
-    beforeEnter: (to, from, next) => {
-      var user = firebase.auth().currentUser;
-      if (user) {
-        next();
-      } else {
-        next(false);
-      }
-    },
     meta: {
       requiresAuth: true,
     }
@@ -183,6 +145,9 @@ export const routes = [
     component: NewOrganizationProfile
   }
 ];
+
+
+
 
 
 // // Nav Guard
