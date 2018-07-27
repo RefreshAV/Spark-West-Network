@@ -122,27 +122,42 @@ export const routes = [
   {
     path: '/Users/',
     name: 'userList',
-    component: UserList
+    component: UserList,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/Users/user/:id',
     name: 'userDetail',
-    component: UserDetail
+    component: UserDetail,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/Users/organizations',
     name: 'organizationList',
-    component: OrganizationsList
+    component: OrganizationsList,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/Organization/detail/:id',
     name: 'organizationProfileDetail',
-    component: OrganizationProfileDetail
+    component: OrganizationProfileDetail,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/Organization/New',
     name: 'newOrganizationProfile',
-    component: NewOrganizationProfile
+    component: NewOrganizationProfile,
+    meta: {
+      requiresAuth: true
+    }
   }
 ];
 
