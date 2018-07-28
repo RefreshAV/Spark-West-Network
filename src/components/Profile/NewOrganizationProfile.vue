@@ -74,15 +74,56 @@
                               <div class="col d-flex align-items-center">
                                 <h5>{{user.name}}</h5>
                               </div>
-                              <div class="col d-flex justify-content-end align-items-center text-muted">
-                                Admin
+                              <div class="col d-flex justify-content-end align-items-center">
+                                <h4><i class="badge badge-secondary badge-pill">Admin</i></h4>
                               </div>
                             </div>
                           </li>
 
-                          <button class="btn btn-success" @click.prevent="addUser"><i class="fa fa-plus fa-2x"></i></button>
+                          <form class="navbar-form" role="search">
+		                        <div class="input-group">
+		                        	<input type="text" class="form-control form-control-lg" placeholder="Search for users . . ." v-model="searchTerm">
+		                        	<div class="input-group-btn">
+		                        		<button class="btn btn-lg btn-primary" @click.prevent="search"><i class="fa fa-search"></i></button>
+		                        	</div>
+		                        </div>
+		                      </form>
                         </ul>
+                        <br>
 
+                        <!-- Search Results -->
+                        <ul class="list-group">
+                          <h3 v-if="searching">Results:</h3>
+                          <div v-if="searching && profiles.length <= 0" class="animated shake">
+                            <div class="row d-flex justify-content-center">
+                              <h4>Nothing found</h4>
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                              <b>Make Sure to:</b>
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                              <ul>
+                                <li>Check Spellling</li>
+                                <li>Check Capitalisation</li>
+                                <li>Check Spacing</li>
+                                <li>Give Up</li>
+                              </ul>
+                            </div>
+                          </div>
+                          <li class="list-group-item " v-if="searching && profiles.length > 0" v-for="profile in profiles" v-bind:key="profile.id">
+                            <div class="row">
+                              <div class="col-auto">
+                                <img :src="profile.img" alt="profile picture" class="searchImg">
+                              </div>
+                              <div class="col d-flex align-items-center">
+                                <h5>{{profile.name}}</h5>
+                              </div>
+                              <div class="col d-flex justify-content-end align-items-center">
+                                <button id="addUser" class="btn btn-lg btn-success"><i class="fa fa-plus"></i></button>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -103,7 +144,6 @@
 
       </form>
       <hr>
-
     </div>
 </template>
 
@@ -131,7 +171,10 @@ export default {
       user: {
         img: "https://picsum.photos/200/200/?random",
         name: "Current User"
-      }
+      },
+      searchTerm: "",
+      profiles: [],
+      searching: false
     };
   },
   mounted() {
@@ -142,7 +185,7 @@ export default {
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           this.user.name = doc.data().user.name;
-          this.user.img = doc.data().user.photo
+          this.user.img = doc.data().user.photo;
         });
       });
   },
@@ -157,8 +200,27 @@ export default {
       this.preImg = imgURL;
       this.image = input.files[0];
     },
-    addUser() {
-      console.log("Add User");
+    search() {
+      const that = this;
+      this.searching = false
+      this.profiles =[]
+      db
+        .collection("users")
+        .where("user.name", "==", this.searchTerm)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const data = {
+              id: doc.id,
+              name: doc.data().user.name,
+              img: doc.data().user.photo
+            };
+            this.profiles.push(data);
+          });
+        })
+        .then(function() {
+          that.searching = true;
+        });
     }
   }
 };
@@ -217,5 +279,15 @@ export default {
   position: absolute;
   z-index: 100;
   margin: 10px;
+}
+
+.searchImg {
+  width: 75px;
+  height: 75px;
+  border-radius: 100%;
+}
+
+#addUser {
+  border-radius: 100%;
 }
 </style>
