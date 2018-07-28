@@ -26,6 +26,11 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="email">Event Location</label>
+            <GmapAutocomplete class="form-control" @place_changed="setLocation">
+            </GmapAutocomplete>
+          </div>
+          <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" class="form-control" autocomplete="off" v-model="email" required>
           </div>
@@ -77,7 +82,12 @@ export default {
       start: null,
       end: null,
       UID: null,
-      submitDate: null
+      submitDate: null,
+      locationPos: {
+        lat: 0,
+        lng: 0
+      },
+      location: null
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -144,6 +154,10 @@ export default {
       this.start = time.substring(0, 5);
     },
     saveExit() {
+      if (this.location) {
+        this.locationPos.lat = this.location.geometry.location.lat();
+        this.locationPos.lng = this.location.geometry.location.lng();
+      }
       var start = this.start;
       var end = this.end;
 
@@ -191,7 +205,11 @@ export default {
                 description: this.description,
                 imageKey: this.imageKey,
                 SubmitDate: this.submitDate,
-                UserUID: this.UID
+                UserUID: this.UID,
+                location: {
+                  lat: this.locationPos.lat,
+                  lng: this.locationPos.lng
+                }
               }
             });
           });
@@ -206,7 +224,10 @@ export default {
 
       this.preImg = imgURL;
       this.image = input.files[0];
-    }
+    },
+    setLocation(location) {
+      this.location = location
+    },
   }
 };
 </script>
