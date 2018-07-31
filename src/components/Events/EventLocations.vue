@@ -25,7 +25,7 @@
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
             L.marker([doc.data().event.location.lat, doc.data().event.location.lng])
-              .bindPopup('<a href="' + 'https://google.com' + '" target="_blank">' + doc.data().event.title + '</a>')
+              .bindPopup('<router-link ' +  'class="btn btn-primary" ' + 'to="/" ' + '>' + doc.data().event.title + '</router-link>')
               .addTo(map);
           });
         });
