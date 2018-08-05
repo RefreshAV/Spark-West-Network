@@ -51,9 +51,9 @@ export default {
           .collection("users")
           .where("user.UserUID", "==", vm.user.UserUID)
           .get()
-          .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-              if (!doc.exists) {
+          .then(function(querySnapshot) {
+            if (querySnapshot.size == 0) {
+              if (user) {
                 db.collection("users").add({
                   user: {
                     name: vm.user.name,
@@ -64,32 +64,11 @@ export default {
                     website: null
                   }
                 });
-              } else {
-                console.log("Document Exists!")
               }
-            });
+            } else {
+              console.log("Doc Exists");
+            }
           });
-
-        //docSnapshot => {
-
-        // if (docSnapshot.exists) {
-        //   console.log("Doc Exists = " + docSnapshot.exists);
-        //   console.log(firebase.auth().currentUser.uid)
-        // } else {
-        //   if (user) {
-        //     db.collection("users").add({
-        //       user: {
-        //         name: vm.user.name,
-        //         email: vm.user.email,
-        //         photo: vm.user.photo,
-        //         UserUID: vm.user.UserUID,
-        //         about: null,
-        //         website: null
-        //       }
-        //     });
-        //   }
-        // }
-        //}
       });
     }
   }
