@@ -53,6 +53,8 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Organization Users -->
                 <div class="row">
                   <div class="form-group col">
                     <label>Location:</label>
@@ -65,6 +67,7 @@
                       <h3 class="card-header">Add People to <span v-if="name == ''">Organization</span> {{name}}</h3>
                       <div class="card-body">
                         <ul class="list-group">
+
                           <!-- Current User -->
                           <li class="list-group-item">
                             <div class="row">
@@ -80,6 +83,26 @@
                             </div>
                           </li>
 
+                          <!-- Added Users -->
+                          <li class="list-group-item bg-light" v-if="users.length > 0" v-for="profile in users" v-bind:key="profile.id">
+                            <div class="row">
+                              <div class="col-auto">
+                                <img :src="profile.img" alt="profile picture" class="userImg">
+                              </div>
+                              <div class="col d-flex align-items-center">
+                                <h5 class="text-muted">{{profile.name}}</h5>
+                              </div>
+                              <div class="col-auto d-flex align-items-center justify-content-end">
+                                <select class="custom-select" v-model="profile.role">
+                                  <option value="1">Admin</option>
+                                  <option value="2">Manager</option>
+                                  <option value="3">User</option>
+                                </select>
+                              </div>
+                            </div>
+                          </li>
+
+                          <!-- Search Bar -->
                           <form class="navbar-form" role="search">
 		                        <div class="input-group">
 		                        	<input type="text" class="form-control form-control-lg" placeholder="Search for users . . ." v-model="searchTerm">
@@ -119,11 +142,59 @@
                                 <h5>{{profile.name}}</h5>
                               </div>
                               <div class="col d-flex justify-content-end align-items-center">
-                                <button id="addUser" class="btn btn-lg btn-success"><i class="fa fa-plus"></i></button>
+                                <button id="addUser" class="btn btn-lg btn-success" @click.prevent="addUser(profile.id,profile.name,profile.img)"><i class="fa fa-plus"></i></button>
                               </div>
                             </div>
                           </li>
                         </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Roles -->
+                  <div class="col-auto">
+                    <div class="card">
+                      <h4 class="card-header">Roles:</h4>
+                      <div class="card-body">
+                        <p>
+                          <button class="btn" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">Admin</button>
+                          <button class="btn" data-toggle="collapse" data-target="#collapseManager" aria-expanded="false" aria-controls="collapseManager">Manager</button>
+                          <button class="btn" data-toggle="collapse" data-target="#collapseUser" aria-expanded="false" aria-controls="collapseUser">User</button>
+                        </p>
+
+                        <div class="collapse" id="collapseAdmin">
+                          <div class="card">
+                            <h5 class="card-header">Admin</h5>
+                            <div class="card-body">
+                              <ul>
+                                <li>Listed under organization</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="collapse" id="collapseManager">
+                          <div class="card">
+                            <h5 class="card-header">Manager</h5>
+                            <div class="card-body">
+                              <ul>
+                                <li>Listed under organization</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="collapse" id="collapseUser">
+                          <div class="card">
+                            <h5 class="card-header">User</h5>
+                            <div class="card-body">
+                              <ul>
+                                <li>Listed under organization</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -190,9 +261,7 @@ export default {
       });
   },
   methods: {
-    submit() {
-      console.log("Submit");
-    },
+    submit() {},
     loadFile: function() {
       var input = document.querySelector(".bUp");
       var preview = document.querySelector("#preview");
@@ -202,11 +271,12 @@ export default {
     },
     search() {
       const that = this;
-      this.searching = false
-      this.profiles =[]
+      this.searching = false;
+      this.profiles = [];
+      var search = this.searchTerm;
       db
         .collection("users")
-        .where("user.name", "==", this.searchTerm)
+        .where("user.name", "==", search.trim())
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -221,6 +291,16 @@ export default {
         .then(function() {
           that.searching = true;
         });
+    },
+    addUser(id, name, img) {
+      console.log("Added User: " + name);
+      var user = {
+        id,
+        name,
+        img,
+        role: 3
+      };
+      this.users.push(user);
     }
   }
 };
@@ -262,6 +342,18 @@ export default {
   border-radius: 100%;
 }
 
+.searchImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+}
+
+.userImg {
+  width: 75px;
+  height: 75px;
+  border-radius: 100%;
+}
+
 #bannerImg {
   position: absolute;
   -webkit-filter: brightness(1);
@@ -279,12 +371,6 @@ export default {
   position: absolute;
   z-index: 100;
   margin: 10px;
-}
-
-.searchImg {
-  width: 75px;
-  height: 75px;
-  border-radius: 100%;
 }
 
 #addUser {
