@@ -27,7 +27,7 @@
           </div>
           <div class="form-group">
             <label for="email">Event Location</label>
-            <GmapAutocomplete class="form-control" @place_changed="setLocation">
+            <GmapAutocomplete class="form-control" @place_changed="setLocation" v-model="locationName">
             </GmapAutocomplete>
           </div>
           <div class="form-group">
@@ -83,6 +83,7 @@ export default {
       end: null,
       UID: null,
       submitDate: null,
+      locationName: "",
       locationPos: {
         lat: 0,
         lng: 0
@@ -104,6 +105,7 @@ export default {
             vm.time = doc.data().event.time;
             vm.email = doc.data().event.email;
             vm.description = doc.data().event.description;
+            vm.locationName = doc.data().event.locationName;
             vm.imageKey = doc.data().event.imageKey;
             vm.submitDate = doc.data().event.SubmitDate;
             vm.UID = doc.data().event.UserUID;
@@ -131,6 +133,7 @@ export default {
             (this.time = doc.data().event.time),
             (this.email = doc.data().event.email),
             (this.desc = doc.data().event.description),
+            (this.locationName = doc.data().event.locationName),
             (this.imageKey = doc.data().event.imageKey),
             (this.submitDate = doc.data().event.SubmitDate),
             (this.UID = doc.data().event.UserUID)
@@ -157,6 +160,7 @@ export default {
       if (this.location) {
         this.locationPos.lat = this.location.geometry.location.lat();
         this.locationPos.lng = this.location.geometry.location.lng();
+        this.event.locationName = this.location.formatted_address;
       }
       var start = this.start;
       var end = this.end;
@@ -206,6 +210,7 @@ export default {
                 imageKey: this.imageKey,
                 SubmitDate: this.submitDate,
                 UserUID: this.UID,
+                locationName: this.locationName,
                 location: {
                   lat: this.locationPos.lat,
                   lng: this.locationPos.lng

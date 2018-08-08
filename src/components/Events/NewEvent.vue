@@ -26,6 +26,7 @@
           </div>
           <div class="form-group">
             <label for="email">Event Location</label>
+            
             <GmapAutocomplete class="form-control" @place_changed="setLocation">
             </GmapAutocomplete>
           </div>
@@ -54,7 +55,7 @@
       <hr>
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-          <router-link to="/events/list" class="btn btn-danger">Cancle</router-link>
+          <router-link to="/events/list" class="btn btn-danger">Cancel</router-link>
           <button type="button" class="btn btn-info" @click="saveExit">
             Save & Exit
           </button>
@@ -103,6 +104,7 @@
           description: "",
           imageKey: "",
           UserUID: firebase.auth().currentUser.uid,
+          locationName: "",
           locationPos: {
             lat: 0,
             lng: 0
@@ -143,6 +145,7 @@
         if (this.location) {
           this.event.locationPos.lat = this.location.geometry.location.lat();
           this.event.locationPos.lng = this.location.geometry.location.lng();
+          this.event.locationName = this.location.formatted_address;
         }
         var desc = this.event.description;
         var imgSize = this.image.size;
@@ -188,6 +191,7 @@
                 SubmitDate: date,
                 imageKey: this.event.imageKey,
                 UserUID: this.event.UserUID,
+                locationName: this.event.locationName,
                 location: {
                   lat: this.event.locationPos.lat,
                   lng: this.event.locationPos.lng
@@ -241,6 +245,7 @@
                 SubmitDate: date,
                 imageKey: this.event.imageKey,
                 UserUID: this.event.UserUID,
+                locationName: this.event.locationName,
                 location: {
                   lat: this.event.locationPos.lat,
                   lng: this.event.locationPos.lng
