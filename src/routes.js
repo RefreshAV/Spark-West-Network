@@ -17,6 +17,7 @@ import NewOrganizationProfile from './components/Profile/NewOrganizationProfile.
 import UserList from "./components/Profile/UserList.vue";
 import UserDetail from "./components/Profile/UserDetail.vue"
 import EventMap from './components/Events/EventLocations.vue';
+import EventGallery from './components/Events/EventGallery.vue';
 import firebase from 'firebase';
 
 export const routes = [
@@ -88,6 +89,14 @@ export const routes = [
     component: EditEvent,
     meta: {
       requiresAuth: true,
+    }
+  },
+  {
+    path: '/events/EventGallery',
+    name: 'EventGallery',
+    component: EventGallery,
+    meta: {
+      requiresAuth: false
     }
   },
   {

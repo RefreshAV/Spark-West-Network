@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="map" style="height: 500px; border: 1px solid #AAA;"></div>
-    <router-link to="/"><button>Test</button></router-link>
   </div>
 
 </template>
@@ -17,7 +16,7 @@
             L.marker([doc.data().event.location.lat, doc.data().event.location.lng])
               // .bindPopup('<router-link ' +  'class="btn btn-primary" ' + 'to="/events/event/' + doc.id + '" ' + '>' + doc.data().event.title + '</router-link>')
               // temporary workaround for router-link insdie a leaflet marker.
-              .bindPopup('<router-link to="/"><a href="/events/event/' + doc.id + '">test</a></router-link>')
+              .bindPopup('<router-link to="/"><a href="/events/event/' + doc.id + '">' + doc.data().event.title + '</a></router-link>')
               .addTo(map)
           });
         }); },
