@@ -160,7 +160,7 @@ export default {
       if (this.location) {
         this.locationPos.lat = this.location.geometry.location.lat();
         this.locationPos.lng = this.location.geometry.location.lng();
-        this.event.locationName = this.location.formatted_address;
+        this.locationName = this.location.formatted_address;
       }
       var start = this.start;
       var end = this.end;

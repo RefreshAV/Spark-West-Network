@@ -13,8 +13,7 @@
         <!-- Slide One - Set the background image for this slide in the line below -->
         <div class="carousel-item active" style="background-image: url('https://picsum.photos/1900/1080/?random')">
           <div class="carousel-caption d-none d-md-block">
-            <h3>First Image Slide</h3>
-            <p>This is a description for the first image.</p>
+          <router-link to="/events/EventGallery" class="btn btn-success" style="margin-bottom: 10px;">Check out the Gallery</router-link>
           </div>
         </div>
 
