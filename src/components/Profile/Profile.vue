@@ -19,6 +19,9 @@
           <li class="nav-item">
             <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
           </li>
+          <li class="nav-item">
+            <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Messages</a>
+          </li>
         </ul>
         <div class="tab-content py-4">
           <div class="tab-pane active" id="profile">
@@ -61,18 +64,18 @@
                 <hr>
                 <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"></i> {{events.length}}</span>{{user.name}}'s Events:</h5>
 
-                <ul class="list-group">
-                  <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in currentPage" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
-                  <div>
-                    <h5>{{event.title}}</h5>
-                    <p>{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</p>
-                  </div>
-                  </router-link>
+                  <ul class="list-group">
+                    <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in currentPage" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
+                    <div>
+                      <h5>{{event.title}}</h5>
+                      <p>{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</p>
+                    </div>
+                    </router-link>
 
-                  <li v-if="events.length == 0" class="list-group-item d-flex justify-content-center align-items-center" style="height:400px">
-                    <h3>Nothing Here!</h3>
-                  </li>
-                </ul>
+                    <li v-if="events.length == 0" class="list-group-item d-flex justify-content-center align-items-center" style="height:400px">
+                      <h3>Nothing Here!</h3>
+                    </li>
+                  </ul>
 
               </div>
 
@@ -149,6 +152,23 @@
               </div>
             </form>
           </div>
+          <div class="tab-pane" id="messages">
+            <h1>Messages</h1>
+                            <ul class="list-group">
+                  <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in currentPage" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
+                  <div>
+                    <h5>{{event.title}}</h5>
+                    <p>{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</p>
+                  </div>
+                  </router-link>
+
+                  <li v-if="events.length == 0" class="list-group-item d-flex justify-content-center align-items-center" style="height:400px">
+                    <h3>Nothing Here!</h3>
+                  </li>
+                </ul>
+                  <button class="btn btn-dark">Send a message</button>
+
+                </div>
         </div>
       </div>
     </div>

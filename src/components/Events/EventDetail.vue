@@ -31,6 +31,7 @@
           <hr>
           <h5>Description:</h5>
           <p>{{desc}}</p>
+            <span class="badge badge-primary"><i class="fa fa-user"></i> {{attendees}} People Attending</span>
         </div>
       </div>
     </div>
@@ -75,6 +76,9 @@ export default {
       liked: false,
       likes: 0,
       likedBy: [],
+      attending: false,
+      attendees: Math.floor(Math.random() * 100),
+      peopleAttending: [],
       isAuthenticated: false,
       isAdmin: false
     };
@@ -210,8 +214,9 @@ export default {
             });
           });
       }
+      //Add join Event logic here
     },
-    likeEvent() {
+        likeEvent() {
       if (this.likedBy == null) {
         this.likedBy = [];
       }
