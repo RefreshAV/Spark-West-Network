@@ -150,7 +150,7 @@
         var desc = this.event.description;
         var imgSize = this.image.size;
         var warning = document.getElementById("warning")
-        if ((desc > 500) || (imgSize > 1000000)) {
+        if ((desc > 500) || (imgSize == 1000000)) {
           $("#warning").modal('toggle')
         } else {
           var key = pushid();
@@ -204,7 +204,7 @@
       saveExit() {
         var desc = this.characters.length;
         var imgSize = this.image.size;
-        if ((desc > 500) || (imgSize > 1000000)) {
+        if ((desc > 500) || (imgSize == 1000000)) {
           alert("Event size exceeds limit!");
         } else {
           var key = pushid();
