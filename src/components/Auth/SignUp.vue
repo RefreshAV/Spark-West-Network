@@ -28,7 +28,7 @@
    </div>
 
         <!-- Login Form -->
-        <div id="firebaseui-auth-container" class="col-md-6" style="margin-top: 100px;"></div>
+        <div id="firebaseui-auth-container" class="col-md-6" style="margin-top: 100px;" ></div>
 </div>
 
         <!-- Remind Passowrd -->
