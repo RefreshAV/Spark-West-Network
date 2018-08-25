@@ -66,7 +66,6 @@ export default {
                 });
               }
             } else {
-              console.log("Doc Exists");
             }
           });
       });
