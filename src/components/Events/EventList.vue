@@ -226,9 +226,6 @@ export default {
 </script>
 
 <style scope>
-img {
-  height: 150px;
-}
 
 .btn-circular-lg {
   width: 70px;
