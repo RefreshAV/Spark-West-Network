@@ -22,7 +22,7 @@
       <div class="col-lg-6">
         <h2>About Nova Obsido</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed voluptate nihil eum consectetur similique? Consectetur, quod, incidunt, harum nisi dolores delectus reprehenderit voluptatem perferendis dicta dolorem non blanditiis ex fugiat.</p>
-        <p>您好! My name is Emma, a grade 11 student studying at Horton High School. I was originally from China, and now I proudly call Nova Scotia my second home. Entrepreneurship had always been an area of interest to me. Spark West Network is a project that allows me to explore this field in a hands-on way. We have an idea, we have a team, and we have passion, so now it's time to realize our vision! With my teamates, I hope to make my contribution to the Nova Scotia business world as a passionate youth! </p>
+        <p> </p>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, consequuntur, modi mollitia corporis ipsa voluptate corrupti eum ratione ex ea praesentium quibusdam? Aut, in eum facere corrupti necessitatibus perspiciatis quis?</p>
       </div>
     </div>
@@ -49,9 +49,9 @@
         <div class="card h-100 text-center">
           <img class="card-img-top" src="https://picsum.photos/500/300/?random" alt="">
           <div class="card-body">
-            <h4 class="card-title">Team Member</h4>
-            <h6 class="card-subtitle mb-2 text-muted">Position</h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit
+            <h4 class="card-title">Emma He</h4>
+            <h6 class="card-subtitle mb-2 text-muted">Position</h6>
+            <p class="card-text">您好! My name is Emma, a grade 11 student studying at Horton High School. I was originally from China, and now I proudly call Nova Scotia my second home. Entrepreneurship had always been an area of interest to me. Spark West Network is a project that allows me to explore this field in a hands-on way. We have an idea, we have a team, and we have passion, so now it's time to realize our vision! With my teamates, I hope to make my contribution to the Nova Scotia business world as a passionate youth!</p>
           </div>
           <div class="card-footer">
             <a href="#">name@example.com</a>
