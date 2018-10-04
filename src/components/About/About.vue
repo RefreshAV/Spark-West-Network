@@ -64,10 +64,10 @@
           <div class="card-body">
             <h4 class="card-title">Team Member</h4>
             <h6 class="card-subtitle mb-2 text-muted">Position</h6>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>
+            <p class="card-text">Hello, I'm Max, a grade 11 student attending Horton High. Ever since I went to the pitches for a local business ideation competition, Start It Up, I've been engaged and interested in local entrepreneurship. With a background in computer science and more artistic endeavors, I have competed in 4 Business ideation competitions placing both 2nd and 1st on two different occasions. I have always wanted to extend my entrepreneurship passion to my family friends and other members of my community, and I believe Nova Obsido is the way to do that</p>
           </div>
           <div class="card-footer">
-            <a href="#">name@example.com</a>
+            <a href="maxacaplan@gmail.com">maxacaplan@gmail.com</a>
           </div>
         </div>
       </div>
