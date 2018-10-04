@@ -36,9 +36,9 @@
         <div class="card h-100 text-center">
           <img class="card-img-top" src="https://picsum.photos/500/300/?random" alt="">
           <div class="card-body">
-            <h4 class="card-title">Team Member</h4>
+            <h4 class="card-title">Alexander Petkov</h4>
             <h6 class="card-subtitle mb-2 text-muted">Position</h6>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>
+            <p class="card-text">My name is Alexander Plamenov Petkov. I am 15th years old and in the 10th grade attending Horton high school. I am interested computer hardware and software and am knowledgable with Raspberr Pi's and Python. I hope to become a computer engineer, or a petroleum engineer, or a nautical archaeologist, or a theme park engineer, or a surgeon. I really don't know. By creating Spark West Network, along with my other group members, I hope to gain valuable knowledge and experience in entrepreneurship and what I want to do in the future. Even if Nova Obsido fails as a business, the experiences and lessons I have learned will greatly benefit me in the future, and that, to me, is a great success.</p>
           </div>
           <div class="card-footer">
             <a href="#">name@example.com</a>
@@ -50,8 +50,8 @@
           <img class="card-img-top" src="https://picsum.photos/500/300/?random" alt="">
           <div class="card-body">
             <h4 class="card-title">Team Member</h4>
-            <h6 class="card-subtitle mb-2 text-muted">Position</h6>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>
+            <h6 class="card-subtitle mb-2 text-muted">Position</h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit
           </div>
           <div class="card-footer">
             <a href="#">name@example.com</a>
