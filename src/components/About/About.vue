@@ -38,7 +38,7 @@
           <div class="card-body">
             <h4 class="card-title">Alexander Petkov</h4>
             <h6 class="card-subtitle mb-2 text-muted">Position</h6>
-            <p class="card-text">My name is Alexander Plamenov Petkov. I am 15th years old and in the 10th grade attending Horton high school. I am interested computer hardware and software and am knowledgable with Raspberr Pi's and Python. I hope to become a computer engineer, or a petroleum engineer, or a nautical archaeologist, or a theme park engineer, or a surgeon. I really don't know. By creating Spark West Network, along with my other group members, I hope to gain valuable knowledge and experience in entrepreneurship and what I want to do in the future. Even if Nova Obsido fails as a business, the experiences and lessons I have learned will greatly benefit me in the future, and that, to me, is a great success.</p>
+            <p class="card-text">My name is Alexander Plamenov Petkov. I am 15 years old and in the 10th grade attending Horton high school. I am interested computer hardware and software and am knowledgable with Raspberry Pi's and the Python programming language. I hope to become a computer engineer, or a petroleum engineer, or a nautical archaeologist, or a theme park engineer, or a surgeon. I really don't know. By creating Spark West Network, along with my other group members, I hope to gain valuable knowledge and experience in entrepreneurship and in figuring out what I want to do in the future. Even if Spark West fails as a business, the experiences and lessons I have learned will greatly benefit me in the future, and that, to me, is a great success.</p>
           </div>
           <div class="card-footer">
             <a href="#">name@example.com</a>
