@@ -116,7 +116,7 @@
               <div class="col-md-12 d-flex justify-content-end">
                 <div class="btn-group">
                   <button class="btn btn-outline-primary" @click="lastPageL"><i class="fa fa-angle-double-left"></i></button>
-                  <input id="page" type="number" class="btn btn-outline-primary" v-model="likePage" style="max-width:4rem;" min="0" :max="likePages.length" readonly>
+                  <input id="likePage" type="number" class="btn btn-outline-primary" v-model="likePage" style="max-width:4rem;" min="0" :max="likePages.length" readonly>
                   <button class="btn btn-outline-primary" @click="nextPageL"><i class="fa fa-angle-double-right"></i></button>
                 </div>
               </div>
@@ -202,7 +202,9 @@ export default {
   },
   watch: {
     page: "updateCurrent",
-    events: "createPages"
+    likePage: "updateCurrentLiked",
+    events: "createPages",
+    likedEvents: "createLikePages"
   },
   methods: {
     loadFile: function() {
@@ -234,6 +236,13 @@ export default {
           });
         });
     },
+    updateCurrentLiked() {
+      // console.log("update")
+      //document.getElementById("likePage").readOnly = true;
+
+      this.currentLikePage = [];
+      this.currentLikePage = this.likePages[this.likePage - 1];
+    },
     nextPage() {
       if (this.page < this.pages.length) {
         this.page++;
@@ -245,7 +254,6 @@ export default {
       }
     },
     nextPageL() {
-      console.log(this.currentLikePage)
       if (this.likePage < this.likePages.length) {
         this.likePage++;
       }
@@ -256,7 +264,6 @@ export default {
       }
     },
     createPages() {
-      //users events
       var length = Math.ceil(this.events.length / this.pageLength);
       for (var i = 0; i < length; i++) {
         if (this.events.slice(i * 4) < 4) {
@@ -271,14 +278,10 @@ export default {
         }
       }
       this.currentPage = this.pages[0];
-
-      //liked events
-      console.log(this.likedEvents, this.likedEvents.length)
-      var likedLength = Math.ceil(this.likedEvents.length / this.pageLength);
-      debugger;
-      
-      
-      for (var l = 0; l < likedLength; l++) {
+    },
+    createLikePages() {
+      var length = Math.ceil(this.likedEvents.length / this.pageLength);
+      for (var l = 0; l < length; l++) {
         if (this.likedEvents.slice(l * 4) < 4) {
           this.likePages.push(this.likedEvents.slice(l * this.pageLength));
         } else {
