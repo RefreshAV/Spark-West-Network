@@ -115,9 +115,9 @@
 
               <div class="col-md-12 d-flex justify-content-end">
                 <div class="btn-group">
-                  <button class="btn btn-outline-primary" @click="lastPage"><i class="fa fa-angle-double-left"></i></button>
-                  <input id="page" type="number" class="btn btn-outline-primary" v-model="page" style="max-width:4rem;" min="0" :max="pages.length" readonly>
-                  <button class="btn btn-outline-primary" @click="nextPage"><i class="fa fa-angle-double-right"></i></button>
+                  <button class="btn btn-outline-primary" @click="lastPageL"><i class="fa fa-angle-double-left"></i></button>
+                  <input id="page" type="number" class="btn btn-outline-primary" v-model="likePage" style="max-width:4rem;" min="0" :max="likePages.length" readonly>
+                  <button class="btn btn-outline-primary" @click="nextPageL"><i class="fa fa-angle-double-right"></i></button>
                 </div>
               </div>
           </div>
@@ -214,8 +214,7 @@ export default {
       this.image = input.files[0];
     },
     writeUserData() {
-      db
-        .collection("users")
+      db.collection("users")
         .where("user.UserUID", "==", firebase.auth().currentUser.uid)
         .orderBy("event.date.month")
         .orderBy("event.date.day")
@@ -246,6 +245,7 @@ export default {
       }
     },
     nextPageL() {
+      console.log(this.currentLikePage)
       if (this.likePage < this.likePages.length) {
         this.likePage++;
       }
@@ -256,6 +256,7 @@ export default {
       }
     },
     createPages() {
+      //users events
       var length = Math.ceil(this.events.length / this.pageLength);
       for (var i = 0; i < length; i++) {
         if (this.events.slice(i * 4) < 4) {
@@ -270,6 +271,26 @@ export default {
         }
       }
       this.currentPage = this.pages[0];
+
+      //liked events
+      console.log(this.likedEvents, this.likedEvents.length)
+      var likedLength = Math.ceil(this.likedEvents.length / this.pageLength);
+      debugger;
+      
+      
+      for (var l = 0; l < likedLength; l++) {
+        if (this.likedEvents.slice(l * 4) < 4) {
+          this.likePages.push(this.likedEvents.slice(l * this.pageLength));
+        } else {
+          this.likePages.push(
+            this.likedEvents.slice(
+              l * this.pageLength,
+              l * this.pageLength + this.pageLength
+            )
+          );
+        }
+      }
+      this.currentLikePage = this.likePages[0];
     },
     updateCurrent() {
       document.getElementById("page").readOnly = true;
@@ -280,8 +301,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     // Get user data
-    db
-      .collection("users")
+    db.collection("users")
       .where("user.UserUID", "==", firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
@@ -298,8 +318,7 @@ export default {
   },
   created() {
     //get events created by user
-    db
-      .collection("events")
+    db.collection("events")
       .where("event.UserUID", "==", firebase.auth().currentUser.uid)
       .orderBy("event.date.year")
       .orderBy("event.date.month")
@@ -321,6 +340,29 @@ export default {
             imageKey: doc.data().event.imageKey
           };
           this.events.push(data);
+        });
+      });
+
+    //get liked events
+    db.collection("events")
+      .where("likedBy", "array-contains", firebase.auth().currentUser.uid)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          var date = doc
+            .data()
+            .event.date.toString()
+            .substring(8);
+          const data = {
+            id: doc.id,
+            title: doc.data().event.title,
+            date: doc.data().event.date,
+            time: doc.data().event.time,
+            email: doc.data().event.email,
+            desc: doc.data().event.description,
+            imageKey: doc.data().event.imageKey
+          };
+          this.likedEvents.push(data);
         });
       });
   }

@@ -29,7 +29,7 @@
                   <hr>
                   <span class="badge badge-primary"><i class="fa fa-user"></i> n Followers</span>
                   <span class="badge badge-success"><i class="fa fa-cog"></i> n Forks</span>
-                  <span class="badge badge-danger"><i class="fa fa-eye"></i> n Views</span>
+                  <span class="badge badge-danger"><i class="fa fa-heart"></i> {{ likedEvents.length }} Liked Events</span>
                 </div>
                 <div class="col-md-12">
                   
@@ -110,6 +110,7 @@ export default {
       website: null,
       UserUID: null,
       events: [],
+      likedEvents: [],
       page: 1,
       pages: [],
       currentPage: [],
@@ -117,8 +118,7 @@ export default {
     };
   },
   beforeRouteEnter(to, from, next) {
-    db
-      .collection("users")
+    db.collection("users")
       .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
       .get()
       .then(querySnapshot => {
@@ -137,8 +137,8 @@ export default {
   mounted() {
     var ref;
 
-    db
-      .collection("users")
+    //get user info
+    db.collection("users")
       .where(
         firebase.firestore.FieldPath.documentId(),
         "==",
@@ -163,8 +163,8 @@ export default {
   },
   methods: {
     getEvents() {
-      db
-        .collection("events")
+      //get users eventstranslate
+      db.collection("events")
         .where("event.UserUID", "==", this.UserUID)
         .orderBy("event.date.year")
         .orderBy("event.date.month")
@@ -188,6 +188,30 @@ export default {
             this.events.push(data);
           });
         });
+
+      //get liked events
+      db.collection("events")
+        .where("likedBy", "array-contains", this.UserUID)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            var date = doc
+              .data()
+              .event.date.toString()
+              .substring(8);
+            const data = {
+              id: doc.id,
+              title: doc.data().event.title,
+              date: doc.data().event.date,
+              time: doc.data().event.time,
+              email: doc.data().event.email,
+              desc: doc.data().event.description,
+              imageKey: doc.data().event.imageKey
+            };
+            this.likedEvents.push(data);
+            
+          });
+        })
     },
     nextPage() {
       if (this.page < this.pages.length) {
