@@ -1,50 +1,96 @@
 <template>
-    <div class="container">
-        <h1>{{title}}</h1>
+  <div class="container">
+    <h1>{{ title }}</h1>
 
-        <form @submit.prevent="saveExit">
+    <form @submit.prevent="saveExit">
       <div class="row">
         <div class="col-md-6">
 
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" placeholder="Event Title" class="form-control" autocomplete="off" v-model="title" required>
+            <input
+              type="text"
+              id="title"
+              placeholder="Event Title"
+              class="form-control"
+              autocomplete="off"
+              v-model="title"
+              required>
           </div>
           <div class="form-group">
             <label for="eventDate">Event Date</label>
-            <input id="eventDate" type="date" class="form-control" v-model="date" required>
+            <input
+              id="eventDate"
+              type="date"
+              class="form-control"
+              v-model="date"
+              required>
           </div>
           <div class="form-group">
-            <label for="eventTime">Event Time</label>
+            <label for="eventTimeStart">Event Time</label>
             <div class ="row">
-            <div class="col-md-6">
-              <input type="time" id="eventTime" class="form-control" autocomplete="off" v-model="start" required>
-            </div>
-            <div class="col-md-6">
-              <input type="time" id="eventTime" class="form-control" autocomplete="off" v-model="end" required>
-            </div>
+              <div class="col-md-6">
+                <input
+                  type="time"
+                  id="eventTimeStart"
+                  class="form-control"
+                  autocomplete="off"
+                  v-model="start"
+                  required>
+              </div>
+              <div class="col-md-6">
+                <input
+                  type="time"
+                  id="eventTimeEnd"
+                  class="form-control"
+                  autocomplete="off"
+                  v-model="end"
+                  required>
+              </div>
             </div>
           </div>
           <div class="form-group">
             <label for="email">Event Location</label>
-            <GmapAutocomplete class="form-control" @place_changed="setLocation" v-model="locationName">
-            </GmapAutocomplete>
+            <GmapAutocomplete
+              class="form-control"
+              @place_changed="setLocation"
+              v-model="locationName"/>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" autocomplete="off" v-model="email" required>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              autocomplete="off"
+              v-model="email"
+              required>
           </div>
           <label for="message">Description</label><br>
-          <textarea id="message" rows="5" class="form-control" maxlength="500" v-model="description"></textarea>
+          <textarea
+            id="message"
+            rows="5"
+            class="form-control"
+            maxlength="500"
+            v-model="description"/>
           <p class="counter">Characters: <span class="cNum">{{ characters }}</span></p>
         </div>
         <div class="col-md-6">
           <!-- IMAGE UPLOAD -->
-          <img id="preview" v-bind:src="preImg" class="d-block mb-2 shadow-sm" alt="" />
+          <img
+            id="preview"
+            :src="preImg"
+            class="d-block mb-2 shadow-sm"
+            alt="" >
           <div class="col-xs-12">
             <div class="dUp file btn btn-primary">
               Browse Images
-              <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" />
+              <input
+                type='file'
+                id="imgUp"
+                class='bUp'
+                accept="image/x-png,image/gif,image/jpeg"
+                @change="loadFile" >
             </div>
           </div>
         </div>
@@ -52,21 +98,26 @@
       <hr>
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-          <router-link v-bind:to="{name: 'event-detail', params: {id: id}}" class="btn btn-danger">Cancel</router-link>
-            <input type="submit" class="btn btn-primary" value="Save & Exit">
+          <router-link
+            :to="{name: 'event-detail', params: {id: id}}"
+            class="btn btn-danger">Cancel</router-link>
+          <input
+            type="submit"
+            class="btn btn-primary"
+            value="Save & Exit">
         </div>
       </div>
     </form>
     <hr>
-    </div>
+  </div>
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
+import 'firebase/firestore'
 export default {
-  data() {
+  data () {
     return {
       id: null,
       title: null,
@@ -76,121 +127,119 @@ export default {
       description: null,
       image: null,
       preImg:
-        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
+        'https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif',
       imageKey: null,
       characters: null,
       start: null,
       end: null,
       UID: null,
       submitDate: null,
-      locationName: "",
+      locationName: '',
       locationPos: {
         lat: 0,
         lng: 0
       },
       location: null
-    };
+    }
   },
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     db
-      .collection("events")
-      .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
+      .collection('events')
+      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.id = doc.id;
-            vm.title = doc.data().event.title;
-            vm.date = doc.data().event.date;
-            vm.time = doc.data().event.time;
-            vm.email = doc.data().event.email;
-            vm.description = doc.data().event.description;
-            vm.locationName = doc.data().event.locationName;
-            vm.imageKey = doc.data().event.imageKey;
-            vm.submitDate = doc.data().event.SubmitDate;
-            vm.UID = doc.data().event.UserUID;
-          });
-        });
-      });
+            vm.id = doc.id
+            vm.title = doc.data().event.title
+            vm.date = doc.data().event.date
+            vm.time = doc.data().event.time
+            vm.email = doc.data().event.email
+            vm.description = doc.data().event.description
+            vm.locationName = doc.data().event.locationName
+            vm.imageKey = doc.data().event.imageKey
+            vm.submitDate = doc.data().event.SubmitDate
+            vm.UID = doc.data().event.UserUID
+          })
+        })
+      })
   },
-  mounted() {
-    var ref;
-
+  mounted () {
     db
-      .collection("events")
+      .collection('events')
       .where(
         firebase.firestore.FieldPath.documentId(),
-        "==",
+        '==',
         this.$route.params.id
       )
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          var date = doc.data().event.date;
-          (this.id = doc.id),
-            (this.title = doc.data().event.title),
-            (this.date = date.year + "-" + date.month + "-" + date.day),
-            (this.time = doc.data().event.time),
-            (this.email = doc.data().event.email),
-            (this.desc = doc.data().event.description),
-            (this.locationName = doc.data().event.locationName),
-            (this.imageKey = doc.data().event.imageKey),
-            (this.submitDate = doc.data().event.SubmitDate),
-            (this.UID = doc.data().event.UserUID)
-        });
-      });
+          let date = doc.data().event.date
+          this.id = doc.id
+          this.title = doc.data().event.title
+          this.date = date.year + '-' + date.month + '-' + date.day
+          this.time = doc.data().event.time
+          this.email = doc.data().event.email
+          this.desc = doc.data().event.description
+          this.locationName = doc.data().event.locationName
+          this.imageKey = doc.data().event.imageKey
+          this.submitDate = doc.data().event.SubmitDate
+          this.UID = doc.data().event.UserUID
+        })
+      })
   },
   watch: {
-    id: "fetchImage"
+    id: 'fetchImage'
   },
   methods: {
-    fetchImage() {
-      var ref = firebase.storage().ref("events/" + this.imageKey);
-      var that = this;
+    fetchImage () {
+      var ref = firebase.storage().ref('events/' + this.imageKey)
+      var that = this
 
-      var fetch = ref.getDownloadURL().then(function(url, a) {
-        that.preImg = url;
-      });
+      ref.getDownloadURL().then(function (url, a) {
+        that.preImg = url
+      })
 
-      var time = this.time;
-      this.end = time.substring(6);
-      this.start = time.substring(0, 5);
+      var time = this.time
+      this.end = time.substring(6)
+      this.start = time.substring(0, 5)
     },
-    saveExit() {
+    saveExit () {
       if (this.location) {
-        this.locationPos.lat = this.location.geometry.location.lat();
-        this.locationPos.lng = this.location.geometry.location.lng();
-        this.locationName = this.location.formatted_address;
+        this.locationPos.lat = this.location.geometry.location.lat()
+        this.locationPos.lng = this.location.geometry.location.lng()
+        this.locationName = this.location.formatted_address
       }
-      var start = this.start;
-      var end = this.end;
+      var start = this.start
+      var end = this.end
 
-      this.time = start + "-" + end;
+      this.time = start + '-' + end
 
-      var ref = firebase.storage().ref("events/" + this.imageKey);
-      var file = this.image;
-      var that = this;
+      var ref = firebase.storage().ref('events/' + this.imageKey)
+      var file = this.image
+      var that = this
 
       if (file != null) {
-        console.log("Updating file");
-        var upload = ref.put(file);
+        console.log('Updating file')
+        var upload = ref.put(file)
 
         upload.on(
-          "state_changed",
-          function progress(snapshot) {
+          'state_changed',
+          function progress (snapshot) {
             var percentage =
-              snapshot.bytesTransferred / snapshot.totalBytes * 100;
+              snapshot.bytesTransferred / snapshot.totalBytes * 100
           },
-          function error(err) {},
-          function complete() {}
-        );
+          function error (err) {},
+          function complete () {}
+        )
       }
 
       db
-        .collection("events")
+        .collection('events')
         .where(
           firebase.firestore.FieldPath.documentId(),
-          "==",
+          '==',
           this.$route.params.id
         )
         .get()
@@ -200,8 +249,8 @@ export default {
               event: {
                 title: this.title,
                 date: {
-                  year: this.date.substring(0,4),
-                  month: this.date.substring(5,7),
+                  year: this.date.substring(0, 4),
+                  month: this.date.substring(5, 7),
                   day: this.date.substring(8)
                 },
                 time: this.time,
@@ -216,25 +265,24 @@ export default {
                   lng: this.locationPos.lng
                 }
               }
-            });
-          });
+            })
+          })
         })
-        .then(that.$router.push("/events/event/" + that.id));
+        .then(that.$router.push('/events/event/' + that.id))
     },
-    loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var preview = document.querySelector("#preview");
+    loadFile: function () {
+      var input = document.querySelector('.bUp')
 
-      var imgURL = window.URL.createObjectURL(input.files[0]);
+      var imgURL = window.URL.createObjectURL(input.files[0])
 
-      this.preImg = imgURL;
-      this.image = input.files[0];
+      this.preImg = imgURL
+      this.image = input.files[0]
     },
-    setLocation(location) {
+    setLocation (location) {
       this.location = location
-    },
+    }
   }
-};
+}
 </script>
 
 <style scoped>

@@ -6,34 +6,72 @@
         <h1>Login</h1>
         <!-- Icon -->
         <div class="fadeIn first">
-          <img src="https://image.freepik.com/iconen-gratis/gebruiker-mannelijke-vorm-in-een-cirkel-ios-7-interface-symbool_318-35357.jpg" id="icon" alt="User Icon" style="height: 70px; width: 70px" />
+          <img
+            src="https://image.freepik.com/iconen-gratis/gebruiker-mannelijke-vorm-in-een-cirkel-ios-7-interface-symbool_318-35357.jpg"
+            id="icon"
+            alt="User Icon"
+            style="height: 70px; width: 70px" >
         </div>
 
         <!-- Email Login -->
         <div class="row">
-    <div class="col-md-6">
-    <div id="logbox">
-      <form id="signup" method="post" action="/signup">
-        <h1>create an account</h1>
-        <input name="user[name]" type="text" placeholder="What's your username?" pattern="^[\w]{3,16}$" autofocus="autofocus" required="required" class="input pass"/>
-        <input name="user[password]" type="password" placeholder="Choose a password" required="required" class="input pass"/>
-        <input name="user[password2]" type="password" placeholder="Confirm password" required="required" class="input pass"/>
-        <input name="user[email]" type="email" placeholder="Email address" class="input pass"/>
-        <input type="submit" value="Sign me up!" class="inputButton"/>
-        <div class="text-center">
-            already have an account? <a href="#" id="login_id">login</a>
-        </div>
-      </form>
-    </div>
-   </div>
+          <div class="col-md-6">
+            <div id="logbox">
+              <form
+                id="signup"
+                method="post"
+                action="/signup">
+                <h1>create an account</h1>
+                <input
+                  name="user[name]"
+                  type="text"
+                  placeholder="What's your username?"
+                  pattern="^[\w]{3,16}$"
+                  autofocus="autofocus"
+                  required="required"
+                  class="input pass">
+                <input
+                  name="user[password]"
+                  type="password"
+                  placeholder="Choose a password"
+                  required="required"
+                  class="input pass">
+                <input
+                  name="user[password2]"
+                  type="password"
+                  placeholder="Confirm password"
+                  required="required"
+                  class="input pass">
+                <input
+                  name="user[email]"
+                  type="email"
+                  placeholder="Email address"
+                  class="input pass">
+                <input
+                  type="submit"
+                  value="Sign me up!"
+                  class="inputButton">
+                <div class="text-center">
+                  already have an account? <a
+                    href="#"
+                    id="login_id">login</a>
+                </div>
+              </form>
+            </div>
+          </div>
 
-        <!-- Login Form -->
-        <div id="firebaseui-auth-container" class="col-md-6" style="margin-top: 100px;" ></div>
-</div>
+          <!-- Login Form -->
+          <div
+            id="firebaseui-auth-container"
+            class="col-md-6"
+            style="margin-top: 100px;" />
+        </div>
 
         <!-- Remind Passowrd -->
         <div id="formFooter">
-          <a class="underlineHover" href="#">Forgot Password?</a>
+          <a
+            class="underlineHover"
+            href="#">Forgot Password?</a>
         </div>
 
       </div>
@@ -42,26 +80,25 @@
 </template>
 
 <script>
-  import firebase from 'firebase/app';
-  import firebaseui from 'firebaseui';
-  import config from '../../Firebase/firebaseConfig.js';
+import firebase from 'firebase/app'
+import firebaseui from 'firebaseui'
 
-  export default {
-    mounted() {
-      var uiConfig = {
-        signInSuccessUrl: '/SignUpSuccess',
-        signInOptions: [
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.EmailAuthProvider.PROVIDER_ID,
-          firebase.auth.GithubAuthProvider.PROVIDER_ID,
-          firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-          // firebase.auth.PhoneAuthProvider.PROVIDER_ID
-        ]
-      };
-      var ui = new firebaseui.auth.AuthUI(firebase.auth());
-      ui.start('#firebaseui-auth-container', uiConfig);
-    },
+export default {
+  mounted () {
+    var uiConfig = {
+      signInSuccessUrl: '/SignUpSuccess',
+      signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GithubAuthProvider.PROVIDER_ID,
+        firebase.auth.TwitterAuthProvider.PROVIDER_ID
+        // firebase.auth.PhoneAuthProvider.PROVIDER_ID
+      ]
+    }
+    var ui = new firebaseui.auth.AuthUI(firebase.auth())
+    ui.start('#firebaseui-auth-container', uiConfig)
   }
+}
 </script>
 
 <style scoped>
@@ -156,7 +193,6 @@ h1, input {
   outline: none;
 }
 
-
   /* BASIC */
 
   html {
@@ -184,8 +220,6 @@ h1, input {
     margin: 40px 8px 10px 8px;
     color: #cccccc;
   }
-
-
 
   /* STRUCTURE */
 
@@ -222,8 +256,6 @@ h1, input {
     border-radius: 0 0 10px 10px;
   }
 
-
-
   /* TABS */
 
   h2.inactive {
@@ -234,8 +266,6 @@ h1, input {
     color: #0d0d0d;
     border-bottom: 2px solid #5fbae9;
   }
-
-
 
   /* FORM TYPOGRAPHY*/
 
@@ -299,11 +329,9 @@ h1, input {
     border-bottom: 2px solid #5fbae9;
   }
 
-  input[type=text]:placeholder {
+  input[type=text]::placeholder {
     color: #cccccc;
   }
-
-
 
   /* ANIMATIONS */
 
@@ -406,8 +434,6 @@ h1, input {
   .underlineHover:hover:after{
     width: 100%;
   }
-
-
 
   /* OTHERS */
 

@@ -2,59 +2,61 @@
   <div class="container">
     <h1>Signup succeeded</h1>
     <hr>
-    <img :src="user.photo" style=”height:120px”> <br>
-    <p>{{user.name}}</p>
-    <p>{{user.email}}</p>
-    <p>{{user.UserUID}}</p>
+    <img
+      :src="user.photo"
+      style=”height:120px”> <br>
+    <p>{{ user.name }}</p>
+    <p>{{ user.email }}</p>
+    <p>{{ user.UserUID }}</p>
     <hr>
     <!--<pre>{{user}}</pre>-->
   </div>
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase/app";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase/app'
 export default {
-  data() {
+  data () {
     return {
       user: {
-        photo: "",
-        UserUID: "",
-        name: "",
-        email: ""
+        photo: '',
+        UserUID: '',
+        name: '',
+        email: ''
       }
-    };
+    }
   },
-  created() {
-    var vm = this;
+  created () {
+    var vm = this
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        vm.user.name = user.displayName;
-        vm.user.email = user.email;
-        vm.user.photo = user.photoURL;
-        vm.user.UserUID = user.uid;
+        vm.user.name = user.displayName
+        vm.user.email = user.email
+        vm.user.photo = user.photoURL
+        vm.user.UserUID = user.uid
       }
-    });
+    })
   },
   computed: {
-    UserUID() {
-      return this.user.UserUID;
+    UserUID () {
+      return this.user.UserUID
     }
   },
   watch: {
-    UserUID() {
-      var vm = this;
+    UserUID () {
+      var vm = this
 
-      firebase.auth().onAuthStateChanged(function(user) {
+      firebase.auth().onAuthStateChanged(function (user) {
         db
-          .collection("users")
-          .where("user.UserUID", "==", vm.user.UserUID)
+          .collection('users')
+          .where('user.UserUID', '==', vm.user.UserUID)
           .get()
-          .then(function(querySnapshot) {
-            if (querySnapshot.size == 0) {
+          .then(function (querySnapshot) {
+            if (querySnapshot.size === 0) {
               if (user) {
-                db.collection("users").add({
+                db.collection('users').add({
                   user: {
                     name: vm.user.name,
                     email: vm.user.email,
@@ -63,13 +65,13 @@ export default {
                     about: null,
                     website: null
                   }
-                });
+                })
               }
             } else {
             }
-          });
-      });
+          })
+      })
     }
   }
-};
+}
 </script>

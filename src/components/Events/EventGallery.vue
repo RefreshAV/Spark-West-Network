@@ -1,66 +1,94 @@
 <template>
-<div class="container gallery-container">
-    
+  <div class="container gallery-container">
+
     <h1>Event Gallery</h1>
 
     <div class="tz-gallery">
 
-        <div class="row">
+      <div class="row">
 
-            <div v-for="(event) in events" v-bind:key="event.id" class="col-sm-6 col-md-4">
-                <div class="thumbnail" data-toggle="modal" :data-target="'#' + event.id">
-                    <div class="lightbox">
-                        <img :src="event.url" alt="Park" style="height:auto; width:325px">
-                    </div>
-                    <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}">
-                    <div class="caption">
-                        <h3>{{event.title}}</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    </div>
-                    </router-link>
-                </div>
+        <div
+          v-for="(event) in events"
+          :key="event.id"
+          class="col-sm-6 col-md-4">
+          <div
+            class="thumbnail"
+            data-toggle="modal"
+            :data-target="'#' + event.id">
+            <div class="lightbox">
+              <img
+                :src="event.url"
+                alt="Park"
+                style="height:auto; width:325px">
             </div>
-
-            <div v-for="event in events" v-bind:key="event.id">
-                <div class="modal fade" :id="event.id" tabindex="-1" role="dialog" aria-hidden="true">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">{{event.title}}</h5>
-                        <button class="close" data-dismiss="modal" aria-label="Close">
-                          <i class="fa fa-times"></i>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <img :src="event.url" alt="">
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
+            <router-link :to="{name: 'event-detail', params: {id: event.id}}">
+              <div class="caption">
+                <h3>{{ event.title }}</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+            </router-link>
+          </div>
         </div>
+
+        <div
+          v-for="event in events"
+          :key="event.id">
+          <div
+            class="modal fade"
+            :id="event.id"
+            tabindex="-1"
+            role="dialog"
+            aria-hidden="true">
+            <div
+              class="modal-dialog modal-lg"
+              role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5
+                    class="modal-title"
+                    id="exampleModalLabel">{{ event.title }}</h5>
+                  <button
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                    <i class="fa fa-times"/>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <img
+                    :src="event.url"
+                    alt="">
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
     </div>
 
-</div>
+  </div>
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
+import db from '../../Firebase/firebaseInit'
 export default {
-  data() {
+  data () {
     return {
       events: [],
       images: []
-    };
+    }
   },
-  created() {
+  created () {
     db
-      .collection("events")
+      .collection('events')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -72,18 +100,17 @@ export default {
             email: doc.data().event.email,
             desc: doc.data().event.description,
             url:
-              "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
+              'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
               doc.data().event.imageKey +
-              "?alt=media&token"
-          };
-          this.events.push(data);
-        });
-      });
-    baguetteBox.run(".tz-gallery");
+              '?alt=media&token'
+          }
+          this.events.push(data)
+        })
+      })
+    baguetteBox.run('.tz-gallery')
   }
-};
+}
 </script>
-
 
 <style scoped>
 /* .container {

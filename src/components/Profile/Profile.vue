@@ -2,37 +2,74 @@
   <div class="container">
     <div class="row my-2 mt-5">
       <div class="col-lg-4 order-lg-1 text-center">
-        <img :src="user.photoUrl" class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm" id="preview" alt="avatar">
+        <img
+          :src="user.photoUrl"
+          class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm"
+          id="preview"
+          alt="avatar">
         <div class="dUp file btn btn-primary">
-          <small>Change <i class="fa fa-camera"></i></small>
-          <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" />
+          <small>Change <i class="fa fa-camera"/></small>
+          <input
+            type='file'
+            id="imgUp"
+            class='bUp'
+            accept="image/x-png,image/gif,image/jpeg"
+            @change="loadFile" >
         </div>
       </div>
       <div class="col-lg-8 order-lg-2">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+            <a
+              href=""
+              data-target="#profile"
+              data-toggle="tab"
+              class="nav-link active">Profile</a>
           </li>
           <li class="nav-item">
-            <a href="" data-target="#likes" data-toggle="tab" class="nav-link">Likes</a>
+            <a
+              href=""
+              data-target="#likes"
+              data-toggle="tab"
+              class="nav-link">Likes</a>
           </li>
           <li class="nav-item">
-            <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
+            <a
+              href=""
+              data-target="#edit"
+              data-toggle="tab"
+              class="nav-link">Edit</a>
           </li>
           <li class="nav-item">
-            <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Messages</a>
+            <a
+              href=""
+              data-target="#messages"
+              data-toggle="tab"
+              class="nav-link">Messages</a>
           </li>
         </ul>
         <div class="tab-content py-4">
-          <div class="tab-pane active" id="profile">
+          <div
+            class="tab-pane active"
+            id="profile">
             <div class="row no-gutters">
               <div class="col">
-                <h2>{{user.name}}</h2>
+                <h2>{{ user.name }}</h2>
               </div>
               <div class="col mr-3">
                 <div class="btn-group float-right">
-                  <router-link id="organBtn" class="btn btn-info btn-sm" to="/Organization/New" data-toggle="tooltip" data-placement="top" title="Create new organization"><span id="organBtnCont"><i class="fa fa-building"></i></span></router-link>
-                  <button class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Add existing organization"><i class="fa fa-plus"></i></button>
+                  <router-link
+                    id="organBtn"
+                    class="btn btn-info btn-sm"
+                    to="/Organization/New"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Create new organization"><span id="organBtnCont"><i class="fa fa-building"/></span></router-link>
+                  <button
+                    class="btn btn-success btn-sm"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Add existing organization"><i class="fa fa-plus"/></button>
                 </div>
               </div>
             </div>
@@ -41,72 +78,55 @@
               <div class="col-md-6">
                 <strong>About</strong>
                 <p>
-                  {{user.about}}
+                  {{ user.about }}
                 </p>
                 <strong>More info</strong>
                 <p>
-                  Website: <a target="_blank" :href="user.website">{{user.website}}</a>
+                  Website: <a
+                    target="_blank"
+                    :href="user.website">{{ user.website }}</a>
                 </p>
               </div>
               <div class="col-md-6">
                 <h6>Recent badges</h6>
-                <a href="#" class="badge badge-dark badge-pill">example1</a>
-                <a href="#" class="badge badge-dark badge-pill">coffee</a>
-                <a href="#" class="badge badge-dark badge-pill">examples</a>
-                <a href="#" class="badge badge-dark badge-pill">more examples</a>
+                <a
+                  href="#"
+                  class="badge badge-dark badge-pill">example1</a>
+                <a
+                  href="#"
+                  class="badge badge-dark badge-pill">coffee</a>
+                <a
+                  href="#"
+                  class="badge badge-dark badge-pill">examples</a>
+                <a
+                  href="#"
+                  class="badge badge-dark badge-pill">more examples</a>
                 <hr>
-                <span class="badge badge-primary"><i class="fa fa-user"></i> n Followers</span>
-                <span class="badge badge-success"><i class="fa fa-cog"></i> n Forks</span>
-                <span class="badge badge-danger"><i class="fa fa-eye"></i> n Views</span>
+                <span class="badge badge-primary"><i class="fa fa-user"/> n Followers</span>
+                <span class="badge badge-success"><i class="fa fa-cog"/> n Forks</span>
+                <span class="badge badge-danger"><i class="fa fa-eye"/> n Views</span>
               </div>
               <div class="col-md-12">
 
                 <hr>
-                <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"></i> {{events.length}}</span>{{user.name}}'s Events:</h5>
-
-                  <ul class="list-group">
-                    <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in currentPage" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
-                    <div>
-                      <h5>{{event.title}}</h5>
-                      <p>{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</p>
-                    </div>
-                    </router-link>
-
-                    <li v-if="events.length == 0" class="list-group-item d-flex justify-content-center align-items-center" style="height:400px">
-                      <h3>Nothing Here!</h3>
-                    </li>
-                  </ul>
-
-              </div>
-
-              <div class="col-md-12 d-flex justify-content-end">
-                <div class="btn-group">
-                  <button class="btn btn-outline-primary" @click="lastPage"><i class="fa fa-angle-double-left"></i></button>
-                  <input id="page" type="number" class="btn btn-outline-primary" v-model="page" style="max-width:4rem;" min="0" :max="pages.length" readonly>
-                  <button class="btn btn-outline-primary" @click="nextPage"><i class="fa fa-angle-double-right"></i></button>
-                </div>
-              </div>
-
-              <router-link to="/events/NewEvent" class="btn btn-primary btn-circular-lg mb-3"><i class="fa fa-plus"></i></router-link>
-            </div>
-            <!--/row-->
-          </div>
-
-
-          <div class="tab-pane" id="likes">
-            <div class="col-md-12">
-                <hr>
-                <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"></i> {{likedEvents.length}}</span>{{user.name}}'s Liked Events:</h5>
+                <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"/> {{ events.length }}</span>{{ user.name }}'s Events:</h5>
 
                 <ul class="list-group">
-                  <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in currentLikePage" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
-                  <div>
-                    <h5>{{event.title}}</h5>
-                    <p>{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</p>
-                  </div>
+                  <router-link
+                    class="list-group-item card text-white bg-dark mb-1"
+                    v-for="event in currentPage"
+                    :key="event.id"
+                    :to="{name: 'event-detail', params: {id: event.id}}">
+                    <div>
+                      <h5>{{ event.title }}</h5>
+                      <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
+                    </div>
                   </router-link>
 
-                  <li v-if="likedEvents.length == 0" class="list-group-item d-flex justify-content-center align-items-center" style="height:400px">
+                  <li
+                    v-if="events.length == 0"
+                    class="list-group-item d-flex justify-content-center align-items-center"
+                    style="height:400px">
                     <h3>Nothing Here!</h3>
                   </li>
                 </ul>
@@ -115,60 +135,162 @@
 
               <div class="col-md-12 d-flex justify-content-end">
                 <div class="btn-group">
-                  <button class="btn btn-outline-primary" @click="lastPageL"><i class="fa fa-angle-double-left"></i></button>
-                  <input id="page" type="number" class="btn btn-outline-primary" v-model="likePage" style="max-width:4rem;" min="0" :max="likePages.length" readonly>
-                  <button class="btn btn-outline-primary" @click="nextPageL"><i class="fa fa-angle-double-right"></i></button>
+                  <button
+                    class="btn btn-outline-primary"
+                    @click="lastPage"><i class="fa fa-angle-double-left"/></button>
+                  <input
+                    id="page"
+                    type="number"
+                    class="btn btn-outline-primary"
+                    v-model="page"
+                    style="max-width:4rem;"
+                    min="0"
+                    :max="pages.length"
+                    readonly>
+                  <button
+                    class="btn btn-outline-primary"
+                    @click="nextPage"><i class="fa fa-angle-double-right"/></button>
                 </div>
               </div>
+
+              <router-link
+                to="/events/NewEvent"
+                class="btn btn-primary btn-circular-lg mb-3"><i class="fa fa-plus"/></router-link>
+            </div>
+            <!--/row-->
           </div>
-          <div class="tab-pane" id="edit">
-            <form role="form" @submit.prevent="writeUserData">
+
+          <div
+            class="tab-pane"
+            id="likes">
+            <div class="col-md-12">
+              <hr>
+              <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"/> {{ likedEvents.length }}</span>{{ user.name }}'s Liked Events:</h5>
+
+              <ul class="list-group">
+                <router-link
+                  class="list-group-item card text-white bg-dark mb-1"
+                  v-for="event in currentLikePage"
+                  :key="event.id"
+                  :to="{name: 'event-detail', params: {id: event.id}}">
+                  <div>
+                    <h5>{{ event.title }}</h5>
+                    <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
+                  </div>
+                </router-link>
+
+                <li
+                  v-if="likedEvents.length == 0"
+                  class="list-group-item d-flex justify-content-center align-items-center"
+                  style="height:400px">
+                  <h3>Nothing Here!</h3>
+                </li>
+              </ul>
+
+            </div>
+
+            <div class="col-md-12 d-flex justify-content-end">
+              <div class="btn-group">
+                <button
+                  class="btn btn-outline-primary"
+                  @click="lastPageL"><i class="fa fa-angle-double-left"/></button>
+                <input
+                  id="page"
+                  type="number"
+                  class="btn btn-outline-primary"
+                  v-model="likePage"
+                  style="max-width:4rem;"
+                  min="0"
+                  :max="likePages.length"
+                  readonly>
+                <button
+                  class="btn btn-outline-primary"
+                  @click="nextPageL"><i class="fa fa-angle-double-right"/></button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane"
+            id="edit">
+            <form
+              role="form"
+              @submit.prevent="writeUserData">
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Username</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="text" placeholder="username"  v-model="user.name" required>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="username"
+                    v-model="user.name"
+                    required>
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Email</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="email" placeholder="email@gmail.com" v-model="user.email" required>
+                  <input
+                    class="form-control"
+                    type="email"
+                    placeholder="email@gmail.com"
+                    v-model="user.email"
+                    required>
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Website</label>
                 <div class="col-lg-9">
-                  <input class="form-control" type="url" value="" v-model="user.website">
+                  <input
+                    class="form-control"
+                    type="url"
+                    value=""
+                    v-model="user.website">
                 </div>
               </div>
               <div class="form-group">
                 <label for="exampleFormControlTextarea1">About Yourself</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="user.about"></textarea>
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                  v-model="user.about"/>
               </div>
               <div class="form-group row">
                 <div class="col-lg-9">
-                  <input type="submit" class="btn btn-primary" value="Save Changes">
+                  <input
+                    type="submit"
+                    class="btn btn-primary"
+                    value="Save Changes">
                 </div>
               </div>
             </form>
           </div>
-          <div class="tab-pane" id="messages">
+          <div
+            class="tab-pane"
+            id="messages">
             <h1>Messages</h1>
-                            <ul class="list-group">
-                  <router-link class="list-group-item card text-white bg-dark mb-1" v-for="event in currentPage" v-bind:key="event.id" v-bind:to="{name: 'event-detail', params: {id: event.id}}">
-                  <div>
-                    <h5>{{event.title}}</h5>
-                    <p>{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</p>
-                  </div>
-                  </router-link>
-
-                  <li v-if="events.length == 0" class="list-group-item d-flex justify-content-center align-items-center" style="height:400px">
-                    <h3>Nothing Here!</h3>
-                  </li>
-                </ul>
-                  <button class="btn btn-dark">Send a message</button>
-
+            <ul class="list-group">
+              <router-link
+                class="list-group-item card text-white bg-dark mb-1"
+                v-for="event in currentPage"
+                :key="event.id"
+                :to="{name: 'event-detail', params: {id: event.id}}">
+                <div>
+                  <h5>{{ event.title }}</h5>
+                  <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
                 </div>
+              </router-link>
+
+              <li
+                v-if="events.length == 0"
+                class="list-group-item d-flex justify-content-center align-items-center"
+                style="height:400px">
+                <h3>Nothing Here!</h3>
+              </li>
+            </ul>
+            <button class="btn btn-dark">Send a message</button>
+
+          </div>
         </div>
       </div>
     </div>
@@ -176,17 +298,17 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase/app";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase/app'
 export default {
-  data() {
+  data () {
     return {
       user: {
-        name: "",
-        email: "",
-        photoUrl: "",
-        website: "",
-        about: ""
+        name: '',
+        email: '',
+        photoUrl: '',
+        website: '',
+        about: ''
       },
       events: [],
       likedEvents: [],
@@ -198,26 +320,25 @@ export default {
       currentLikePage: [],
       pageLength: 4,
       likePageLength: 4
-    };
+    }
   },
   watch: {
-    page: "updateCurrent",
-    events: "createPages"
+    page: 'updateCurrent',
+    events: 'createPages'
   },
   methods: {
-    loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var preview = document.querySelector("#preview");
+    loadFile: function () {
+      var input = document.querySelector('.bUp')
 
-      var imgURL = window.URL.createObjectURL(input.files[0]);
-      this.preImg = imgURL;
-      this.image = input.files[0];
+      var imgURL = window.URL.createObjectURL(input.files[0])
+      this.preImg = imgURL
+      this.image = input.files[0]
     },
-    writeUserData() {
-      db.collection("users")
-        .where("user.UserUID", "==", firebase.auth().currentUser.uid)
-        .orderBy("event.date.month")
-        .orderBy("event.date.day")
+    writeUserData () {
+      db.collection('users')
+        .where('user.UserUID', '==', firebase.auth().currentUser.uid)
+        .orderBy('event.date.month')
+        .orderBy('event.date.day')
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -230,106 +351,101 @@ export default {
                 UserUID: firebase.auth().currentUser.uid,
                 photo: this.user.photoUrl
               }
-            });
-          });
-        });
+            })
+          })
+        })
     },
-    nextPage() {
+    nextPage () {
       if (this.page < this.pages.length) {
-        this.page++;
+        this.page++
       }
     },
-    lastPage() {
+    lastPage () {
       if (this.page > 1) {
-        this.page--;
+        this.page--
       }
     },
-    nextPageL() {
+    nextPageL () {
       console.log(this.currentLikePage)
       if (this.likePage < this.likePages.length) {
-        this.likePage++;
+        this.likePage++
       }
     },
-    lastPageL() {
+    lastPageL () {
       if (this.likePage > 1) {
-        this.likePage--;
+        this.likePage--
       }
     },
-    createPages() {
-      //users events
-      var length = Math.ceil(this.events.length / this.pageLength);
+    createPages () {
+      // users events
+      var length = Math.ceil(this.events.length / this.pageLength)
       for (var i = 0; i < length; i++) {
         if (this.events.slice(i * 4) < 4) {
-          this.pages.push(this.events.slice(i * this.pageLength));
+          this.pages.push(this.events.slice(i * this.pageLength))
         } else {
           this.pages.push(
             this.events.slice(
               i * this.pageLength,
               i * this.pageLength + this.pageLength
             )
-          );
+          )
         }
       }
-      this.currentPage = this.pages[0];
+      this.currentPage = this.pages[0]
 
-      //liked events
+      // liked events
       console.log(this.likedEvents, this.likedEvents.length)
-      var likedLength = Math.ceil(this.likedEvents.length / this.pageLength);
-      debugger;
-      
-      
+      var likedLength = Math.ceil(this.likedEvents.length / this.pageLength)
+      debugger
+
       for (var l = 0; l < likedLength; l++) {
         if (this.likedEvents.slice(l * 4) < 4) {
-          this.likePages.push(this.likedEvents.slice(l * this.pageLength));
+          this.likePages.push(this.likedEvents.slice(l * this.pageLength))
         } else {
           this.likePages.push(
             this.likedEvents.slice(
               l * this.pageLength,
               l * this.pageLength + this.pageLength
             )
-          );
+          )
         }
       }
-      this.currentLikePage = this.likePages[0];
+      this.currentLikePage = this.likePages[0]
     },
-    updateCurrent() {
-      document.getElementById("page").readOnly = true;
+    updateCurrent () {
+      document.getElementById('page').readOnly = true
 
-      this.currentPage = [];
-      this.currentPage = this.pages[this.page - 1];
+      this.currentPage = []
+      this.currentPage = this.pages[this.page - 1]
     }
   },
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     // Get user data
-    db.collection("users")
-      .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+    db.collection('users')
+      .where('user.UserUID', '==', firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.user.name = doc.data().user.name;
-            vm.user.email = doc.data().user.email;
-            vm.user.photoUrl = doc.data().user.photo;
-            vm.user.website = doc.data().user.website;
-            vm.user.about = doc.data().user.about;
-          });
-        });
-      });
+            vm.user.name = doc.data().user.name
+            vm.user.email = doc.data().user.email
+            vm.user.photoUrl = doc.data().user.photo
+            vm.user.website = doc.data().user.website
+            vm.user.about = doc.data().user.about
+          })
+        })
+      })
   },
-  created() {
-    //get events created by user
-    db.collection("events")
-      .where("event.UserUID", "==", firebase.auth().currentUser.uid)
-      .orderBy("event.date.year")
-      .orderBy("event.date.month")
-      .orderBy("event.date.day")
+  created () {
+    // get events created by user
+    db.collection('events')
+      .where('event.UserUID', '==', firebase.auth().currentUser.uid)
+      .orderBy('event.date.year')
+      .orderBy('event.date.month')
+      .orderBy('event.date.day')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          var date = doc
-            .data()
-            .event.date.toString()
-            .substring(8);
           const data = {
             id: doc.id,
             title: doc.data().event.title,
@@ -338,21 +454,17 @@ export default {
             email: doc.data().event.email,
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          };
-          this.events.push(data);
-        });
-      });
+          }
+          this.events.push(data)
+        })
+      })
 
-    //get liked events
-    db.collection("events")
-      .where("likedBy", "array-contains", firebase.auth().currentUser.uid)
+    // get liked events
+    db.collection('events')
+      .where('likedBy', 'array-contains', firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          var date = doc
-            .data()
-            .event.date.toString()
-            .substring(8);
           const data = {
             id: doc.id,
             title: doc.data().event.title,
@@ -361,12 +473,12 @@ export default {
             email: doc.data().event.email,
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          };
-          this.likedEvents.push(data);
-        });
-      });
+          }
+          this.likedEvents.push(data)
+        })
+      })
   }
-};
+}
 </script>
 
 <style>
@@ -422,4 +534,3 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 </style>
-

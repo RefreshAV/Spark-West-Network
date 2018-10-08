@@ -1,282 +1,385 @@
 <template>
-    <div class="container">
-      <form @submit.prevent="submit">
-        <div class="row mb-3">
-          <div class="col">
-            <h1>New Organization</h1>
-          </div>
+  <div class="container">
+    <form @submit.prevent="submit">
+      <div class="row mb-3">
+        <div class="col">
+          <h1>New Organization</h1>
         </div>
-        <div class="row">
-          <!-- Image Uploads -->
-          <div class="col-auto">
-            <div class="row">
-              <div class="col-auto text-center">
-                <h4>Profile Picture</h4>
-                <img :src="preImg" class="img-fluid rounded d-block mb-2 shadow-sm" id="preview" alt="profile Picture">
-                <div class="dUp file btn btn-primary">
-                  <small>Change <i class="fa fa-camera"></i></small>
-                  <input type='file' id="imgUp" class='bUp' accept="image/x-png,image/gif,image/jpeg" @change="loadFile" required/>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <h4>Banner</h4>
-            <div id="banner" class="rounded shadow-sm mb-3">
-              <div id="preBadge" class="badge badge-secondary badge-pill shadow-sm">preview</div>
-              <img id="bannerImg" :src="bannerPreImg" alt="Banner Image" class="img-fluid">
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <div class="row">
-                  <div class="form-group col">
-                    <input class="form-control form-control-lg" type="text" placeholder="Organization Name" v-model="name" required>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <input type="url" class="form-control mb-2" placeholder="website" v-model="website">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col">
-                    <label>Description</label>
-                    <textarea id="desc" rows="5" class="form-control" placeholder="A description of the organization" v-model="description"></textarea>
-                  </div>
-                  <div class="col">
-                    <div class="form-group">
-                      <label>Contact Info</label>
-                      <input type="email" class="form-control mb-2" placeholder="email" v-model="email" required>
-                      <input type="text" class="form-control mb-2" placeholder="phone number" v-model="phone">
-                      <input type="text" class="form-control mb" placeholder="other" v-model="other">
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Organization Users -->
-                <div class="row">
-                  <div class="form-group col">
-                    <label>Location:</label>
-                    <input type="text" class="form-control mb-2" placeholder="Organization address" v-model="location">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="card bg-light mb-3">
-                      <h3 class="card-header">Add People to <span v-if="name == ''">Organization</span> {{name}}</h3>
-                      <div class="card-body">
-                        <ul class="list-group">
-
-                          <!-- Current User -->
-                          <li class="list-group-item">
-                            <div class="row">
-                              <div class="col-auto">
-                                <img :src="user.img" alt="profile picture" class="profileImg">
-                              </div>
-                              <div class="col d-flex align-items-center">
-                                <h5>{{user.name}}</h5>
-                              </div>
-                              <div class="col d-flex justify-content-end align-items-center">
-                                <h4><i class="badge badge-secondary badge-pill">Admin</i></h4>
-                              </div>
-                            </div>
-                          </li>
-
-                          <!-- Added Users -->
-                          <li class="list-group-item bg-light" v-if="users.length > 0" v-for="profile in users" v-bind:key="profile.id">
-                            <div class="row">
-                              <div class="col-auto">
-                                <img :src="profile.img" alt="profile picture" class="userImg">
-                              </div>
-                              <div class="col d-flex align-items-center">
-                                <h5 class="text-muted">{{profile.name}}</h5>
-                              </div>
-                              <div class="col-auto d-flex align-items-center justify-content-end">
-                                <select class="custom-select" v-model="profile.role">
-                                  <option value="1">Admin</option>
-                                  <option value="2">Manager</option>
-                                  <option value="3">User</option>
-                                </select>
-                              </div>
-                            </div>
-                          </li>
-
-                          <!-- Search Bar -->
-                          <form class="navbar-form" role="search">
-		                        <div class="input-group">
-		                        	<input type="text" class="form-control form-control-lg" placeholder="Search for users . . ." v-model="searchTerm">
-		                        	<div class="input-group-btn">
-		                        		<button class="btn btn-lg btn-primary" @click.prevent="search"><i class="fa fa-search"></i></button>
-		                        	</div>
-		                        </div>
-		                      </form>
-                        </ul>
-                        <br>
-
-                        <!-- Search Results -->
-                        <ul class="list-group">
-                          <h3 v-if="searching">Results:</h3>
-                          <div v-if="searching && profiles.length <= 0" class="animated shake">
-                            <div class="row d-flex justify-content-center">
-                              <h4>Nothing found</h4>
-                            </div>
-                            <div class="row d-flex justify-content-center">
-                              <b>Make Sure to:</b>
-                            </div>
-                            <div class="row d-flex justify-content-center">
-                              <ul>
-                                <li>Check Spellling</li>
-                                <li>Check Capitalisation</li>
-                                <li>Check Spacing</li>
-                                <li>Give Up</li>
-                              </ul>
-                            </div>
-                          </div>
-                          <li class="list-group-item " v-if="searching && profiles.length > 0" v-for="profile in profiles" v-bind:key="profile.id">
-                            <div class="row">
-                              <div class="col-auto">
-                                <img :src="profile.img" alt="profile picture" class="searchImg">
-                              </div>
-                              <div class="col d-flex align-items-center">
-                                <h5>{{profile.name}}</h5>
-                              </div>
-                              <div class="col d-flex justify-content-end align-items-center">
-                                <button id="addUser" class="btn btn-lg btn-success" @click.prevent="addUser(profile.id,profile.name,profile.img)"><i class="fa fa-plus"></i></button>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Roles -->
-                  <div class="col-auto">
-                    <div class="card">
-                      <h4 class="card-header">Roles:</h4>
-                      <div class="card-body">
-                        <p>
-                          <button class="btn" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">Admin</button>
-                          <button class="btn" data-toggle="collapse" data-target="#collapseManager" aria-expanded="false" aria-controls="collapseManager">Manager</button>
-                          <button class="btn" data-toggle="collapse" data-target="#collapseUser" aria-expanded="false" aria-controls="collapseUser">User</button>
-                        </p>
-
-                        <div class="collapse" id="collapseAdmin">
-                          <div class="card">
-                            <h5 class="card-header">Admin</h5>
-                            <div class="card-body">
-                              <ul>
-                                <li>Listed under organization</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="collapse" id="collapseManager">
-                          <div class="card">
-                            <h5 class="card-header">Manager</h5>
-                            <div class="card-body">
-                              <ul>
-                                <li>Listed under organization</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="collapse" id="collapseUser">
-                          <div class="card">
-                            <h5 class="card-header">User</h5>
-                            <div class="card-body">
-                              <ul>
-                                <li>Listed under organization</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      </div>
+      <div class="row">
+        <!-- Image Uploads -->
+        <div class="col-auto">
+          <div class="row">
+            <div class="col-auto text-center">
+              <h4>Profile Picture</h4>
+              <img
+                :src="preImg"
+                class="img-fluid rounded d-block mb-2 shadow-sm"
+                id="preview"
+                alt="profile Picture">
+              <div class="dUp file btn btn-primary">
+                <small>Change <i class="fa fa-camera"/></small>
+                <input
+                  type='file'
+                  id="imgUp"
+                  class='bUp'
+                  accept="image/x-png,image/gif,image/jpeg"
+                  @change="loadFile"
+                  required>
               </div>
             </div>
           </div>
         </div>
+        <div class="col">
+          <h4>Banner</h4>
+          <div
+            id="banner"
+            class="rounded shadow-sm mb-3">
+            <div
+              id="preBadge"
+              class="badge badge-secondary badge-pill shadow-sm">preview</div>
+            <img
+              id="bannerImg"
+              :src="bannerPreImg"
+              alt="Banner Image"
+              class="img-fluid">
+          </div>
 
-        <!-- Form Controls -->
-        <hr>
-        <div class="row">
-          <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-            <router-link to="/profile" class="btn btn-danger">Cancle</router-link>
-            <input type="submit" class="btn btn-primary">
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <div class="form-group col">
+                  <input
+                    class="form-control form-control-lg"
+                    type="text"
+                    placeholder="Organization Name"
+                    v-model="name"
+                    required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <input
+                    type="url"
+                    class="form-control mb-2"
+                    placeholder="website"
+                    v-model="website">
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label>Description</label>
+                  <textarea
+                    id="desc"
+                    rows="5"
+                    class="form-control"
+                    placeholder="A description of the organization"
+                    v-model="description"/>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label>Contact Info</label>
+                    <input
+                      type="email"
+                      class="form-control mb-2"
+                      placeholder="email"
+                      v-model="email"
+                      required>
+                    <input
+                      type="text"
+                      class="form-control mb-2"
+                      placeholder="phone number"
+                      v-model="phone">
+                    <input
+                      type="text"
+                      class="form-control mb"
+                      placeholder="other"
+                      v-model="other">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Organization Users -->
+              <div class="row">
+                <div class="form-group col">
+                  <label>Location:</label>
+                  <input
+                    type="text"
+                    class="form-control mb-2"
+                    placeholder="Organization address"
+                    v-model="location">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="card bg-light mb-3">
+                    <h3 class="card-header">Add People to <span v-if="name == ''">Organization</span> {{ name }}</h3>
+                    <div class="card-body">
+                      <ul class="list-group">
+
+                        <!-- Current User -->
+                        <li class="list-group-item">
+                          <div class="row">
+                            <div class="col-auto">
+                              <img
+                                :src="user.img"
+                                alt="profile picture"
+                                class="profileImg">
+                            </div>
+                            <div class="col d-flex align-items-center">
+                              <h5>{{ user.name }}</h5>
+                            </div>
+                            <div class="col d-flex justify-content-end align-items-center">
+                              <h4><i class="badge badge-secondary badge-pill">Admin</i></h4>
+                            </div>
+                          </div>
+                        </li>
+
+                        <!-- Added Users -->
+                        <li
+                          class="list-group-item bg-light"
+                          v-if="users.length > 0"
+                          v-for="profile in users"
+                          :key="profile.id">
+                          <div class="row">
+                            <div class="col-auto">
+                              <img
+                                :src="profile.img"
+                                alt="profile picture"
+                                class="userImg">
+                            </div>
+                            <div class="col d-flex align-items-center">
+                              <h5 class="text-muted">{{ profile.name }}</h5>
+                            </div>
+                            <div class="col-auto d-flex align-items-center justify-content-end">
+                              <select
+                                class="custom-select"
+                                v-model="profile.role">
+                                <option value="1">Admin</option>
+                                <option value="2">Manager</option>
+                                <option value="3">User</option>
+                              </select>
+                            </div>
+                          </div>
+                        </li>
+
+                        <!-- Search Bar -->
+                        <form
+                          class="navbar-form"
+                          role="search">
+                          <div class="input-group">
+                            <input
+                              type="text"
+                              class="form-control form-control-lg"
+                              placeholder="Search for users . . ."
+                              v-model="searchTerm">
+                            <div class="input-group-btn">
+                              <button
+                                class="btn btn-lg btn-primary"
+                                @click.prevent="search"><i class="fa fa-search"/></button>
+                            </div>
+                          </div>
+                        </form>
+                      </ul>
+                      <br>
+
+                      <!-- Search Results -->
+                      <ul class="list-group">
+                        <h3 v-if="searching">Results:</h3>
+                        <div
+                          v-if="searching && profiles.length <= 0"
+                          class="animated shake">
+                          <div class="row d-flex justify-content-center">
+                            <h4>Nothing found</h4>
+                          </div>
+                          <div class="row d-flex justify-content-center">
+                            <b>Make Sure to:</b>
+                          </div>
+                          <div class="row d-flex justify-content-center">
+                            <ul>
+                              <li>Check Spellling</li>
+                              <li>Check Capitalisation</li>
+                              <li>Check Spacing</li>
+                              <li>Give Up</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <li
+                          class="list-group-item "
+                          v-if="searching && profiles.length > 0"
+                          v-for="profile in profiles"
+                          :key="profile.id">
+                          <div class="row">
+                            <div class="col-auto">
+                              <img
+                                :src="profile.img"
+                                alt="profile picture"
+                                class="searchImg">
+                            </div>
+                            <div class="col d-flex align-items-center">
+                              <h5>{{ profile.name }}</h5>
+                            </div>
+                            <div class="col d-flex justify-content-end align-items-center">
+                              <button
+                                id="addUser"
+                                class="btn btn-lg btn-success"
+                                @click.prevent="addUser(profile.id,profile.name,profile.img)"><i class="fa fa-plus"/></button>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Roles -->
+                <div class="col-auto">
+                  <div class="card">
+                    <h4 class="card-header">Roles:</h4>
+                    <div class="card-body">
+                      <p>
+                        <button
+                          class="btn"
+                          data-toggle="collapse"
+                          data-target="#collapseAdmin"
+                          aria-expanded="false"
+                          aria-controls="collapseAdmin">Admin</button>
+                        <button
+                          class="btn"
+                          data-toggle="collapse"
+                          data-target="#collapseManager"
+                          aria-expanded="false"
+                          aria-controls="collapseManager">Manager</button>
+                        <button
+                          class="btn"
+                          data-toggle="collapse"
+                          data-target="#collapseUser"
+                          aria-expanded="false"
+                          aria-controls="collapseUser">User</button>
+                      </p>
+
+                      <div
+                        class="collapse"
+                        id="collapseAdmin">
+                        <div class="card">
+                          <h5 class="card-header">Admin</h5>
+                          <div class="card-body">
+                            <ul>
+                              <li>Listed under organization</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        class="collapse"
+                        id="collapseManager">
+                        <div class="card">
+                          <h5 class="card-header">Manager</h5>
+                          <div class="card-body">
+                            <ul>
+                              <li>Listed under organization</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        class="collapse"
+                        id="collapseUser">
+                        <div class="card">
+                          <h5 class="card-header">User</h5>
+                          <div class="card-body">
+                            <ul>
+                              <li>Listed under organization</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-      </form>
+      <!-- Form Controls -->
       <hr>
-    </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+          <router-link
+            to="/profile"
+            class="btn btn-danger">Cancle</router-link>
+          <input
+            type="submit"
+            class="btn btn-primary">
+        </div>
+      </div>
+
+    </form>
+    <hr>
+  </div>
 </template>
 
 <script>
-import jquery from "jquery";
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
-import pushid from "pushid";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
+import 'firebase/firestore'
 export default {
-  data() {
+  data () {
     return {
-      bannerImg: "",
-      bannerPreImg: "https://picsum.photos/1900/500/?random",
-      image: "",
-      preImg: "https://picsum.photos/150/150/?random",
-      name: "",
-      website: "",
-      description: "",
-      email: "",
-      phone: "",
-      other: "",
-      location: "",
+      bannerImg: '',
+      bannerPreImg: 'https://picsum.photos/1900/500/?random',
+      image: '',
+      preImg: 'https://picsum.photos/150/150/?random',
+      name: '',
+      website: '',
+      description: '',
+      email: '',
+      phone: '',
+      other: '',
+      location: '',
       users: [],
       user: {
-        img: "https://picsum.photos/200/200/?random",
-        name: "Current User"
+        img: 'https://picsum.photos/200/200/?random',
+        name: 'Current User'
       },
-      searchTerm: "",
+      searchTerm: '',
       profiles: [],
       searching: false
-    };
+    }
   },
-  mounted() {
+  mounted () {
     db
-      .collection("users")
-      .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+      .collection('users')
+      .where('user.UserUID', '==', firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          this.user.name = doc.data().user.name;
-          this.user.img = doc.data().user.photo;
-        });
-      });
+          this.user.name = doc.data().user.name
+          this.user.img = doc.data().user.photo
+        })
+      })
   },
   methods: {
-    submit() {},
-    loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var preview = document.querySelector("#preview");
-      var imgURL = window.URL.createObjectURL(input.files[0]);
-      this.preImg = imgURL;
-      this.image = input.files[0];
+    submit () {},
+    loadFile: function () {
+      var input = document.querySelector('.bUp')
+      var imgURL = window.URL.createObjectURL(input.files[0])
+      this.preImg = imgURL
+      this.image = input.files[0]
     },
-    search() {
-      const that = this;
-      this.searching = false;
-      this.profiles = [];
-      var search = this.searchTerm;
+    search () {
+      const that = this
+      this.searching = false
+      this.profiles = []
+      var search = this.searchTerm
       db
-        .collection("users")
-        .where("user.name", "==", search.trim())
+        .collection('users')
+        .where('user.name', '==', search.trim())
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -284,26 +387,26 @@ export default {
               id: doc.id,
               name: doc.data().user.name,
               img: doc.data().user.photo
-            };
-            this.profiles.push(data);
-          });
+            }
+            this.profiles.push(data)
+          })
         })
-        .then(function() {
-          that.searching = true;
-        });
+        .then(function () {
+          that.searching = true
+        })
     },
-    addUser(id, name, img) {
-      console.log("Added User: " + name);
+    addUser (id, name, img) {
+      console.log('Added User: ' + name)
       var user = {
         id,
         name,
         img,
         role: 3
-      };
-      this.users.push(user);
+      }
+      this.users.push(user)
     }
   }
-};
+}
 </script>
 
 <style scoped>

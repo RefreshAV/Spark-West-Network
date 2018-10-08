@@ -9,7 +9,7 @@
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="index.html">Home</a>
+        <a href="/">Home</a>
       </li>
       <li class="breadcrumb-item active">About</li>
     </ol>
@@ -17,12 +17,15 @@
     <!-- Intro Content -->
     <div class="row">
       <div class="col-lg-6">
-        <img class="img-fluid rounded mb-4" src="https://picsum.photos/500/300/?random" alt="">
+        <img
+          class="img-fluid rounded mb-4"
+          src="https://picsum.photos/500/300/?random"
+          alt="">
       </div>
       <div class="col-lg-6">
         <h2>About Nova Obsido</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed voluptate nihil eum consectetur similique? Consectetur, quod, incidunt, harum nisi dolores delectus reprehenderit voluptatem perferendis dicta dolorem non blanditiis ex fugiat.</p>
-        <p> </p>
+
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, consequuntur, modi mollitia corporis ipsa voluptate corrupti eum ratione ex ea praesentium quibusdam? Aut, in eum facere corrupti necessitatibus perspiciatis quis?</p>
       </div>
     </div>
@@ -34,7 +37,10 @@
     <div class="row">
       <div class="col-lg-4 mb-4">
         <div class="card h-100 text-center">
-          <img class="card-img-top" src="https://picsum.photos/500/300/?random" alt="">
+          <img
+            class="card-img-top"
+            src="https://picsum.photos/500/300/?random"
+            alt="">
           <div class="card-body">
             <h4 class="card-title">Alexander Petkov</h4>
             <h6 class="card-subtitle mb-2 text-muted">Position</h6>
@@ -47,7 +53,10 @@
       </div>
       <div class="col-lg-4 mb-4">
         <div class="card h-100 text-center">
-          <img class="card-img-top" src="https://picsum.photos/500/300/?random" alt="">
+          <img
+            class="card-img-top"
+            src="https://picsum.photos/500/300/?random"
+            alt="">
           <div class="card-body">
             <h4 class="card-title">Emma He</h4>
             <h6 class="card-subtitle mb-2 text-muted">Position</h6>
@@ -60,14 +69,17 @@
       </div>
       <div class="col-lg-4 mb-4">
         <div class="card h-100 text-center">
-          <img class="card-img-top" src="../../assets/Max.png" alt="">
+          <img
+            class="card-img-top"
+            src="../../assets/Max.png"
+            alt="">
           <div class="card-body">
             <h4 class="card-title">Team Member</h4>
             <h6 class="card-subtitle mb-2 text-muted">Position</h6>
             <p class="card-text">Hello, I'm Max, a grade 11 student attending Horton High. Ever since I went to the pitches for a local business ideation competition, Start It Up, I've been engaged and interested in local entrepreneurship. With a background in computer science and more artistic endeavors, I have competed in 4 Business ideation competitions placing both 2nd and 1st on two different occasions. I have always wanted to extend my entrepreneurship passion to my family friends and other members of my community, and I believe Nova Obsido is the way to do that</p>
           </div>
           <div class="card-footer">
-            <a href="maxacaplan@gmail.com">maxacaplan@gmail.com</a>
+            <a href="mailto:maxacaplan@gmail.com">maxacaplan@gmail.com</a>
           </div>
         </div>
       </div>
@@ -78,22 +90,40 @@
     <h2>Our Customers</h2>
     <div class="row">
       <div class="col-lg-2 col-sm-4 mb-4">
-        <img class="img-fluid" src="https://picsum.photos/500/300/?random" alt="">
+        <img
+          class="img-fluid"
+          src="https://picsum.photos/500/300/?random"
+          alt="">
       </div>
       <div class="col-lg-2 col-sm-4 mb-4">
-        <img class="img-fluid" src="https://picsum.photos/500/300/?random" alt="">
+        <img
+          class="img-fluid"
+          src="https://picsum.photos/500/300/?random"
+          alt="">
       </div>
       <div class="col-lg-2 col-sm-4 mb-4">
-        <img class="img-fluid" src="https://picsum.photos/500/300/?random" alt="">
+        <img
+          class="img-fluid"
+          src="https://picsum.photos/500/300/?random"
+          alt="">
       </div>
       <div class="col-lg-2 col-sm-4 mb-4">
-        <img class="img-fluid" src="https://picsum.photos/500/300/?random" alt="">
+        <img
+          class="img-fluid"
+          src="https://picsum.photos/500/300/?random"
+          alt="">
       </div>
       <div class="col-lg-2 col-sm-4 mb-4">
-        <img class="img-fluid" src="https://picsum.photos/500/300/?random" alt="">
+        <img
+          class="img-fluid"
+          src="https://picsum.photos/500/300/?random"
+          alt="">
       </div>
       <div class="col-lg-2 col-sm-4 mb-4">
-        <img class="img-fluid" src="https://picsum.photos/500/300/?random" alt="">
+        <img
+          class="img-fluid"
+          src="https://picsum.photos/500/300/?random"
+          alt="">
       </div>
     </div>
     <!-- /.row -->
@@ -102,9 +132,9 @@
 </template>
 
 <script>
-  export default {
+export default {
 
-  }
+}
 </script>
 
 <style scoped>

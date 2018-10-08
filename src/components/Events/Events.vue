@@ -1,108 +1,142 @@
 <template>
   <div class="container mt-3">
-    <div class="d-flex justify-content-center" v-if="events.length == 0">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" class="loading mb-3" style="width:50px; height: 50px;">
+    <div
+      class="d-flex justify-content-center"
+      v-if="events.length == 0">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif"
+        class="loading mb-3"
+        style="width:50px; height: 50px;">
     </div>
     <div v-if="events.length != 0">
       <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
-          <h1 class="display-4">{{events[0].title}}</h1>
-          <p class="lead my-3">{{events[0].desc}}</p>
-          <p class="lead mb-0"><router-link v-bind:to="{name: 'event-detail', params: {id: events[0].id}}" tag="a" class="text-white font-weight-bold">Find out more...</router-link></p>
+          <h1 class="display-4">{{ events[0].title }}</h1>
+          <p class="lead my-3">{{ events[0].desc }}</p>
+          <p class="lead mb-0"><router-link
+            :to="{name: 'event-detail', params: {id: events[0].id}}"
+            tag="a"
+            class="text-white font-weight-bold">Find out more...</router-link></p>
         </div>
       </div>
 
       <div class="card-deck mb-2">
-        <router-link v-bind:to="{name: 'event-detail', params: {id: event.id}}" class="card flex-md-row mb-4 box-shadow h-md-250" style="min-width:30rem;overflow:hidden" v-for="(event, i) in events.slice(1)" v-bind:key="event.id" :id="event.id">
+        <router-link
+          :to="{name: 'event-detail', params: {id: event.id}}"
+          class="card flex-md-row mb-4 box-shadow h-md-250"
+          style="min-width:30rem;overflow:hidden"
+          v-for="(event, i) in events.slice(1)"
+          :key="event.id"
+          :id="event.id">
           <div class="card-body d-flex flex-column align-items-start">
             <h3 class="mb-0">
-              {{event.title}}
+              {{ event.title }}
             </h3>
-            <div class="mb-1 text-muted">{{event.date.year}}-{{event.date.month}}-{{event.date.day}}</div>
-            <div class="card-text mb-auto preText">{{event.desc}}</div>
+            <div class="mb-1 text-muted">{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</div>
+            <div class="card-text mb-auto preText">{{ event.desc }}</div>
 
           </div>
-          <img class="card-img-right flex-auto d-none d-md-block"  v-if="images.length > 0" :src="images[i+1]" alt="Card image cap">
-          <img class="card-img-right flex-auto d-none d-md-block" v-if="images.length == 0" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif" alt="Card image cap">
+          <img
+            class="card-img-right flex-auto d-none d-md-block"
+            v-if="images.length > 0"
+            :src="images[i+1]"
+            alt="Card image cap">
+          <img
+            class="card-img-right flex-auto d-none d-md-block"
+            v-if="images.length == 0"
+            src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif"
+            alt="Card image cap">
         </router-link>
       </div>
       <div class="text-center">
-        <router-link to="/events/NewEvent" tag="button" class="btn btn-primary my-2" v-if="isLoggedIn">Create an Event!</router-link>
-        <router-link to="/events/list" tag="button" class="btn btn-secondary my-2" v-if="isLoggedIn">All Events!</router-link>
-        <router-link to="/events/EventMap" tag="button" class="btn btn-secondary my-2" v-if="isLoggedIn">Map</router-link>
+        <router-link
+          to="/events/NewEvent"
+          tag="button"
+          class="btn btn-primary my-2"
+          v-if="isLoggedIn">Create an Event!</router-link>
+        <router-link
+          to="/events/list"
+          tag="button"
+          class="btn btn-secondary my-2"
+          v-if="isLoggedIn">All Events!</router-link>
+        <router-link
+          to="/events/EventMap"
+          tag="button"
+          class="btn btn-secondary my-2"
+          v-if="isLoggedIn">Map</router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script scoped>
-  import db from "../../Firebase/firebaseInit";
-  import firebase, { functions } from "firebase";
-  import jquery from "jquery";
-  export default {
-    data() {
-      return {
-        events: [],
-        images: [],
-        isLoggedIn: false
-      };
-    },
-    created() {
-      db
-        .collection("events")
-        .orderBy("likes", "desc")
-        .limit(3)
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            //truncate description
-            var desc;
-            if (doc.data().event.description.length > 130 && this.events.length > 0) {
-              var trunc = doc.data().event.description
-              desc = trunc.substring(0,131) + " . . ."
-            } else {
-              desc = doc.data().event.description
-            }
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
 
-            //compile and push data as object
-            const data = {
-              id: doc.id,
-              title: doc.data().event.title,
-              date: doc.data().event.date,
-              time: doc.data().event.time,
-              email: doc.data().event.email,
-              desc: desc,
-              imageKey: doc.data().event.imageKey
-            };
-            this.events.push(data);
-          });
-        });
-      var vm = this;
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          vm.isLoggedIn = true;
-        } else {
-          vm.isLoggedIn = false;
-        }
-      });
-    },
-    watch: {
-      events: "fetchImage"
-    },
-    methods: {
-      fetchImage() {
-        var images = [];
-        for (var i = 0; i < this.events.length; i++) {
-          var url =
-            "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
-            this.events[i].imageKey +
-            "?alt=media&token";
-          images.push(url);
-        }
-        this.images = images;
-      }
+export default {
+  data () {
+    return {
+      events: [],
+      images: [],
+      isLoggedIn: false
     }
-  };
+  },
+  created () {
+    db
+      .collection('events')
+      .orderBy('likes', 'desc')
+      .limit(3)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // truncate description
+          var desc
+          if (doc.data().event.description.length > 130 && this.events.length > 0) {
+            var trunc = doc.data().event.description
+            desc = trunc.substring(0, 131) + ' . . .'
+          } else {
+            desc = doc.data().event.description
+          }
+
+          // compile and push data as object
+          const data = {
+            id: doc.id,
+            title: doc.data().event.title,
+            date: doc.data().event.date,
+            time: doc.data().event.time,
+            email: doc.data().event.email,
+            desc: desc,
+            imageKey: doc.data().event.imageKey
+          }
+          this.events.push(data)
+        })
+      })
+    var vm = this
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        vm.isLoggedIn = true
+      } else {
+        vm.isLoggedIn = false
+      }
+    })
+  },
+  watch: {
+    events: 'fetchImage'
+  },
+  methods: {
+    fetchImage () {
+      var images = []
+      for (var i = 0; i < this.events.length; i++) {
+        var url =
+            'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
+            this.events[i].imageKey +
+            '?alt=media&token'
+        images.push(url)
+      }
+      this.images = images
+    }
+  }
+}
 </script>
 
 <style scoped>

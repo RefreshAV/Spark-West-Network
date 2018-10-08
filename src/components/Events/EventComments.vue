@@ -1,11 +1,11 @@
 <template>
   <div class="comments">
-    <vue-disqus shortname="sparkwestnews"></vue-disqus>
+    <vue-disqus shortname="sparkwestnews"/>
   </div>
 </template>
 
 <script>
-  export default {
+export default {
 
-  }
+}
 </script>
