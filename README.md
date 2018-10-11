@@ -1,4 +1,6 @@
-# spark-west
+# Spark West Network
+Spark West Network is an umbrella marketing program that draws together, assists, and coordinates the various organizations, events, and people that define our region’s unique entrepreneurial opportunities.
+
 
 ## Project setup
 ```
