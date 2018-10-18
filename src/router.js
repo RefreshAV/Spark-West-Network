@@ -9,6 +9,7 @@ import EditEvent from './components/Events/EditEvent'
 import NewEvent from './components/Events/NewEvent'
 import Contact from './components/Contact/Contact.vue'
 import FAQ from './components/FAQ/FAQ.vue'
+import Login from './components/Auth/Login.vue'
 import SignUp from './components/Auth/SignUp.vue'
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue'
 import LogOut from './components/Auth/LogOut.vue'
@@ -104,8 +105,13 @@ const routes = [
     }
   },
   {
+    path: '/Login',
+    name: 'login',
+    component: Login
+  },
+  {
     path: '/SignUp',
-    name: 'sign-up',
+    name: 'signup',
     component: SignUp
   },
   {

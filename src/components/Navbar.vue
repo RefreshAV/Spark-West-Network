@@ -47,7 +47,7 @@
             active-class="nav-item"
             v-if="isLoggedIn"><a class="nav-link">Profile</a></router-link>
           <router-link
-            :to="{name: 'sign-up'}"
+            :to="{name: 'login'}"
             tag="li"
             active-class="nav-item"
             v-if="!isLoggedIn"><button
