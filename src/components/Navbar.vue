@@ -52,7 +52,7 @@
             active-class="nav-item"
             v-if="!isLoggedIn"><button
               class="btn btn-outline-success my-2 my-sm-0"
-              type="submit">Sign Up</button></router-link>
+              type="submit">Login</button></router-link>
           <router-link
             to="/"
             tag="li"

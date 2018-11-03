@@ -8,13 +8,13 @@
                 </div>
             </div>
 
-            <div class="row d-flex justify-content-center">              
+            <div class="row d-flex justify-content-center">            
               <div class="col-md-5">
                   <h2>Welcome to Spark West Network!</h2>
                   <hr>
                   <i class="text-muted">"We believe that rural Nova Scotia is a great place to be an entrepreneur. However, there is much need for improvement."</i>
                   <hr>
-                <div class="row">
+                <div class="row mb-3">
 
                   <div class="col">
                     <div class="row d-flex justify-content-center">
@@ -48,6 +48,32 @@
 
               <div class="col">
                 <form @submit.prevent="signUp()">
+                  <div class="row d-flex justify-content-center">
+                    <div class="col-lg-4 order-lg-1 text-center">
+                      <img
+                        src="../../assets/Profile.png"
+                        class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm"
+                        id="preview"
+                        alt="avatar"
+                        v-if="!preImg">
+                      <img
+                        :src="preImg"
+                        class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm"
+                        id="preview"
+                        alt="avatar"
+                        v-if="preImg">
+                      <div class="dUp file btn btn-primary">
+                        <small>Browse <i class="fa fa-camera"/></small>
+                        <input
+                          type='file'
+                          id="imgUp"
+                          class='bUp'
+                          accept="image/x-png,image/gif,image/jpeg"
+                          @change="loadFile" 
+                          required>
+                      </div>
+                    </div>
+                  </div>
                     <div class="form-group">
                     <label for="email">Name</label>
                       <input
@@ -77,7 +103,9 @@
                     </div>
                   <div class="row">
                     <div class="col-auto">
-                      <input type="submit" class="btn btn-primary" value="Sign Up"> 
+                      <button type="submit" class="btn btn-primary">
+                        Sign Up! <i class="fas fa-cog fa-spin" v-if="upload"></i>
+                      </button> 
                     </div>
                     <div class="col-m3">
                       <p>Or if you already have an account <router-link to="/Login">Login!</router-link></p>
@@ -97,28 +125,73 @@ import firebase from "firebase/app";
 import firebaseui from "firebaseui";
 import db from "../../Firebase/firebaseInit";
 
+var check = firebase;
+
 export default {
   data() {
     return {
       profPic: "",
       name: "",
       email: "",
-      password: ""
+      password: "",
+      preImg: "",
+      image: null,
+      upload: false
     };
+  },
+  watch: {
+    upload: "createProfile"
   },
   methods: {
     signUp() {
+      const that = this;
+
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
-        .catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          console.log(errorMessage)
-        }).then(
-          this.$router.push('/')
-        )
+        .then((this.upload = true));
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          db.collection("users").add({
+            user: {
+              UserUID: firebase.auth().currentUser.uid,
+              about: "",
+              email: that.email,
+              name: that.name,
+              photo:
+                "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/users%2F" +
+                firebase.auth().currentUser.uid +
+                "?alt=media&token",
+              website: ""
+            }
+          })
+
+          var ref = firebase
+            .storage()
+            .ref("users/" + firebase.auth().currentUser.uid);
+          var file = that.image;
+
+          var upload = ref.put(file);
+          upload.on(
+            "state_changed",
+            function progress(snapshot) {
+              var percentage =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            },
+            function error(err) {},
+            function complete() {}
+          ).then(
+            that.$router.push('/')
+          )
+        }
+      });
+    },
+    createProfile() {},
+    loadFile: function() {
+      var input = document.querySelector(".bUp");
+      var imgURL = window.URL.createObjectURL(input.files[0]);
+      this.preImg = imgURL;
+      this.image = input.files[0];
     }
   }
 };

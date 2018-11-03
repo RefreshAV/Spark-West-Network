@@ -27,7 +27,8 @@
       </div>
       <button class="btn btn-dark ">Sign up for Newsletter!</button>
     </form>
-    <p> <a href="https://google.com">Nova Obsido</a> by <a href="https://google.com">@ Callum & Max</a>.</p>
+    <br>
+    <p>Spark West Network coded by Callum & Max.</p>
     <p>
       <a href="#">Back to top</a>
     </p>
