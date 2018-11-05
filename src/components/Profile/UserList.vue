@@ -19,10 +19,10 @@
       </div>
     </div>
     <div class="list-group list-group-flush mb-3">
-      <router-link
+      <button
         v-for="profile in profiles"
         :key="profile.id"
-        :to="{name: 'userDetail', params: {id: profile.id}}"
+        @click="loadProfile(profile.uid, profile.id)"
         class="list-group-item list-group-item-action media ">
         <img
           class="align-self-center mr-3"
@@ -33,40 +33,51 @@
           <p class="mb-0 text-muted">{{ profile.email }}</p>
           <span class="badge badge-primary"><i class="fa fa-user"/> n Followers</span>
         </div>
-      </router-link>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase"
+
 export default {
-  data () {
+  data() {
     return {
       profiles: []
-    }
+    };
   },
-  created () {
-    db
-      .collection('users')
+  created() {
+    db.collection("users")
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           const data = {
             id: doc.id,
+            uid: doc.data().user.UserUID,
             name: doc.data().user.name,
             img: doc.data().user.photo,
             email: doc.data().user.email
-          }
-          this.profiles.push(data)
-        })
-      })
+          };
+          this.profiles.push(data);
+        });
+      });
+  },
+  methods: {
+    loadProfile(uid, id) {
+      if(uid == firebase.auth().currentUser.uid) {
+        this.$router.push('/Profile')
+      } else {
+        this.$router.push('Users/user/' + id)
+      }
+    }
   }
-}
+};
 </script>
 
 <style scoped>
 .list-group-item img {
-    max-width: 84px
+  max-width: 84px;
 }
 </style>
