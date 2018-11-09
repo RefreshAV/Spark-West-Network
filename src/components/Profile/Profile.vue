@@ -128,6 +128,7 @@
                     class="list-group-item d-flex justify-content-center align-items-center"
                     style="height:400px">
                     <h3>Nothing Here!</h3>
+                    <i class="far fa-frown"></i>
                   </li>
                 </ul>
 
@@ -184,6 +185,7 @@
                   class="list-group-item d-flex justify-content-center align-items-center"
                   style="height:400px">
                   <h3>Nothing Here!</h3>
+                  <i class="far fa-frown"></i>
                 </li>
               </ul>
 
@@ -214,7 +216,7 @@
             id="edit">
             <form
               role="form"
-              @submit.prevent="writeUserData">
+              @submit.prevent="writeUserData()">
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Username</label>
                 <div class="col-lg-9">
@@ -246,6 +248,25 @@
                     value=""
                     v-model="user.website">
                 </div>
+              </div>
+              <!-- Social Media -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                  <i class="fab fa-facebook-square fa-3x"></i> Facebook 
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label align-middle" for="defaultCheck1">
+                  <i class="fab fa-twitter-square fa-3x"></i> Twitter 
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                  <i class="fab fa-instagram fa-3x"></i> Instagram
+                </label>
               </div>
               <div class="form-group">
                 <label for="exampleFormControlTextarea1">About Yourself</label>
@@ -286,6 +307,7 @@
                 class="list-group-item d-flex justify-content-center align-items-center"
                 style="height:400px">
                 <h3>Nothing Here!</h3>
+                <i class="far fa-frown"></i>
               </li>
             </ul>
             <button class="btn btn-dark">Send a message</button>
@@ -310,6 +332,8 @@ export default {
         website: "",
         about: ""
       },
+      facebook: "",
+      twitter: "",
       image: null,
       events: [],
       likedEvents: [],
@@ -356,8 +380,6 @@ export default {
     writeUserData() {
       db.collection("users")
         .where("user.UserUID", "==", firebase.auth().currentUser.uid)
-        .orderBy("event.date.month")
-        .orderBy("event.date.day")
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -554,5 +576,16 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+li h3 {
+  position: absolute;
+  z-index: 100;
+}
+
+.fa-frown {
+  font-size: 20em;
+  color: rgba(38, 41, 45, 0.5);
+  z-index: 0;
 }
 </style>

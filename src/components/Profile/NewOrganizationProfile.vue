@@ -159,6 +159,12 @@
                                 <option value="2">Manager</option>
                                 <option value="3">User</option>
                               </select>
+                              <button
+                                id="addUser"
+                                class="btn btn-lg btn-danger ml-3"
+                                @click.prevent="removeUser(profile.id,profile.name,profile.img)">
+                                <i class="fa fa-times"/>
+                              </button>
                             </div>
                           </div>
                         </li>
@@ -171,7 +177,7 @@
                             <input
                               type="text"
                               class="form-control form-control-lg"
-                              placeholder="Search for users . . ."
+                              placeholder="Add people by email . . ."
                               v-model="searchTerm">
                             <div class="input-group-btn">
                               <button
@@ -325,88 +331,102 @@
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase'
-import 'firebase/firestore'
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase";
+import "firebase/firestore";
 export default {
-  data () {
+  data() {
     return {
-      bannerImg: '',
-      bannerPreImg: 'https://picsum.photos/1900/500/?random',
-      image: '',
-      preImg: 'https://picsum.photos/150/150/?random',
-      name: '',
-      website: '',
-      description: '',
-      email: '',
-      phone: '',
-      other: '',
-      location: '',
+      bannerImg: "",
+      bannerPreImg: "https://picsum.photos/1900/500/?random",
+      image: "",
+      preImg: "https://picsum.photos/150/150/?random",
+      name: "",
+      website: "",
+      description: "",
+      email: "",
+      phone: "",
+      other: "",
+      location: "",
       users: [],
       user: {
-        img: 'https://picsum.photos/200/200/?random',
-        name: 'Current User'
+        img: "https://picsum.photos/200/200/?random",
+        name: "Current User",
+        email: ""
       },
-      searchTerm: '',
+      searchTerm: "",
       profiles: [],
       searching: false
-    }
+    };
   },
-  mounted () {
-    db
-      .collection('users')
-      .where('user.UserUID', '==', firebase.auth().currentUser.uid)
+  mounted() {
+    db.collection("users")
+      .where("user.UserUID", "==", firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          this.user.name = doc.data().user.name
-          this.user.img = doc.data().user.photo
-        })
-      })
+          this.user.name = doc.data().user.name;
+          this.user.img = doc.data().user.photo;
+          this.user.email = doc.data().user.email;
+        });
+      });
   },
   methods: {
-    submit () {},
-    loadFile: function () {
-      var input = document.querySelector('.bUp')
-      var imgURL = window.URL.createObjectURL(input.files[0])
-      this.preImg = imgURL
-      this.image = input.files[0]
+    submit() {},
+    loadFile: function() {
+      var input = document.querySelector(".bUp");
+      var imgURL = window.URL.createObjectURL(input.files[0]);
+      this.preImg = imgURL;
+      this.image = input.files[0];
     },
-    search () {
-      const that = this
-      this.searching = false
-      this.profiles = []
-      var search = this.searchTerm
-      db
-        .collection('users')
-        .where('user.name', '==', search.trim())
+    search() {
+      const that = this;
+      this.searching = false;
+      this.profiles = [];
+      var search = this.searchTerm;
+      db.collection("users")
+        .where("user.email", "==", search.trim())
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
             const data = {
               id: doc.id,
-              name: doc.data().user.name,
+              name: doc.data().user.email,
               img: doc.data().user.photo
-            }
-            this.profiles.push(data)
-          })
+            };
+            this.profiles.push(data);
+          });
         })
-        .then(function () {
-          that.searching = true
-        })
+        .then(function() {
+          that.searching = true;
+        });
     },
-    addUser (id, name, img) {
-      console.log('Added User: ' + name)
-      var user = {
-        id,
-        name,
-        img,
-        role: 3
+    addUser(id, name, img) {
+      var found = this.users.find(function(value) {
+        return (value.name = name);
+      });
+
+      if (!found && name != this.user.email) {
+        var user = {
+          id,
+          name,
+          img,
+          role: 3
+        };
+        this.users.push(user);
       }
-      this.users.push(user)
+    },
+    removeUser(id, name, img) {
+      var filtered = this.users.filter(function(value, index, arr) {
+        return value.name != name;
+      });
+      this.users = filtered;
+    },
+    createOrganization() {
+      db.collection("organizations")
     }
   }
-}
+};
 </script>
 
 <style scoped>
