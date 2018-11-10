@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Meta from 'vue-meta'
 import About from './components/About/About.vue'
 import Home from './components/Main/Home.vue'
 import Events from './components/Events/Events.vue'
@@ -24,6 +25,7 @@ import EventGallery from './components/Events/EventGallery.vue'
 import firebase from 'firebase'
 
 Vue.use(Router)
+Vue.use(Meta)
 
 const routes = [
   // {
