@@ -66,11 +66,7 @@ export default {
   },
   methods: {
     loadProfile(uid, id) {
-      if(uid == firebase.auth().currentUser.uid) {
-        this.$router.push('/Profile')
-      } else {
-        this.$router.push('Users/user/' + id)
-      }
+      this.$router.push('Users/user/' + id)
     }
   }
 };

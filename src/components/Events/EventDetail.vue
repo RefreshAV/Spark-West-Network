@@ -45,6 +45,8 @@
           <hr>
           <h5>Description:</h5>
           <p>{{ desc }}</p>
+          <h5>Location:</h5>
+          <p class="lead">{{ locationName }}<br><i><a :href="'https://maps.google.com/?q=' + locationName">Get directions</a></i></p>
           <span class="badge badge-primary"><i class="fa fa-user"/> {{ attendees }} People Attending</span>
         </div>
       </div>
@@ -68,14 +70,14 @@
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase'
-import 'firebase/firestore'
-import Comments from './EventComments.vue'
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase";
+import "firebase/firestore";
+import Comments from "./EventComments.vue";
 
 export default {
-  name: 'EventDetail',
-  data () {
+  name: "EventDetail",
+  data() {
     return {
       id: null,
       title: null,
@@ -84,10 +86,12 @@ export default {
       email: null,
       desc: null,
       image:
-        'https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif',
+        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
       imageKey: null,
-      submitDate: 'not found',
+      submitDate: "not found",
       UserUID: null,
+      location: null,
+      locationName: null,
       author: {
         name: null,
         email: null,
@@ -102,185 +106,184 @@ export default {
       peopleAttending: [],
       isAuthenticated: false,
       isAdmin: false
-    }
+    };
   },
-  beforeRouteEnter (to, from, next) {
-    db
-      .collection('events')
-      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
+  beforeRouteEnter(to, from, next) {
+    db.collection("events")
+      .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.id = doc.id
-            vm.title = doc.data().event.title
-            vm.date = doc.data().event.date
-            vm.time = doc.data().event.time
-            vm.email = doc.data().event.email
-            vm.desc = doc.data().event.description
-            vm.imageKey = doc.data().event.imageKey
-            vm.submitDate = doc.data().event.SubmitDate
-            vm.UserUID = doc.data().event.UserUID
-            vm.likes = doc.data().likes
-            vm.likedBy = doc.data().likedBy
-          })
-        })
-      })
+            vm.id = doc.id;
+            vm.title = doc.data().event.title;
+            vm.date = doc.data().event.date;
+            vm.time = doc.data().event.time;
+            vm.email = doc.data().event.email;
+            vm.desc = doc.data().event.description;
+            vm.imageKey = doc.data().event.imageKey;
+            vm.submitDate = doc.data().event.SubmitDate;
+            vm.UserUID = doc.data().event.UserUID;
+            vm.likes = doc.data().likes;
+            vm.likedBy = doc.data().likedBy;
+          });
+        });
+      });
   },
-  mounted () {
-    var that = this
+  mounted() {
+    var that = this;
 
-    if (firebase.auth().currentUser.uid == 'ZgI7pcwABkZXi4bMa1xBXi2KHv22' || firebase.auth().currentUser.uid == '0jqATDnHD0Twd9MWmN5SAr2HuEv2') {
-      this.isAdmin = true
+    if (
+      firebase.auth().currentUser.uid == "ZgI7pcwABkZXi4bMa1xBXi2KHv22" ||
+      firebase.auth().currentUser.uid == "0jqATDnHD0Twd9MWmN5SAr2HuEv2"
+    ) {
+      this.isAdmin = true;
     } else {
-      this.isAdmin = false
+      this.isAdmin = false;
     }
 
-    db
-      .collection('events')
+    db.collection("events")
       .where(
         firebase.firestore.FieldPath.documentId(),
-        '==',
+        "==",
         this.$route.params.id
       )
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           (this.id = doc.id),
-          (this.title = doc.data().event.title),
-          (this.date = doc.data().event.date),
-          (this.time = doc.data().event.time),
-          (this.email = doc.data().event.email),
-          (this.desc = doc.data().event.description),
-          (this.imageKey = doc.data().event.imageKey),
-          (this.submitDate = doc.data().event.SubmitDate),
-          (this.UserUID = doc.data().event.UserUID),
-          (this.likes = doc.data().likes),
-          (this.likedBy = doc.data().likedBy)
-        })
+            (this.title = doc.data().event.title),
+            (this.date = doc.data().event.date),
+            (this.time = doc.data().event.time),
+            (this.email = doc.data().event.email),
+            (this.desc = doc.data().event.description),
+            (this.imageKey = doc.data().event.imageKey),
+            (this.submitDate = doc.data().event.SubmitDate),
+            (this.UserUID = doc.data().event.UserUID),
+            (this.likes = doc.data().likes),
+            (this.likedBy = doc.data().likedBy),
+            (this.location = doc.data().event.location),
+            (this.locationName = doc.data().event.locationName)
+        });
       })
-      .then(function () {
+      .then(function() {
         if (that.likedBy.includes(firebase.auth().currentUser.uid)) {
-          that.liked = true
+          that.liked = true;
         } else {
-          that.liked = false
+          that.liked = false;
         }
-      })
+      });
   },
-  updated () {
+  updated() {
     if (firebase.auth().currentUser.uid == this.UserUID) {
-      this.isAuthenticated = true
+      this.isAuthenticated = true;
     }
   },
   watch: {
-    title: 'fetchImage',
-    UserUID: 'getAuthor',
-    liked: function () {
-      var button = document.getElementById('like')
+    title: "fetchImage",
+    UserUID: "getAuthor",
+    liked: function() {
+      var button = document.getElementById("like");
 
       if (this.liked) {
-        button.classList.add('text-light')
-        button.classList.remove('text-danger')
-        button.classList.add('btn-danger')
-        button.classList.add('animated', 'bounceIn')
+        button.classList.add("text-light");
+        button.classList.remove("text-danger");
+        button.classList.add("btn-danger");
+        button.classList.add("animated", "bounceIn");
       } else {
-        button.classList.remove('text-light')
-        button.classList.remove('btn-danger')
-        button.classList.add('text-danger')
-        button.classList.remove('animated', 'bounceIn')
+        button.classList.remove("text-light");
+        button.classList.remove("btn-danger");
+        button.classList.add("text-danger");
+        button.classList.remove("animated", "bounceIn");
       }
     }
   },
   methods: {
-    fetchImage () {
-      var ref = firebase.storage().ref('events/' + this.imageKey)
-      var that = this
+    fetchImage() {
+      var ref = firebase.storage().ref("events/" + this.imageKey);
+      var that = this;
 
-      ref.getDownloadURL().then(function (url) {
-        that.image = url
-      })
+      ref.getDownloadURL().then(function(url) {
+        that.image = url;
+      });
     },
-    getAuthor () {
-      db
-        .collection('users')
-        .where('user.UserUID', '==', this.UserUID)
+    getAuthor() {
+      db.collection("users")
+        .where("user.UserUID", "==", this.UserUID)
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            this.author.id = doc.id
-            this.author.name = doc.data().user.name
-            this.author.img = doc.data().user.photo
-            this.author.email = doc.data().user.email
-          })
-        })
+            this.author.id = doc.id;
+            this.author.name = doc.data().user.name;
+            this.author.img = doc.data().user.photo;
+            this.author.email = doc.data().user.email;
+          });
+        });
     },
-    deleteEvent () {
-      if (confirm('Are you sure?')) {
-        var ref = firebase.storage().ref('events/' + this.imageKey)
-        ref.delete()
+    deleteEvent() {
+      if (confirm("Are you sure?")) {
+        var ref = firebase.storage().ref("events/" + this.imageKey);
+        ref.delete();
 
-        db
-          .collection('events')
+        db.collection("events")
           .where(
             firebase.firestore.FieldPath.documentId(),
-            '==',
+            "==",
             this.$route.params.id
           )
           .get()
           .then(querySnapshot => {
             querySnapshot.forEach(doc => {
-              doc.ref.delete()
-              this.$router.push('/events/list')
-            })
-          })
+              doc.ref.delete();
+              this.$router.push("/events/list");
+            });
+          });
       }
       // Add join Event logic here
     },
-    likeEvent () {
+    likeEvent() {
       if (this.likedBy == null) {
-        this.likedBy = []
+        this.likedBy = [];
       }
       if (this.likes == null) {
-        this.likes = 0
+        this.likes = 0;
       }
 
       if (this.liked) {
         // remove like
-        this.liked = false
-        this.likes--
+        this.liked = false;
+        this.likes--;
 
         var remove = this.likedBy.filter(
           uid => uid !== firebase.auth().currentUser.uid
-        )
-        this.likedBy = remove
+        );
+        this.likedBy = remove;
 
-        db
-          .collection('events')
+        db.collection("events")
           .doc(this.id)
           .update({
             likes: this.likes,
             likedBy: this.likedBy
-          })
+          });
       } else {
         // add like
-        this.liked = true
-        this.likes++
-        this.likedBy.push(firebase.auth().currentUser.uid)
+        this.liked = true;
+        this.likes++;
+        this.likedBy.push(firebase.auth().currentUser.uid);
 
-        db
-          .collection('events')
+        db.collection("events")
           .doc(this.id)
           .update({
             likes: this.likes,
             likedBy: this.likedBy
-          })
+          });
       }
     }
   },
   components: {
-    'app-comments': Comments
+    "app-comments": Comments
   }
-}
+};
 </script>
 
 <style scoped>
