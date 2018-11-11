@@ -162,6 +162,11 @@ export default {
       { vmid: 'description', name: 'description', content: 'The description of a user on Spark West Network' }
     ]
   },
+  metaInfo () {
+    return {
+      title: this.name
+    }
+  },
   beforeRouteEnter(to, from, next) {
     var UserUID;
 
