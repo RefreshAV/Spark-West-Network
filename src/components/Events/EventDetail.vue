@@ -108,6 +108,18 @@ export default {
       isAdmin: false
     };
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Event",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'An event on Spark West Network' }
+    ]
+  },
+  metaInfo () {
+    return {
+      title: this.title
+    }
+  },
   beforeRouteEnter(to, from, next) {
     db.collection("events")
       .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)

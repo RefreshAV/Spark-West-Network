@@ -359,6 +359,13 @@ export default {
       searching: false
     };
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "New Organization",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'Create a new organization account' }
+    ]
+  },
   mounted() {
     db.collection("users")
       .where("user.UserUID", "==", firebase.auth().currentUser.uid)

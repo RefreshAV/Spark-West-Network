@@ -81,6 +81,13 @@ export default {
         message: ''
       }
     }
+  },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Contact",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'Get in touch with us' }
+    ]
   }
 }
 </script>

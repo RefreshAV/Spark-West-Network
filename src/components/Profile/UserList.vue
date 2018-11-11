@@ -48,6 +48,13 @@ export default {
       profiles: []
     };
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Users",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'Users on Spark West Network' }
+    ]
+  },
   created() {
     db.collection("users")
       .get()

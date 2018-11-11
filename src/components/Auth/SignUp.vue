@@ -139,6 +139,13 @@ export default {
       upload: false
     };
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Sign Up",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'Create your account on Spark West Network!' }
+    ]
+  },
   watch: {
     upload: "createProfile"
   },

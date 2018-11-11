@@ -155,6 +155,13 @@ export default {
       pageLength: 4
     };
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "User",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'The description of a user on Spark West Network' }
+    ]
+  },
   beforeRouteEnter(to, from, next) {
     var UserUID;
 
@@ -170,12 +177,12 @@ export default {
             vm.about = doc.data().user.about;
             vm.website = doc.data().user.website;
             UserUID = doc.data().user.UserUID;
-            if(UserUID == firebase.auth().currentUser.uid) {
-              next('/Profile')
+            if (UserUID == firebase.auth().currentUser.uid) {
+              next("/Profile");
             }
           });
         });
-      })
+      });
   },
   mounted() {
     // get user info

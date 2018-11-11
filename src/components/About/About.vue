@@ -243,32 +243,38 @@
 
 <script>
 export default {
-
-}
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "About",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'Learn about Spark West Network, our customers, and the awesome' }
+    ]
+  }
+};
 </script>
 
 <style scoped>
+body {
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
   body {
-    padding-top: 54px;
+    padding-top: 56px;
   }
+}
 
-  @media (min-width: 992px) {
-    body {
-      padding-top: 56px;
-    }
-  }
+.portfolio-item {
+  margin-bottom: 30px;
+}
 
-  .portfolio-item {
-    margin-bottom: 30px;
-  }
+.card-deck .card {
+  max-width: 20rem;
+  min-width: 18rem;
+  padding: 0;
+}
 
-  .card-deck .card {
-    max-width: 20rem;
-    min-width: 18rem;
-    padding:0;
-  }
-
-  .modalImg {
-    width:100%;
-  }
+.modalImg {
+  width: 100%;
+}
 </style>

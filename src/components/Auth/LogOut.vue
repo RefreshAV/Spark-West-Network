@@ -10,6 +10,10 @@ export default {
 
     }
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Log Out"
+  },
   methods: {
     test: function () {
       console.log(firebase.auth().currentUser.uid)

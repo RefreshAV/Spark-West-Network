@@ -6,10 +6,17 @@
 
 <script>
 export default {
-  data () {
-    return {}
-  }
-}
+  data() {
+    return {};
+  },
+  meta: [
+    {
+      vmid: "description",
+      name: "description",
+      content: "Organization Account"
+    }
+  ]
+};
 </script>
 
 <style scoped>

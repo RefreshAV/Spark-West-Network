@@ -88,7 +88,13 @@
 
 <script>
 export default {
-
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "FAQ",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'Frequently asked questions' }
+    ]
+  }
 }
 </script>
 

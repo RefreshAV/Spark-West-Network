@@ -48,6 +48,13 @@ export default {
       organizations: []
     }
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Organizations",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'The Organizations present on Spark West Network' }
+    ]
+  },
   created () {
     // get organizations
   }

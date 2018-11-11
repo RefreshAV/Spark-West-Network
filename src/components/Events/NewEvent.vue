@@ -193,6 +193,13 @@ export default {
       location: null
     }
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "New Event",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'Create a new event on Spark West Network' }
+    ]
+  },
   mounted () {
   },
   computed: {

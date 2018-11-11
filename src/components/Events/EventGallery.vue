@@ -86,6 +86,13 @@ export default {
       images: []
     }
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Gallery",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'A collection of pictures from events on Spark West Network' }
+    ]
+  },
   created () {
     db
       .collection('events')

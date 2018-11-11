@@ -61,6 +61,13 @@ export default {
       password: ""
     };
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Login",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'Login to your account' }
+    ]
+  },
   methods: {
     getProfPic() {
       const email = this.email;

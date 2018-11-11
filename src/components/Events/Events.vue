@@ -114,7 +114,11 @@ export default {
       events: [],
       images: [],
       isLoggedIn: false
-    };
+    }
+  },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Events"
   },
   created() {
     db.collection("events")
@@ -163,7 +167,10 @@ export default {
     });
   },
   watch: {
-    events: "fetchImage"
+    events: "fetchImage",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'The top events on Spark West Network' }
+    ]
   },
   methods: {
     fetchImage() {

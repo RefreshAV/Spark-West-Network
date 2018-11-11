@@ -347,6 +347,24 @@ export default {
       likePageLength: 4
     };
   },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Profile",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'Your personal account on Spark West Network' }
+    ]
+  },
+  metaInfo() {
+    if (this.user.name) {
+      return {
+        title: this.user.name
+      };
+    } else {
+      return {
+        title: "Profile"
+      };
+    }
+  },
   watch: {
     page: "updateCurrent",
     likePage: "updateCurrentLiked",

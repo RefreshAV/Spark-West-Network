@@ -23,6 +23,13 @@ export default {
           .addTo(map)
       })
     })
+  },
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Map",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'A map of all the events on Spark West Network' }
+    ]
   }
 }
 </script>

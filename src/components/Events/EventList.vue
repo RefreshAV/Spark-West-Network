@@ -72,7 +72,13 @@ export default {
       display: true
     }
   },
-
+  metaInfo: {
+    // title will be injected into parent titleTemplate
+    title: "Event List",
+    meta: [
+      { vmid: 'description', name: 'description', content: 'A list of the current and approching events on Spark West Network' }
+    ]
+  },
   // generates array of event data objects from firebase when the component is created
   created () {
     // get date
