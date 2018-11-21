@@ -146,7 +146,11 @@ export default {
     // title will be injected into parent titleTemplate
     title: "Edit Event",
     meta: [
-      { vmid: 'description', name: 'description', content: 'Edit the details of an event' }
+      {
+        vmid: "description",
+        name: "description",
+        content: "Edit the details of an event"
+      }
     ]
   },
   metaInfo() {
@@ -206,9 +210,13 @@ export default {
       });
   },
   watch: {
-    id: "fetchImage"
+    id: "fetchImage",
+    description: "getChars"
   },
   methods: {
+    getChars() {
+      this.characters = this.description.length;
+    },
     fetchImage() {
       var ref = firebase.storage().ref("events/" + this.imageKey);
       var that = this;

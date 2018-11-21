@@ -39,7 +39,7 @@
           <div class="carousel-caption d-none d-md-block">
             <router-link
               to="/events/EventGallery"
-              class="btn btn-success"
+              class="btn btn-success mb-5"
               style="margin-bottom: 10px;">Check out the Gallery</router-link>
           </div>
         </div>

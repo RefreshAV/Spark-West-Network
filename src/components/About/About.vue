@@ -31,7 +31,7 @@
     <hr>
 
     <!-- Team Members -->
-    <h2>The <span data-toggle="modal" data-target="#edddModal">Dream</span> Team</h2>
+    <h2>The <span id="dream" data-toggle="modal" data-target="#edddModal">Dream</span> Team</h2>
 
     <div class="d-flex justify-content-center">
       <div class="card-deck mb-3 d-flex justify-content-center">
@@ -147,7 +147,7 @@
             <img class="modalImg" src="../../assets/hoang.png" alt="Alex">
             <hr>
             <p>
-              Hoang is the newest member of <b>Spark West Network</b>, and he really needs to make his bio!
+              My name is Hoang Quoc Bun, a grade 12 student studying at Horton High School. I am an international student from Vietnam. Although I am new for these kinds of project, joining Spark West Network is a great honor for me as an international student. I don’t have any background of coding nor experiences in business, but with the help of Spark West team, I have gone a long way. I have a great interest in computer and business at the same time,  that’s why I’m trying all my best to help Spark West Network and the team itself 
             </p>
           </div>
         </div>
@@ -247,7 +247,12 @@ export default {
     // title will be injected into parent titleTemplate
     title: "About",
     meta: [
-      { vmid: 'description', name: 'description', content: 'Learn about Spark West Network, our customers, and the awesome' }
+      {
+        vmid: "description",
+        name: "description",
+        content:
+          "Learn about Spark West Network, our customers, and the awesome"
+      }
     ]
   }
 };
@@ -276,5 +281,9 @@ body {
 
 .modalImg {
   width: 100%;
+}
+
+#dream {
+  cursor: pointer;
 }
 </style>

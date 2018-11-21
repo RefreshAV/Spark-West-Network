@@ -22,8 +22,8 @@
           type="email"
           value=""
           name="EMAIL"
-          class="form-control"
-          placeholder="email">
+          class="form-control mx-2"
+          placeholder="Email">
       </div>
       <button class="btn btn-dark ">Sign up for Newsletter!</button>
     </form>

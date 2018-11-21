@@ -69,8 +69,7 @@
                           id="imgUp"
                           class='bUp'
                           accept="image/x-png,image/gif,image/jpeg"
-                          @change="loadFile" 
-                          required>
+                          @change="loadFile">
                       </div>
                     </div>
                   </div>
@@ -91,6 +90,7 @@
                         v-model="email"
                         placeholder="example@email.com"
                         class="form-control mb-4"
+                        @change="gravatar()"
                         required>
                         <label for="email">Password</label>
                       <input
@@ -124,6 +124,7 @@
 import firebase from "firebase/app";
 import firebaseui from "firebaseui";
 import db from "../../Firebase/firebaseInit";
+import gravatarUrl from "gravatar-url";
 
 var check = firebase;
 
@@ -136,14 +137,19 @@ export default {
       password: "",
       preImg: "",
       image: null,
-      upload: false
+      upload: false,
+      blob: null
     };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
     title: "Sign Up",
     meta: [
-      { vmid: 'description', name: 'description', content: 'Create your account on Spark West Network!' }
+      {
+        vmid: "description",
+        name: "description",
+        content: "Create your account on Spark West Network!"
+      }
     ]
   },
   watch: {
@@ -171,7 +177,7 @@ export default {
                 "?alt=media&token",
               website: ""
             }
-          })
+          });
 
           var ref = firebase
             .storage()
@@ -179,17 +185,17 @@ export default {
           var file = that.image;
 
           var upload = ref.put(file);
-          upload.on(
-            "state_changed",
-            function progress(snapshot) {
-              var percentage =
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            },
-            function error(err) {},
-            function complete() {}
-          ).then(
-            that.$router.push('/')
-          )
+          upload
+            .on(
+              "state_changed",
+              function progress(snapshot) {
+                var percentage =
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              },
+              function error(err) {},
+              function complete() {}
+            )
+            .then(that.$router.push("/"));
         }
       });
     },
@@ -199,6 +205,17 @@ export default {
       var imgURL = window.URL.createObjectURL(input.files[0]);
       this.preImg = imgURL;
       this.image = input.files[0];
+    },
+    gravatar() {
+      var img = gravatarUrl(this.email, { size: 200, d: "retro" });
+
+      fetch(img)
+        .then(res => res.blob()) // Gets the response and returns it as a blob
+        .then(blob => {
+          this.image = blob;
+          let objectURL = URL.createObjectURL(blob);
+          this.preImg = objectURL;
+        });
     }
   }
 };
