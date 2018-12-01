@@ -162,7 +162,10 @@ export default {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
-        .then((this.upload = true));
+        .then((this.upload = true))
+        .catch((error) => {
+          alert(error.message)
+        });
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           db.collection("users").add({
