@@ -26,10 +26,10 @@
             <div class="card-block m-3 px-2">
               <h1 class="display-4">{{ events[0].title }}</h1>
               <p class="my-3">{{ events[0].desc }}</p>
-              <p class="mb-0"><router-link
+              <router-link
                 :to="{name: 'event-detail', params: {id: events[0].id}}"
                 tag="a"
-                class="text-white font-weight-bold">Find out more...</router-link></p>
+                class="btn btn-info font-weight-bold mb-0">Find out more...</router-link>
             </div>
           </div>
           <div class="col-4" :style="'background: url(' + images[0] + '); background-size:cover; background-position:center; background-repeat: no-repeat;'">
