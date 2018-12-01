@@ -1,99 +1,108 @@
 <template>
   <section id="contact">
     <div class="container">
-      <div class="well well-sm">
-        <h3><strong>Contact Us</strong></h3>
-      </div>
-
+      <h1 class="mt-4 mb-3">
+        Contact Us
+      </h1>
+      <hr>
       <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-7 mb-3">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22534.894807880497!2d-64.37648732789971!3d45.08859451133002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4b585508649b3e03%3A0xb991fdcccab87245!2sWolfville%2C+NS!5e0!3m2!1sen!2sca!4v1531401712394"
             width="100%"
-            height="315"
+            height="100%"
             frameborder="0"
             style="border:0"
-            allowfullscreen/>
+            allowfullscreen
+          />
         </div>
 
-        <div class="col-md-5">
-          <h4><strong>Get in Touch</strong></h4>
+        <div class="col-md-5 mb-3">
+          <h4>
+            Get in Touch
+          </h4>
           <form>
             <div class="form-group">
               <input
                 type="text"
                 class="form-control"
-                name=""
-                value=""
+                name
+                value
                 placeholder="Name"
-                v-model="contactRequest.name">
+                v-model="contactRequest.name"
+              >
             </div>
             <div class="form-group">
               <input
                 type="email"
                 class="form-control"
-                name=""
-                value=""
+                name
+                value
                 placeholder="E-mail"
-                v-model="contactRequest.email">
+                v-model="contactRequest.email"
+              >
             </div>
             <div class="form-group">
               <input
                 type="tel"
                 class="form-control"
-                name=""
-                value=""
+                name
+                value
                 placeholder="Phone"
-                v-model="contactRequest.phone">
+                v-model="contactRequest.phone"
+              >
             </div>
             <div class="form-group">
               <textarea
                 class="form-control"
-                name=""
-                rows="3"
+                name
+                rows="4"
                 placeholder="Message"
-                v-model="contactRequest.message"/>
+                v-model="contactRequest.message"
+                style="resize:none;"
+              />
             </div>
-            <button
-              class="btn btn-default"
-              type="submit"
-              name="button">
-              <i
-                class="fa fa-paper-plane-o"
-                aria-hidden="true"/> Submit
+            <button class="btn btn-primary" type="submit" name="button">
+              Send <i class="fas fa-paper-plane"></i>
             </button>
           </form>
         </div>
       </div>
     </div>
   </section>
-
 </template>
 
 <script>
 export default {
-  data: function () {
+  data: function() {
     return {
       contactRequest: {
-        name: '',
-        email: '',
-        phone: '',
-        message: ''
+        name: "",
+        email: "",
+        phone: "",
+        message: ""
       }
-    }
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
     title: "Contact",
     meta: [
-      { vmid: 'description', name: 'description', content: 'Get in touch with us' }
+      {
+        vmid: "description",
+        name: "description",
+        content: "Get in touch with us"
+      }
     ]
   }
-}
+};
 </script>
 
 <style>
-  #contact{
+textarea {
+  resize: none;
+}
+/* #contact{
     background-color:#f1f1f1;
   }
 
@@ -121,5 +130,5 @@ export default {
       margin-bottom: 15px;
     }
 
-  }
+  } */
 </style>
