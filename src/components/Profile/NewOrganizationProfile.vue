@@ -11,7 +11,7 @@
         <div class="col-auto">
           <div class="row">
             <div class="col-auto text-center">
-              <h4>Profile Picture</h4>
+              <h4>Logo</h4>
               <img
                 :src="preImg"
                 class="img-fluid rounded d-block mb-2 shadow-sm"
@@ -37,12 +37,19 @@
             class="rounded shadow-sm mb-3">
             <div
               id="preBadge"
-              class="badge badge-secondary badge-pill shadow-sm">preview</div>
+              class="badge badge-warning badge-pill shadow-sm">preview</div>
             <img
               id="bannerImg"
               :src="bannerPreImg"
               alt="Banner Image"
-              class="img-fluid">
+              class="img-fluid dUp file">
+            <input
+              type='file'
+              id="imgUp"
+              class='bUp2'
+              accept="image/x-png,image/gif,image/jpeg"
+              @change="bannerUpload"
+              required>
           </div>
 
           <div class="row">
@@ -386,6 +393,12 @@ export default {
       this.preImg = imgURL;
       this.image = input.files[0];
     },
+    bannerUpload() {
+      var input = document.querySelector(".bUp2");
+      var imgURL = window.URL.createObjectURL(input.files[0]);
+      this.bannerImg = input.files[0]
+      this.bannerPreImg = imgURL
+    },
     search() {
       const that = this;
       this.searching = false;
@@ -442,7 +455,7 @@ export default {
   overflow: hidden;
 }
 
-.bUp {
+.bUp, .bUp2 {
   position: absolute;
   font-size: 50px;
   opacity: 0;
@@ -465,6 +478,10 @@ export default {
   height: 150px;
   overflow: hidden;
   filter: brightness(1);
+  transition: height 1s;
+}
+#banner:hover {
+  height: 300px
 }
 
 .profileImg {
