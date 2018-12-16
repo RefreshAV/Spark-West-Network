@@ -24,28 +24,28 @@
               href=""
               data-target="#profile"
               data-toggle="tab"
-              class="nav-link active">Profile</a>
+              class="nav-link active"><i class="fas fa-user-circle"></i> Profile</a>
           </li>
           <li class="nav-item">
             <a
               href=""
               data-target="#likes"
               data-toggle="tab"
-              class="nav-link">Likes</a>
+              class="nav-link"><i class="fas fa-heart"></i> Likes</a>
           </li>
           <li class="nav-item">
             <a
               href=""
               data-target="#edit"
               data-toggle="tab"
-              class="nav-link">Edit</a>
+              class="nav-link"><i class="fas fa-pencil-alt"></i> Edit</a>
           </li>
           <li class="nav-item">
             <a
               href=""
               data-target="#messages"
               data-toggle="tab"
-              class="nav-link">Messages</a>
+              class="nav-link"><i class="fas fa-envelope"></i> Messages</a>
           </li>
         </ul>
         <div class="tab-content py-4">
@@ -58,18 +58,18 @@
               </div>
               <div class="col mr-3">
                 <div class="btn-group float-right">
+                  <button
+                    class="btn btn-info btn-sm"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Create new organization"><i class="fa fa-building"/></button>
                   <router-link
                     id="organBtn"
-                    class="btn btn-info btn-sm"
+                    class="btn btn-success btn-sm"
                     to="/Organization/New"
                     data-toggle="tooltip"
                     data-placement="top"
-                    title="Create new organization"><span id="organBtnCont"><i class="fa fa-building"/></span></router-link>
-                  <button
-                    class="btn btn-success btn-sm"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Add existing organization"><i class="fa fa-plus"/></button>
+                    title="Add existing organization"><span id="organBtnCont"><i class="fa fa-plus"/></span></router-link>
                 </div>
               </div>
             </div>
@@ -156,7 +156,9 @@
 
               <router-link
                 to="/events/NewEvent"
-                class="btn btn-primary btn-circular-lg mb-3"><i class="fa fa-plus"/></router-link>
+                class="bg-primary text-white circular mx-3 mb-3 d-flex justify-content-center align-items-center">
+                <i class="fa fa-plus"/>
+              </router-link>
             </div>
             <!--/row-->
           </div>
@@ -575,14 +577,11 @@ export default {
   margin: 0px;
 }
 
-.btn-circular-lg {
+.circular {
   width: 70px;
   height: 70px;
-  padding: 10px 16px;
   border-radius: 35px;
-  font-size: 40px;
-  line-height: 1.33;
-  margin-top: 5px;
+  text-decoration-line: none;
 }
 
 .btn-group input {

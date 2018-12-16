@@ -53,7 +53,9 @@
 
     <router-link
       to="/events/NewEvent"
-      class="btn btn-primary btn-circular-lg mb-3"><i class="fa fa-plus"/></router-link>
+      class="bg-primary text-white circular mb-3 d-flex justify-content-center align-items-center">
+      <i class="fa fa-plus"/>
+    </router-link>
   </div>
 </template>
 
@@ -247,12 +249,10 @@ export default {
 
 <style scope>
 
-.btn-circular-lg {
+.circular {
   width: 70px;
   height: 70px;
-  padding: 10px 16px;
   border-radius: 35px;
-  font-size: 40px;
-  line-height: 1.33;
+  text-decoration-line: none;
 }
 </style>
