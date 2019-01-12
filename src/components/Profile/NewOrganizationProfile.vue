@@ -145,7 +145,7 @@
                         <!-- Added Users -->
                         <li
                           class="list-group-item bg-light"
-                          v-if="users.length > 0"
+                          v-show="users.length > 0"
                           v-for="profile in users"
                           :key="profile.id">
                           <div class="row">
@@ -219,7 +219,7 @@
                         </div>
                         <li
                           class="list-group-item "
-                          v-if="searching && profiles.length > 0"
+                          v-show="searching && profiles.length > 0"
                           v-for="profile in profiles"
                           :key="profile.id">
                           <div class="row">
@@ -345,7 +345,7 @@ export default {
   data() {
     return {
       bannerImg: "",
-      bannerPreImg: "https://picsum.photos/1900/500/?random",
+      bannerPreImg: "https://picsum.photos/930/300/?random",
       image: "",
       preImg: "https://picsum.photos/150/150/?random",
       name: "",
