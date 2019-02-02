@@ -157,7 +157,7 @@ const routes = [
     }
   },
   {
-    path: '/Users/organizations',
+    path: '/Organizations',
     name: 'organizationList',
     component: OrganizationsList,
     meta: {
