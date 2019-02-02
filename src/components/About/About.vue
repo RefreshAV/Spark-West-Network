@@ -14,7 +14,7 @@
         <img
           class="img-fluid rounded mb-4"
           style="width:100%"
-          src="../../assets/TempLogo.png"
+          src="../../assets/LogoMediumREN.png"
           alt="">
       </div>
       <div class="col-lg-6">
@@ -34,7 +34,7 @@
     <h2>The <span id="dream" data-toggle="modal" data-target="#edddModal">Dream</span> Team</h2>
 
     <div class="d-flex justify-content-center">
-      <div class="card-deck mb-3 d-flex justify-content-center">
+      <div class="card-group mb-3 d-flex justify-content-center">
       <button class="card mb-3" data-toggle="modal" data-target="#alexModal">
         <img class="card-img" src="../../assets/alex.png" alt="Card image">
         <div class="card-body">
@@ -60,13 +60,6 @@
       <img class="card-img" src="../../assets/hoang.png" alt="Card image">
         <div class="card-body">
           <h5 class="card-title">Hoang Bun</h5>
-          <p class="card-text">position</p>
-        </div>
-      </button>
-      <button class="card mb-3" data-toggle="modal" data-target="#andrewModal">
-        <img class="card-img" src="../../assets/andrew.png" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Andrew Ramanujam</h5>
           <p class="card-text">position</p>
         </div>
       </button>
@@ -148,26 +141,6 @@
             <hr>
             <p>
               My name is Hoang Quoc Bun, a grade 12 student studying at Horton High School. I am an international student from Vietnam. Although I am new for these kinds of project, joining Spark West Network is a great honor for me as an international student. I don’t have any background of coding nor experiences in business, but with the help of Spark West team, I have gone a long way. I have a great interest in computer and business at the same time,  that’s why I’m trying all my best to help Spark West Network and the team itself 
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="andrewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalCenterTitle">Andrew Ramanujam</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <img class="modalImg" src="../../assets/andrew.png" alt="Alex">
-            <hr>
-            <p>
-              I’m an 11th-grade student at Horton High School. It is my goal and dream to start an investment company specializing in market securities. But above all, I want to be an entrepreneur with the capability of creating an impact in the world. I believe that passion, guts, and faith are all it takes to become a great influential entrepreneur.
             </p>
           </div>
         </div>
