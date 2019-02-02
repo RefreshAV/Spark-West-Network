@@ -15,7 +15,7 @@
           to="/Users">Users</router-link>
         <router-link
           class="dropdown-item"
-          to="/Users/organizations">Organizations</router-link>
+          to="/Organizations">Organizations</router-link>
       </div>
     </div>
     <div class="list-group list-group-flush mb-3">
@@ -25,7 +25,7 @@
         @click="loadProfile(profile.uid, profile.id)"
         class="list-group-item list-group-item-action media ">
         <img
-          class="align-self-center mr-3"
+          class="align-self-center mr-3 shadow-sm"
           :src="profile.img"
           alt="Generic placeholder image">
         <div class="media-body">

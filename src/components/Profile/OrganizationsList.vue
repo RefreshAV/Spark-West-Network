@@ -1,23 +1,19 @@
 <template>
   <div class="container">
-
     <div class="btn-group my-3">
       <button
         class="btn btn-secondary btn-lg dropdown-toggle"
         type="button"
         data-toggle="dropdown"
         aria-haspopup="true"
-        aria-expanded="false">
+        aria-expanded="false"
+      >
         Organizations
         <span class="badge badge-danger badge-pill">WIP</span>
       </button>
       <div class="dropdown-menu">
-        <router-link
-          class="dropdown-item"
-          to="/Users">Users</router-link>
-        <router-link
-          class="dropdown-item"
-          to="/Users/organizations">Organizations</router-link>
+        <router-link class="dropdown-item" to="/Users">Users</router-link>
+        <router-link class="dropdown-item" to="/Organizations">Organizations</router-link>
       </div>
     </div>
 
@@ -26,15 +22,19 @@
         v-for="organization in organizations"
         :key="organization.id"
         :to="{name: 'userDetail', params: {id: organization.id}}"
-        class="list-group-item list-group-item-action media ">
+        class="list-group-item list-group-item-action media"
+      >
         <img
-          class="align-self-center mr-3"
-          :src="organization.img"
-          alt="Generic placeholder image">
+          class="align-self-center mr-3 shadow-sm"
+          :src="'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Flogo%2F' + organization.logo + '?alt=media&token'"
+          alt="Generic placeholder image"
+        >
         <div class="media-body">
           <h5 class="mb-0">{{ organization.name }}</h5>
           <p class="mb-0 text-muted">{{ organization.email }}</p>
-          <span class="badge badge-primary"><i class="fa fa-user"/> n Followers</span>
+          <span class="badge badge-primary">
+            <i class="fa fa-user"/> n Followers
+          </span>
         </div>
       </router-link>
     </div>
@@ -42,27 +42,53 @@
 </template>
 
 <script>
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase";
+
 export default {
-  data () {
+  data() {
     return {
       organizations: []
-    }
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
     title: "Organizations",
     meta: [
-      { vmid: 'description', name: 'description', content: 'The Organizations present on Spark West Network' }
+      {
+        vmid: "description",
+        name: "description",
+        content: "The Organizations present on Spark West Network"
+      }
     ]
   },
-  created () {
-    // get organizations
+  created() {
+    db.collection("organizations")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          console.log(doc.data().organization.imagekey);
+          const data = {
+            id: doc.id,
+            name: doc.data().organization.name,
+            logo: doc.data().organization.imagekey,
+            banner:
+              "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Fbanner%2F" +
+              doc.data().organization.bannerKey +
+              "?alt=media&token",
+            email: doc.data().organization.contact.email
+          };
+          this.organizations.push(data);
+        });
+      });
+  },
+  methods: {
   }
-}
+};
 </script>
 
 <style scoped>
 .list-group-item img {
-    max-width: 84px
+  max-width: 84px;
 }
 </style>
