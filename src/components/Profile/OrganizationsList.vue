@@ -18,25 +18,31 @@
     </div>
 
     <div class="list-group list-group-flush mb-3">
-      <router-link
+      <button
         v-for="organization in organizations"
         :key="organization.id"
-        :to="{name: 'userDetail', params: {id: organization.id}}"
+        @click="loadOrganization(organization.id)"
         class="list-group-item list-group-item-action media"
       >
-        <img
-          class="align-self-center mr-3 shadow-sm"
-          :src="'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Flogo%2F' + organization.logo + '?alt=media&token'"
-          alt="Generic placeholder image"
-        >
-        <div class="media-body">
-          <h5 class="mb-0">{{ organization.name }}</h5>
-          <p class="mb-0 text-muted">{{ organization.email }}</p>
-          <span class="badge badge-primary">
-            <i class="fa fa-user"/> n Followers
-          </span>
+        <div class="row">
+          <div class="col-auto">
+            <img
+              class="align-self-center mr-3 shadow-sm"
+              :src="'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Flogo%2F' + organization.logo + '?alt=media&token'"
+              alt="Generic placeholder image"
+            >
+            <div class="media-body">
+              <h5 class="mb-0">{{ organization.name }}</h5>
+              <p class="mb-0 text-muted">{{ organization.email }}</p>
+              <span class="badge badge-primary">
+                <i class="fa fa-user"/> n Followers
+              </span>
+            </div>
+          </div>
+          <div class="col" :style="'background-image: url(' + organization.banner + '); background-position: center; background-size: cover; background-repeat: no-repeat;'">
+          </div>
         </div>
-      </router-link>
+      </button>
     </div>
   </div>
 </template>
@@ -83,6 +89,9 @@ export default {
       });
   },
   methods: {
+    loadOrganization(id) {
+      this.$router.push('Organizations/organization/' + id)
+    }
   }
 };
 </script>

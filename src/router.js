@@ -16,8 +16,8 @@ import SignUpSuccess from './components/Auth/SignUpSuccess.vue'
 import LogOut from './components/Auth/LogOut.vue'
 import Profile from './components/Profile/Profile.vue'
 import OrganizationsList from './components/Profile/OrganizationsList'
-import OrganizationProfileDetail from './components/Profile/OrganizationProfileDetail'
 import NewOrganizationProfile from './components/Profile/NewOrganizationProfile.vue'
+import OrganizationDetail from './components/Profile/OrganizationDetail.vue'
 import UserList from './components/Profile/UserList.vue'
 import UserDetail from './components/Profile/UserDetail.vue'
 import EventMap from './components/Events/EventLocations.vue'
@@ -165,9 +165,9 @@ const routes = [
     }
   },
   {
-    path: '/Organization/detail/:id',
+    path: '/Organizations/organization/:id',
     name: 'organizationProfileDetail',
-    component: OrganizationProfileDetail,
+    component: OrganizationDetail,
     meta: {
       requiresAuth: true
     }
