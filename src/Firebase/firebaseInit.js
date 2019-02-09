@@ -6,9 +6,4 @@ export default firebaseApp.firestore()
 export const storage = firebaseApp.storage()
 
 const firestore = firebase.firestore()
-const settings = {
-  timestampsInSnapshots: true
-}
-firestore.settings(settings)
-
 // For monday https://firebase.google.com/docs/firestore/security/rules-conditions
