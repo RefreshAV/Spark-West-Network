@@ -26,6 +26,7 @@
               title="Website"
               :href="website"
               v-if="website"
+              target="_blank"
             >
               <span class="fa-stack fa-lg text-secondary">
                 <i class="fas fa-square fa-stack-2x"></i>
@@ -48,6 +49,7 @@
               title="Twitter"
               :href="twitter"
               v-if="twitter"
+              target="_blank"
             >
               <span class="fa-stack fa-lg text-info">
                 <i class="fas fa-square fa-stack-2x"></i>
@@ -62,6 +64,7 @@
               title="Facebook"
               :href="facebook"
               v-if="facebook"
+              target="_blank"
             >
               <span class="fa-stack fa-lg">
                 <i class="fas fa-square fa-stack-2x"></i>
@@ -76,6 +79,7 @@
               title="Instagram"
               :href="instagram"
               v-if="instagram"
+              target="_blank"
             >
               <span class="fa-stack fa-lg text-danger">
                 <i class="fas fa-square fa-stack-2x"></i>
@@ -90,6 +94,7 @@
               title="Linkdin"
               :href="linkdin"
               v-if="linkdin"
+              target="_blank"
             >
               <span class="fa-stack fa-lg">
                 <i class="fas fa-square fa-stack-2x"></i>
@@ -99,8 +104,62 @@
           </div>
         </div>
         <hr>
-        <p>{{description}}</p>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card" style="height:100%">
+              <div class="card-body d-flex justify-content-center align-items-center">No Events :(</div>
+            </div>
+          </div>
+          <div class="col">
+            <h3>About:</h3>
+            <p>
+              {{description_small}}
+              <a data-toggle="modal" href="#exampleModal">more</a>
+            </p>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col">
+            <div class="card bg-secondary text-white">
+              <div class="card-body d-flex justify-content-center">Members go here</div>
+            </div>
+          </div>
+        </div>
         <hr>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">About {{name}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i class="fas fa-times-circle"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row d-flex justify-content-center">
+              <img
+                :src="'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Flogo%2F' + logo + '?alt=media&token'"
+                class="mx-auto img-fluid img-circle d-block mb-2 shadow"
+                id="preview"
+                alt="logo"
+              >
+            </div>
+            <hr>
+            <p>{{description}}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -120,11 +179,21 @@ export default {
       instagram: "",
       linkdin: "",
       description: "",
+      description_small: "",
       email: "",
       other: "",
       logo: "",
       banner: ""
     };
+  },
+  watch: {
+    description: function() {
+      if (this.description.length > 200) {
+        this.description_small = this.description.slice(0, 200) + "...";
+      } else {
+        this.description_small = this.description;
+      }
+    }
   },
   beforeRouteEnter(to, from, next) {
     db.collection("organizations")
