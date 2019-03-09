@@ -6,52 +6,51 @@
           :src="user.photoUrl"
           class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm"
           id="preview"
-          alt="avatar">
+          alt="avatar"
+        >
         <div class="dUp file btn btn-primary">
-          <small>Change <i class="fa fa-camera"/></small>
+          <small>
+            Change
+            <i class="fa fa-camera"/>
+          </small>
           <input
-            type='file'
+            type="file"
             id="imgUp"
-            class='bUp'
-            accept="image/x-png,image/gif,image/jpeg"
-            @change="loadFile" >
+            class="bUp"
+            accept="image/x-png, image/gif, image/jpeg"
+            @change="loadFile"
+          >
         </div>
       </div>
       <div class="col-lg-8 order-lg-2">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a
-              href=""
-              data-target="#profile"
-              data-toggle="tab"
-              class="nav-link active"><i class="fas fa-user-circle"></i> Profile</a>
+            <a href data-target="#profile" data-toggle="tab" class="nav-link active">
+              <i class="fas fa-user-circle"></i>
+              <span class="d-none d-sm-inline"> Profile</span>
+            </a>
           </li>
           <li class="nav-item">
-            <a
-              href=""
-              data-target="#likes"
-              data-toggle="tab"
-              class="nav-link"><i class="fas fa-heart"></i> Likes</a>
+            <a href data-target="#likes" data-toggle="tab" class="nav-link">
+              <i class="fas fa-heart"></i>
+              <span class="d-none d-sm-inline"> Likes</span>
+            </a>
           </li>
           <li class="nav-item">
-            <a
-              href=""
-              data-target="#edit"
-              data-toggle="tab"
-              class="nav-link"><i class="fas fa-pencil-alt"></i> Edit</a>
+            <a href data-target="#edit" data-toggle="tab" class="nav-link">
+              <i class="fas fa-pencil-alt"></i>
+              <span class="d-none d-sm-inline"> Edit</span>
+            </a>
           </li>
           <li class="nav-item">
-            <a
-              href=""
-              data-target="#messages"
-              data-toggle="tab"
-              class="nav-link"><i class="fas fa-envelope"></i> Messages</a>
+            <a href data-target="#messages" data-toggle="tab" class="nav-link">
+              <i class="fas fa-envelope"></i>
+              <span class="d-none d-sm-inline"> Messages</span>
+            </a>
           </li>
         </ul>
         <div class="tab-content py-4">
-          <div
-            class="tab-pane active"
-            id="profile">
+          <div class="tab-pane active" id="profile">
             <div class="row no-gutters">
               <div class="col">
                 <h2>{{ user.name }}</h2>
@@ -62,14 +61,22 @@
                     class="btn btn-info btn-sm"
                     data-toggle="tooltip"
                     data-placement="top"
-                    title="Create new organization"><i class="fa fa-building"/></button>
+                    title="Create new organization"
+                  >
+                    <i class="fa fa-building"/>
+                  </button>
                   <router-link
                     id="organBtn"
                     class="btn btn-success btn-sm"
                     to="/Organization/New"
                     data-toggle="tooltip"
                     data-placement="top"
-                    title="Add existing organization"><span id="organBtnCont"><i class="fa fa-plus"/></span></router-link>
+                    title="Add existing organization"
+                  >
+                    <span id="organBtnCont">
+                      <i class="fa fa-plus"/>
+                    </span>
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -77,46 +84,48 @@
             <div class="row">
               <div class="col-md-6">
                 <strong>About</strong>
-                <p>
-                  {{ user.about }}
-                </p>
+                <p>{{ user.about }}</p>
                 <strong>More info</strong>
                 <p>
-                  Website: <a
-                    target="_blank"
-                    :href="user.website">{{ user.website }}</a>
+                  Website:
+                  <a target="_blank" :href="user.website">{{ user.website }}</a>
                 </p>
               </div>
               <div class="col-md-6">
                 <h6>Recent badges</h6>
-                <a
-                  href="#"
-                  class="badge badge-dark badge-pill">example1</a>
-                <a
-                  href="#"
-                  class="badge badge-dark badge-pill">coffee</a>
-                <a
-                  href="#"
-                  class="badge badge-dark badge-pill">examples</a>
-                <a
-                  href="#"
-                  class="badge badge-dark badge-pill">more examples</a>
+                <a href="#" class="badge badge-dark badge-pill mx-1">example1</a>
+                <a href="#" class="badge badge-dark badge-pill mx-1">coffee</a>
+                <a href="#" class="badge badge-dark badge-pill mx-1">examples</a>
+                <a href="#" class="badge badge-dark badge-pill">more examples</a>
                 <hr>
-                <span class="badge badge-primary"><i class="fa fa-user"/> n Followers</span>
-                <span class="badge badge-success"><i class="fa fa-cog"/> n Forks</span>
-                <span class="badge badge-danger"><i class="fa fa-eye"/> n Views</span>
+                <span class="badge badge-primary mx-1">
+                  <i class="fa fa-user"/> n Followers
+                </span>
+                <span class="badge badge-success mx-1">
+                  <i class="fa fa-cog"/> n Forks
+                </span>
+                <span class="badge badge-danger mx-1">
+                  <i class="fa fa-heart"/>
+                  {{likedEvents.length}} Likes
+                </span>
               </div>
               <div class="col-md-12">
-
                 <hr>
-                <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"/> {{ events.length }}</span>{{ user.name }}'s Events:</h5>
+                <h5 class="mt-2">
+                  <span class="float-right badge badge-primary badge-pill">
+                    <i class="fa fa-calendar"/>
+                    {{ events.length }}
+                  </span>
+                  {{ user.name }}'s Events:
+                </h5>
 
                 <ul class="list-group">
                   <router-link
                     class="list-group-item card text-white bg-dark mb-1"
                     v-for="event in currentPage"
                     :key="event.id"
-                    :to="{name: 'event-detail', params: {id: event.id}}">
+                    :to="{name: 'event-detail', params: {id: event.id}}"
+                  >
                     <div>
                       <h5>{{ event.title }}</h5>
                       <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
@@ -126,19 +135,19 @@
                   <li
                     v-if="events.length == 0"
                     class="list-group-item d-flex justify-content-center align-items-center"
-                    style="height:400px">
+                    style="height:400px"
+                  >
                     <h3>Nothing Here!</h3>
                     <i class="far fa-frown"></i>
                   </li>
                 </ul>
-
               </div>
 
               <div class="col-md-12 d-flex justify-content-end">
                 <div class="btn-group">
-                  <button
-                    class="btn btn-outline-primary"
-                    @click="lastPage"><i class="fa fa-angle-double-left"/></button>
+                  <button class="btn btn-outline-primary" @click="lastPage">
+                    <i class="fa fa-angle-double-left"/>
+                  </button>
                   <input
                     id="page"
                     type="number"
@@ -147,35 +156,42 @@
                     style="max-width:4rem;"
                     min="0"
                     :max="pages.length"
-                    readonly>
-                  <button
-                    class="btn btn-outline-primary"
-                    @click="nextPage"><i class="fa fa-angle-double-right"/></button>
+                    readonly
+                  >
+                  <button class="btn btn-outline-primary" @click="nextPage">
+                    <i class="fa fa-angle-double-right"/>
+                  </button>
                 </div>
               </div>
 
               <router-link
                 to="/events/NewEvent"
-                class="bg-primary text-white circular mx-3 mb-3 d-flex justify-content-center align-items-center">
+                class="bg-primary text-white circular mx-3 mb-3 d-flex justify-content-center align-items-center"
+              >
                 <i class="fa fa-plus"/>
               </router-link>
             </div>
             <!--/row-->
           </div>
 
-          <div
-            class="tab-pane"
-            id="likes">
+          <div class="tab-pane" id="likes">
             <div class="col-md-12">
               <hr>
-              <h5 class="mt-2"><span class="float-right badge badge-primary badge-pill"><i class="fa fa-calendar"/> {{ likedEvents.length }}</span>{{ user.name }}'s Liked Events:</h5>
+              <h5 class="mt-2">
+                <span class="float-right badge badge-primary badge-pill">
+                  <i class="fa fa-calendar"/>
+                  {{ likedEvents.length }}
+                </span>
+                {{ user.name }}'s Liked Events:
+              </h5>
 
               <ul class="list-group">
                 <router-link
                   class="list-group-item card text-white bg-dark mb-1"
                   v-for="event in currentLikePage"
                   :key="event.id"
-                  :to="{name: 'event-detail', params: {id: event.id}}">
+                  :to="{name: 'event-detail', params: {id: event.id}}"
+                >
                   <div>
                     <h5>{{ event.title }}</h5>
                     <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
@@ -185,19 +201,19 @@
                 <li
                   v-if="likedEvents.length == 0"
                   class="list-group-item d-flex justify-content-center align-items-center"
-                  style="height:400px">
+                  style="height:400px"
+                >
                   <h3>Nothing Here!</h3>
                   <i class="far fa-frown"></i>
                 </li>
               </ul>
-
             </div>
 
             <div class="col-md-12 d-flex justify-content-end">
               <div class="btn-group">
-                <button
-                  class="btn btn-outline-primary"
-                  @click="lastPageL"><i class="fa fa-angle-double-left"/></button>
+                <button class="btn btn-outline-primary" @click="lastPageL">
+                  <i class="fa fa-angle-double-left"/>
+                </button>
                 <input
                   id="likePage"
                   type="number"
@@ -206,19 +222,16 @@
                   style="max-width:4rem;"
                   min="0"
                   :max="likePages.length"
-                  readonly>
-                <button
-                  class="btn btn-outline-primary"
-                  @click="nextPageL"><i class="fa fa-angle-double-right"/></button>
+                  readonly
+                >
+                <button class="btn btn-outline-primary" @click="nextPageL">
+                  <i class="fa fa-angle-double-right"/>
+                </button>
               </div>
             </div>
           </div>
-          <div
-            class="tab-pane"
-            id="edit">
-            <form
-              role="form"
-              @submit.prevent="writeUserData()">
+          <div class="tab-pane" id="edit">
+            <form role="form" @submit.prevent="writeUserData()">
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Username</label>
                 <div class="col-lg-9">
@@ -227,7 +240,8 @@
                     type="text"
                     placeholder="username"
                     v-model="user.name"
-                    required>
+                    required
+                  >
                 </div>
               </div>
               <div class="form-group row">
@@ -238,66 +252,91 @@
                     type="email"
                     placeholder="email@gmail.com"
                     v-model="user.email"
-                    required>
+                    required
+                  >
                 </div>
               </div>
+
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Website</label>
                 <div class="col-lg-9">
-                  <input
-                    class="form-control"
-                    type="url"
-                    value=""
-                    v-model="user.website">
+                  <input class="form-control" type="url" value v-model="user.website">
                 </div>
               </div>
-              <!-- Social Media -->
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                <label class="form-check-label" for="defaultCheck1">
-                  <i class="fab fa-facebook-square fa-3x"></i> Facebook 
-                </label>
+
+              <!-- Facebook -->
+              <div class="input-group-row mb-3 d-flex">
+                <div class="col p-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text text-white bg-primary"><i class="fab fa-facebook-f mx-1"></i></span>
+                  </div>
+                  <input type="url" class="form-control" v-model="user.facebook">
+                </div>
+                </div>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                <label class="form-check-label align-middle" for="defaultCheck1">
-                  <i class="fab fa-twitter-square fa-3x"></i> Twitter 
-                </label>
+
+              <!-- Twitter -->
+              <div class="input-group-row mb-3 d-flex">
+                <div class="col p-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text text-white bg-info"><i class="fab fa-twitter"></i></span>
+                  </div>
+                  <input type="url" class="form-control" v-model="user.twitter">
+                </div>
+                </div>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                <label class="form-check-label" for="defaultCheck1">
-                  <i class="fab fa-instagram fa-3x"></i> Instagram
-                </label>
+
+              <!-- Instagram -->
+              <div class="input-group-row mb-3 d-flex">
+                <div class="col p-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text text-white bg-danger"><i class="fab fa-instagram"></i></span>
+                  </div>
+                  <input type="url" class="form-control" v-model="user.instagram">
+                </div>
+                </div>
               </div>
+
+              <!-- Linkedin -->
+              <div class="input-group-row mb-3 d-flex">
+                <div class="col p-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text text-white bg-primary"><i class="fab fa-linkedin-in"></i></span>
+                  </div>
+                  <input type="url" class="form-control" v-model="user.linkedin">
+                </div>
+                </div>
+              </div>
+
               <div class="form-group">
                 <label for="exampleFormControlTextarea1">About Yourself</label>
                 <textarea
                   class="form-control"
                   id="exampleFormControlTextarea1"
                   rows="3"
-                  v-model="user.about"/>
+                  v-model="user.about"
+                />
               </div>
               <div class="form-group row">
                 <div class="col-lg-9">
-                  <input
-                    type="submit"
-                    class="btn btn-primary"
-                    value="Save Changes">
+                  <input type="submit" class="btn btn-primary" value="Save Changes">
                 </div>
               </div>
             </form>
           </div>
-          <div
-            class="tab-pane"
-            id="messages">
+          <div class="tab-pane" id="messages">
             <h1>Messages</h1>
             <ul class="list-group">
               <router-link
                 class="list-group-item card text-white bg-dark mb-1"
                 v-for="event in currentPage"
                 :key="event.id"
-                :to="{name: 'event-detail', params: {id: event.id}}">
+                :to="{name: 'event-detail', params: {id: event.id}}"
+              >
                 <div>
                   <h5>{{ event.title }}</h5>
                   <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
@@ -307,13 +346,13 @@
               <li
                 v-if="events.length == 0"
                 class="list-group-item d-flex justify-content-center align-items-center"
-                style="height:400px">
+                style="height:400px"
+              >
                 <h3>Nothing Here!</h3>
                 <i class="far fa-frown"></i>
               </li>
             </ul>
             <button class="btn btn-dark">Send a message</button>
-
           </div>
         </div>
       </div>
@@ -332,10 +371,12 @@ export default {
         email: "",
         photoUrl: "",
         website: "",
+        facebook: "",
+        twitter: "",
+        instagram: "",
+        linkedin: "",
         about: ""
       },
-      facebook: "",
-      twitter: "",
       image: null,
       events: [],
       likedEvents: [],
@@ -353,7 +394,11 @@ export default {
     // title will be injected into parent titleTemplate
     title: "Profile",
     meta: [
-      { vmid: 'description', name: 'description', content: 'Your personal account on Spark West Network' }
+      {
+        vmid: "description",
+        name: "description",
+        content: "Your personal account on Spark West Network"
+      }
     ]
   },
   metaInfo() {
@@ -408,6 +453,10 @@ export default {
                 name: this.user.name,
                 email: this.user.email,
                 website: this.user.website,
+                facebook: this.user.facebook,
+                twitter: this.user.twitter,
+                instagram: this.user.instagram,
+                linkedin: this.user.linkedin,
                 about: this.user.about,
                 UserUID: firebase.auth().currentUser.uid,
                 photo: this.user.photoUrl

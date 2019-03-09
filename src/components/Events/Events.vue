@@ -1,25 +1,13 @@
 <template>
   <div class="container my-3">
-    <div
-      class="d-flex justify-content-center"
-      v-if="events.length == 0">
+    <div class="d-flex justify-content-center" v-if="events.length == 0">
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif"
         class="loading mb-3"
-        style="width:50px; height: 50px;">
+        style="width:50px; height: 50px;"
+      >
     </div>
     <div v-if="events.length != 0">
-      <!-- <div class="jumbotron text-white rounded" :style="'background: url(' + images[0] + ')'">
-        <div id="jumboContent" class="col-md-4 bg-dark">
-          <h1 class="display-4">{{ events[0].title }}</h1>
-          <p class="lead my-3">{{ events[0].desc }}</p>
-          <p class="lead mb-0"><router-link
-            :to="{name: 'event-detail', params: {id: events[0].id}}"
-            tag="a"
-            class="text-white font-weight-bold">Find out more...</router-link></p>
-        </div>
-      </div> -->
-
       <div class="card mb-3 bg-dark text-white">
         <div class="row no-gutters">
           <div class="col">
@@ -29,23 +17,32 @@
               <router-link
                 :to="{name: 'event-detail', params: {id: events[0].id}}"
                 tag="a"
-                class="btn btn-info font-weight-bold mb-0">Find out more...</router-link>
+                class="btn btn-info font-weight-bold mb-0 text-white border-0"
+              >Find out more...</router-link>
             </div>
           </div>
-          <div class="col-4" :style="'background: url(' + images[0] + '); background-size:cover; background-position:center; background-repeat: no-repeat;'">
-          </div>
+          <div
+            class="col-4"
+            :style="'background: url(' + images[0] + '); background-size:cover; background-position:center; background-repeat: no-repeat;'"
+          ></div>
         </div>
       </div>
 
       <div class="card-deck mb-3">
-        <router-link :to="{name: 'event-detail', params: {id: events[1].id}}" class="card bg-light text-dark">
+        <router-link
+          :to="{name: 'event-detail', params: {id: events[1].id}}"
+          class="card bg-light text-dark"
+        >
           <div class="card-body">
             <h1>{{ events[1].title }}</h1>
             <hr>
             <p class="my-3">{{ events[1].desc }}</p>
           </div>
         </router-link>
-        <router-link :to="{name: 'event-detail', params: {id: events[2].id}}" class="card bg-light text-dark">
+        <router-link
+          :to="{name: 'event-detail', params: {id: events[2].id}}"
+          class="card bg-light text-dark"
+        >
           <div class="card-body">
             <h1>{{ events[2].title }}</h1>
             <hr>
@@ -54,51 +51,50 @@
         </router-link>
       </div>
 
-      <!-- <div class="card-deck mb-2">
-        <router-link
-          :to="{name: 'event-detail', params: {id: event.id}}"
-          class="card flex-md-row mb-4 box-shadow h-md-250"
-          style="min-width:30rem;overflow:hidden"
-          v-for="(event, i) in events.slice(1)"
-          :key="event.id"
-          :id="event.id">
-          <div class="card-body d-flex flex-column align-items-start">
-            <h3 class="mb-0">
-              {{ event.title }}
-            </h3>
-            <div class="mb-1 text-muted">{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</div>
-            <div class="card-text mb-auto preText">{{ event.desc }}</div>
+      <!-- Horizontal Buttons -->
+      <div class="row d-none d-md-block">
+        <div class="btn-group mb-3 col" style="width:100%;">
+          <router-link to="/events/NewEvent" tag="button" class="btn btn-primary">
+            <div class="row d-flex justify-content-center">
+              <i class="fas fa-plus-circle fa-2x"></i>
+            </div>
+            <div class="row d-flex justify-content-center">Create an Event</div>
+          </router-link>
+          <router-link to="/events/list" tag="button" class="btn btn-info">
+            <div class="row d-flex justify-content-center">
+              <i class="fas fa-eye fa-2x"></i>
+            </div>
+            <div class="row d-flex justify-content-center">View All Events</div>
+          </router-link>
+          <router-link to="/events/EventMap" tag="button" class="btn btn-danger">
+            <div class="row d-flex justify-content-center">
+              <i class="fas fa-map-marker-alt fa-2x"></i>
+            </div>
+            <div class="row d-flex justify-content-center">View Event Map</div>
+          </router-link>
+        </div>
+      </div>
 
+      <!-- Vertical Button -->
+      <div class="btn-group-vertical mb-3 d-md-none" style="width:100%;">
+        <router-link to="/events/NewEvent" tag="button" class="btn btn-primary">
+          <div class="row d-flex justify-content-center">
+            <i class="fas fa-plus-circle fa-2x"></i>
           </div>
-          <img
-            class="card-img-right flex-auto d-none d-md-block"
-            v-if="images.length > 0"
-            :src="images[i+1]"
-            alt="Card image cap">
-          <img
-            class="card-img-right flex-auto d-none d-md-block"
-            v-if="images.length == 0"
-            src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif"
-            alt="Card image cap">
+          <div class="row d-flex justify-content-center">Create an Event</div>
         </router-link>
-      </div> -->
-
-      <div class="text-center">
-        <router-link
-          to="/events/NewEvent"
-          tag="button"
-          class="btn btn-primary">
-          Create an Event!</router-link>
-        <router-link
-          to="/events/list"
-          tag="button"
-          class="btn btn-secondary mx-1">
-          All Events!</router-link>
-        <router-link
-          to="/events/EventMap"
-          tag="button"
-          class="btn btn-secondary">
-          Map</router-link>
+        <router-link to="/events/list" tag="button" class="btn btn-info">
+          <div class="row d-flex justify-content-center">
+            <i class="fas fa-eye fa-2x"></i>
+          </div>
+          <div class="row d-flex justify-content-center">View All Events</div>
+        </router-link>
+        <router-link to="/events/EventMap" tag="button" class="btn btn-danger">
+          <div class="row d-flex justify-content-center">
+            <i class="fas fa-map-marker-alt fa-2x"></i>
+          </div>
+          <div class="row d-flex justify-content-center">View Event Map</div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -114,7 +110,7 @@ export default {
       events: [],
       images: [],
       isLoggedIn: false
-    }
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
@@ -140,14 +136,14 @@ export default {
           }
 
           // compile and push data as object
-          var day = doc.data().event.date.day
-          var month = doc.data().event.date.month
-          var year = doc.data().event.date.year
+          var day = doc.data().event.date.day;
+          var month = doc.data().event.date.month;
+          var year = doc.data().event.date.year;
 
           const data = {
             id: doc.id,
             title: doc.data().event.title,
-            date: year + '-' + month + '-' + day,
+            date: year + "-" + month + "-" + day,
             time: doc.data().event.time,
             email: doc.data().event.email,
             desc: desc,
@@ -156,7 +152,6 @@ export default {
           this.events.push(data);
         });
       });
-    id = "bigTxt";
     var vm = this;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -169,7 +164,11 @@ export default {
   watch: {
     events: "fetchImage",
     meta: [
-      { vmid: 'description', name: 'description', content: 'The top events on Spark West Network' }
+      {
+        vmid: "description",
+        name: "description",
+        content: "The top events on Spark West Network"
+      }
     ]
   },
   methods: {
@@ -189,30 +188,12 @@ export default {
 </script>
 
 <style scoped>
-/* .jumbotron {
-  padding: 0;
-  height: 20rem;
+.more {
+  background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
 }
 
-#jumboContent {
-  height: 100%;
+.overllay-text {
+  color: white;
+  mix-blend-mode: difference;
 }
-
-#bigEvent {
-  padding: 0;
-  max-height: 20rem;
-  height: 100%;
-}
-
-#bigTxt {
-  overflow: hidden;
-  text-overflow: ellipsis; 
-}
-
-#bigImg {
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-} */
 </style>

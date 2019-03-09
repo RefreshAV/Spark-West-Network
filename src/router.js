@@ -18,6 +18,7 @@ import Profile from './components/Profile/Profile.vue'
 import OrganizationsList from './components/Profile/OrganizationsList'
 import NewOrganizationProfile from './components/Profile/NewOrganizationProfile.vue'
 import OrganizationDetail from './components/Profile/OrganizationDetail.vue'
+import OrganizationUsers from './components/Profile/OrganizationUsers.vue'
 import UserList from './components/Profile/UserList.vue'
 import UserDetail from './components/Profile/UserDetail.vue'
 import EventMap from './components/Events/EventLocations.vue'
@@ -187,6 +188,11 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/Organizations/organization/:id/users/',
+    name: 'organizationUsers',
+    component: OrganizationUsers
   }
 ]
 

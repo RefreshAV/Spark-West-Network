@@ -1,72 +1,80 @@
 <template>
   <div class="container mt-3">
-    <div
-      id="event"
-      v-if="id != null">
+    <div id="event" v-if="id != null">
       <div class="row">
         <div class="col">
           <router-link
             :to="{name: 'userDetail', params: {id: author.id}}"
-            class="media btn btn-light mb-3">
-            <img
-              class="align-self-center mr-3"
-              :src="author.img"
-              alt="Generic placeholder image">
+            class="media btn btn-light mb-3"
+          >
+            <img class="align-self-center mr-3" :src="author.img" alt="Generic placeholder image">
             <div class="media-body">
               <h5 class="mb-0">{{ author.name }}</h5>
               <p class="mb-0 text-muted">{{ author.email }}</p>
-              <span class="badge badge-primary"><i class="fa fa-user"/> n Followers</span>
+              <span class="badge badge-primary">
+                <i class="fa fa-user"/> n Followers
+              </span>
             </div>
           </router-link>
         </div>
       </div>
       <div class="row">
         <div class="col align-middle">
-          <img
-            id="eventImg"
-            :src="image"
-            alt="event image"
-            class="rounded img-fluid">
+          <img id="eventImg" :src="image" alt="event image" class="rounded img-fluid">
         </div>
         <div class="col">
           <h1>{{ title }}</h1>
           <div class="row">
             <div class="col-auto">
               <h3 class="text-muted">{{ date.year }}-{{ date.month }}-{{ date.day }}</h3>
-              <h4><span class="badge badge-secondary">{{ time }}</span></h4>
+              <h4>
+                <span class="badge badge-secondary">{{ time }}</span>
+              </h4>
             </div>
             <div class="col">
-              <div
-                id="like"
-                class="btn text-danger badge badge-pill"
-                @click="likeEvent"><i class="fa fa-heart"/> {{ likes }}</div>
+              <div id="like" class="btn badge badge-pill border-0 text-danger" @click="likeEvent">
+                <span>
+                  <i class="fa fa-heart"/>
+                  {{ likes }}
+                </span>
+              </div>
             </div>
           </div>
           <hr>
           <h5>Description:</h5>
           <p>{{ desc }}</p>
           <h5>Location:</h5>
-          <p class="lead">{{ locationName }}<br><i><a :href="'https://maps.google.com/?q=' + locationName">Get directions</a></i></p>
-          <span class="badge badge-primary"><i class="fa fa-user"/> {{ attendees }} People Attending</span>
+          <p class="lead">
+            {{ locationName }}
+            <br>
+            <i>
+              <a :href="'https://maps.google.com/?q=' + locationName">Get directions</a>
+            </i>
+          </p>
+          <span class="badge badge-primary">
+            <i class="fa fa-user"/>
+            {{ attendees }} People Attending
+          </span>
         </div>
       </div>
     </div>
     <hr>
-    <router-link
-      class="btn btn-secondary animated flipInX"
-      to="/events/list">Back</router-link>
-    <button
-      @click="deleteEvent"
-      class="btn btn-danger animated flipInX"
-      v-if="isAuthenticated || isAdmin">Delete</button>
-    <router-link
-      :to="{name: 'EditEvent', params: {id: id}}"
-      class="btn btn-primary animated flipInX"
-      v-if="isAuthenticated || isAdmin">Edit</router-link>
+    <div class="btn-group">
+      <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
+      <router-link
+        :to="{name: 'EditEvent', params: {id: id}}"
+        class="btn btn-primary"
+        v-if="isAuthenticated || isAdmin"
+      >Edit</router-link>
+      <button
+        @click="deleteEvent"
+        class="btn btn-danger"
+        v-if="isAuthenticated || isAdmin"
+      >Delete</button>
+    </div>
     <hr>
     <app-comments class="mb-3"/>
   </div>
-
 </template>
 
 <script>
@@ -112,13 +120,17 @@ export default {
     // title will be injected into parent titleTemplate
     title: "Event",
     meta: [
-      { vmid: 'description', name: 'description', content: 'An event on Spark West Network' }
+      {
+        vmid: "description",
+        name: "description",
+        content: "An event on Spark West Network"
+      }
     ]
   },
-  metaInfo () {
+  metaInfo() {
     return {
       title: this.title
-    }
+    };
   },
   beforeRouteEnter(to, from, next) {
     db.collection("events")
@@ -146,8 +158,7 @@ export default {
     var that = this;
 
     if (
-      firebase.auth().currentUser.uid == "ZgI7pcwABkZXi4bMa1xBXi2KHv22" ||
-      firebase.auth().currentUser.uid == "0jqATDnHD0Twd9MWmN5SAr2HuEv2"
+      firebase.auth().currentUser.uid == "KwDaa9UdSAe8Jnn8biRTr0rcRlk2"
     ) {
       this.isAdmin = true;
     } else {
@@ -175,14 +186,17 @@ export default {
             (this.likes = doc.data().likes),
             (this.likedBy = doc.data().likedBy),
             (this.location = doc.data().event.location),
-            (this.locationName = doc.data().event.locationName)
+            (this.locationName = doc.data().event.locationName);
         });
       })
       .then(function() {
+        var button = document.getElementById("like");
         if (that.likedBy.includes(firebase.auth().currentUser.uid)) {
           that.liked = true;
+          button.classList.add("liked", "animated", "heartBeat");
         } else {
           that.liked = false;
+          button.classList.add("notLiked");
         }
       });
   },
@@ -198,15 +212,11 @@ export default {
       var button = document.getElementById("like");
 
       if (this.liked) {
-        button.classList.add("text-light");
-        button.classList.remove("text-danger");
-        button.classList.add("btn-danger");
-        button.classList.add("animated", "bounceIn");
+        button.classList.remove("notLiked");
+        button.classList.add("liked", "animated", "heartBeat");
       } else {
-        button.classList.remove("text-light");
-        button.classList.remove("btn-danger");
-        button.classList.add("text-danger");
-        button.classList.remove("animated", "bounceIn");
+        button.classList.remove("liked", "animated", "heartBeat");
+        button.classList.add("notLiked");
       }
     }
   },
@@ -312,5 +322,26 @@ export default {
 #like {
   font-size: 20px;
   box-shadow: 0px 0px 2px grey;
+}
+
+.liked {
+  background-image: linear-gradient(to right, #ff0844 0%, #ffb199 100%);
+  color: white;
+}
+
+.notLiked {
+  color: white;
+}
+
+.liked span {
+  color: white;
+}
+
+.notLiked span {
+  background-image: linear-gradient(to left, #ff0844 0%, #ffb199 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: red;
 }
 </style>

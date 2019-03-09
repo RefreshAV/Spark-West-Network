@@ -35,29 +35,29 @@
 
     <div class="d-flex justify-content-center">
       <div class="card-group mb-3 d-flex justify-content-center">
-      <button class="card mb-3" data-toggle="modal" data-target="#alexModal">
-        <img class="card-img" src="../../assets/alex.png" alt="Card image">
+      <button class="card px-0 mb-3 rounded" data-toggle="modal" data-target="#alexModal">
+        <img class="card-img rounded-0" src="../../assets/alex.png" alt="Card image">
         <div class="card-body">
           <h5 class="card-title">Alex Petkov</h5>
           <p class="card-text">position</p>
         </div>
       </button>
-      <button class="card mb-3" data-toggle="modal" data-target="#emmaModal">
-        <img class="card-img" src="../../assets/emma.png" alt="Card image">
+      <button class="card px-0 mb-3 rounded" data-toggle="modal" data-target="#emmaModal">
+        <img class="card-img rounded-0" src="../../assets/emma.png" alt="Card image">
         <div class="card-body">
           <h5 class="card-title">Emma He</h5>
           <p class="card-text">position</p>
         </div>
       </button>
-      <button class="card mb-3" data-toggle="modal" data-target="#maxModal">
-        <img class="card-img" src="../../assets/max.png" alt="Card image">
+      <button class="card px-0 mb-3 rounded" data-toggle="modal" data-target="#maxModal">
+        <img class="card-img rounded-0" src="../../assets/max.png" alt="Card image">
         <div class="card-body">
           <h5 class="card-title">Max Caplan</h5>
           <p class="card-text">position</p>
         </div>
       </button>
-      <button class="card mb-3" data-toggle="modal" data-target="#hoangModal">
-      <img class="card-img" src="../../assets/hoang.png" alt="Card image">
+      <button class="card px-0 mb-3 rounded" data-toggle="modal" data-target="#hoangModal">
+      <img class="card-img rounded-0" src="../../assets/hoang.png" alt="Card image">
         <div class="card-body">
           <h5 class="card-title">Hoang Bun</h5>
           <p class="card-text">position</p>

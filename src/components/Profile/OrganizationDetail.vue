@@ -66,7 +66,7 @@
               v-if="facebook"
               target="_blank"
             >
-              <span class="fa-stack fa-lg">
+              <span class="fa-stack fa-lg text-primary">
                 <i class="fas fa-square fa-stack-2x"></i>
                 <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
               </span>
@@ -105,9 +105,9 @@
         </div>
         <hr>
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-8" v-if="events.length > 0">
             <div class="card" style="height:100%">
-              <div class="card-body d-flex justify-content-center align-items-center">No Events :(</div>
+              <div class="card-body d-flex justify-content-center align-items-center">Top Event</div>
             </div>
           </div>
           <div class="col">
@@ -118,11 +118,81 @@
             </p>
           </div>
         </div>
-        <br>
-        <div class="row">
+
+        <div class="row mt-3" v-if="events.length > 0">
           <div class="col">
-            <div class="card bg-secondary text-white">
-              <div class="card-body d-flex justify-content-center">Members go here</div>
+            <div class="card">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-center p-0">
+                  <!-- Event Slider -->
+                  <carousel :paginationPosition="'bottom-overlay'" :paginationColor="'#F0F1F2'" :paginationActiveColor="'#0275d8'" :autoplayTimeout="6000" :scrollPerPage="false" :perPageCustom="[[480, 2], [768, 3]]" :autoplay="true" :loop="true" class="w-100 rounded">
+                    <slide v-for="event in events" :key="event.id">
+                      <div class="card bg-secondary text-white">
+                        <div class="card-header">
+                          <h1>Date</h1>
+                        </div>
+                        <div class="card-body">
+                          Information
+                        </div>
+                      </div>
+                    </slide>
+                  </carousel>
+                </li>
+                <button class="list-group-item btn btn-primary bg-primary">See all events</button>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md mt-3">
+            <router-link :to="'/Organizations/organization/' + id + '/users/'" class="card btn p-0">
+              <img src="https://picsum.photos/1900/1080/?random" class="card-img" alt="gallery">
+              <div class="card-img-overlay d-flex justify-content-center align-items-center">
+                <h1 class="overllay-text">Gallery</h1>
+              </div>
+            </router-link>
+          </div>
+          <div class="col-md mt-3">
+            <div class="card mh-100 h-100">
+              <div class="card-header pb-0 text-center">
+                <h3>Members</h3>
+              </div>
+              <div class="card-body py-0">
+                <div class="row h-100">
+                  <div
+                    class="col-md d-flex justify-content-center align-items-center"
+                    v-if="users.length"
+                  >
+                    <figure class="figure text-center">
+                      <img
+                        :src="users[0].img"
+                        class="figure-img img-fluid rounded-circle w-50"
+                        alt="..."
+                      >
+                      <figcaption class="figure-caption">{{users[0].name}}</figcaption>
+                    </figure>
+                  </div>
+
+                  <div
+                    class="col-md d-flex justify-content-center align-items-center"
+                    v-if="users.length > 1"
+                  >
+                    <figure class="figure text-center">
+                      <img
+                        :src="users[1].img"
+                        class="figure-img img-fluid rounded-circle w-50"
+                        alt="..."
+                      >
+                      <figcaption class="figure-caption">{{users[1].name}}</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <router-link
+                class="card-footer btn btn-primary bg-primary text-white"
+                :to="'/Organizations/organization/' + id + '/users/'"
+              >See all members</router-link>
             </div>
           </div>
         </div>
@@ -141,23 +211,25 @@
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header mb-0">
             <h5 class="modal-title" id="exampleModalLabel">About {{name}}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <i class="fas fa-times-circle"></i>
             </button>
           </div>
-          <div class="modal-body">
-            <div class="row d-flex justify-content-center">
+          <div class="modal-body pt-0">
+            <div
+              class="row d-flex justify-content-center py-3"
+              :style="'background-image: url(' + banner + '); background-position: center; background-size: cover; background-repeat: no-repeat;'"
+            >
               <img
                 :src="'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Flogo%2F' + logo + '?alt=media&token'"
-                class="mx-auto img-fluid img-circle d-block mb-2 shadow"
+                class="mx-auto img-fluid img-circle d-block shadow"
                 id="preview"
                 alt="logo"
               >
             </div>
-            <hr>
-            <p>{{description}}</p>
+            <p class="mt-3">{{description}}</p>
           </div>
         </div>
       </div>
@@ -168,6 +240,8 @@
 import db from "../../Firebase/firebaseInit";
 import firebase from "firebase";
 import "firebase/firestore";
+import $ from "jquery";
+import { Carousel, Slide } from "vue-carousel";
 
 export default {
   data() {
@@ -183,8 +257,15 @@ export default {
       email: "",
       other: "",
       logo: "",
-      banner: ""
+      banner: "",
+      users: {},
+      id: null,
+      events: []
     };
+  },
+  components: {
+    Carousel,
+    Slide
   },
   watch: {
     description: function() {
@@ -212,6 +293,8 @@ export default {
             vm.facbook = doc.data().organization.contact.facebook;
             vm.twitter = doc.data().organization.contact.twitter;
             vm.linkdin = doc.data().organization.contact.linkdin;
+            vm.users = doc.data().organization.users;
+            vm.id = doc.id;
           });
         });
       });
@@ -239,10 +322,26 @@ export default {
           this.facebook = doc.data().organization.contact.facebook;
           this.twitter = doc.data().organization.contact.twitter;
           this.linkdin = doc.data().organization.contact.linkdin;
+          this.users = doc.data().organization.users;
+          this.id = doc.id;
         });
       });
+
+    for(var i = 0; i < 6 ;i++) {
+      this.events.push({id:i})
+    }
   }
 };
 </script>
 <style>
+.overllay-text {
+  color: white;
+  mix-blend-mode: difference;
+}
+
+.users {
+  position: absolute;
+  color: white;
+  mix-blend-mode: difference;
+}
 </style>

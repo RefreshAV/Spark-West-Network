@@ -30,7 +30,6 @@
       </ol>
       <div
         class="carousel-inner"
-        data-interval="false"
         role="listbox">
         <!-- Slide One - Set the background image for this slide in the line below -->
         <div

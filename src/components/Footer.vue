@@ -13,7 +13,7 @@
           type="text"
           value=""
           name="FNAME"
-          class="form-control"
+          class="form-control mx-2"
           placeholder="Name">
       </div>
       <div class="form-group">
@@ -25,7 +25,7 @@
           class="form-control mx-2"
           placeholder="Email">
       </div>
-      <button class="btn btn-dark ">Sign up for Newsletter!</button>
+      <button class="btn btn-dark ">Sign up for our Newsletter!</button>
     </form>
     <br>
     <p>Spark West Network coded by Callum & Max.</p>
