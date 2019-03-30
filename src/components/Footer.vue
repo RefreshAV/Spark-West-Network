@@ -1,60 +1,42 @@
 <template>
-  <footer class="blog-footer">
-    <form
-      action="https://cuppajoeman.us18.list-manage.com/subscribe/post?u=c17c393bba103183d966bcc6a&amp;id=cdf9e59361"
-      method="post"
-      name="mc-embedded-subscribe-form"
-      target="_blank"
-      novalidate
-      class="form-inline justify-content-center">
-      <div class="form-group">
-        <label class="sr-only">Name</label>
-        <input
-          type="text"
-          value=""
-          name="FNAME"
-          class="form-control mx-2"
-          placeholder="Name">
+  <footer class="px-5 text-center bg-light">
+    <div class="row mt-3 d-flex justify-content-center">
+      <div class="col-md-8">
+        <form
+          action="https://cuppajoeman.us18.list-manage.com/subscribe/post?u=c17c393bba103183d966bcc6a&amp;id=cdf9e59361"
+        >
+          <div class="form-row">
+            <div class="col-md mb-2">
+              <input type="text" class="form-control" placeholder="Name" required>
+            </div>
+            <div class="col-md mb-2">
+              <input type="email" class="form-control" placeholder="Email" required>
+            </div>
+            <div class="col-auto mb-3">
+              <input type="submit" value="Sign up for our newsletter!" class="form-control btn btn-dark">
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="form-group">
-        <label class="sr-only">Email</label>
-        <input
-          type="email"
-          value=""
-          name="EMAIL"
-          class="form-control mx-2"
-          placeholder="Email">
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>Created by <a href="https://github.com/cuppajoeman" target="blank">Callum</a> & <a href="https://www.github.com/jellycream" target="blank">Max</a>.</p>
       </div>
-      <button class="btn btn-dark ">Sign up for our Newsletter!</button>
-    </form>
-    <br>
-    <p>Spark West Network coded by Callum & Max.</p>
-    <p>
-      <a href="#">Back to top</a>
-    </p>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          <a href="#">Back to top</a>
+        </p>
+      </div>
+    </div>
   </footer>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style scoped>
-
-  /*
- * Footer
- */
-  .blog-footer {
-    padding: 2.5rem 0;
-    color: #999;
-    text-align: center;
-    background-color: #f9f9f9;
-    border-top: .05rem solid #e5e5e5;
-  }
-  .blog-footer p:last-child {
-    margin-bottom: 0;
-  }
-
 </style>

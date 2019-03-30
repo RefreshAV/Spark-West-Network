@@ -3,7 +3,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark mt-0">
     <div class="container">
       <router-link to="/" tag="a" active-class="navbar-brand">
-        <img src="../assets/SPARKWEST_COL.png" height="70" alt="logo">
+        <img src="../assets/SPARKWEST_STACKED_COL.png" height="70" alt="logo">
         <!-- <span class="badge badge-secondary">beta</span> -->
       </router-link>
       <button
@@ -20,19 +20,19 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <!--Do this in for loop-->
-          <router-link :to="{name: 'about'}" tag="li" active-class="nav-item">
+          <router-link :to="{name: 'about'}" tag="li" active-class="nav-item" data-toggle="collapse" data-target=".navbar-collapse">
             <a class="nav-link">About</a>
           </router-link>
-          <router-link :to="{name: 'faq'}" tag="li" active-class="nav-item">
+          <router-link :to="{name: 'faq'}" tag="li" active-class="nav-item" data-toggle="collapse" data-target=".navbar-collapse">
             <a class="nav-link">FAQ</a>
           </router-link>
-          <router-link :to="{name: 'contact'}" tag="li" active-class="nav-item">
+          <router-link :to="{name: 'contact'}" tag="li" active-class="nav-item" data-toggle="collapse" data-target=".navbar-collapse">
             <a class="nav-link">Contact</a>
           </router-link>
-          <router-link :to="{name: 'events'}" tag="li" active-class="nav-item">
+          <router-link :to="{name: 'events'}" tag="li" active-class="nav-item" data-toggle="collapse" data-target=".navbar-collapse">
             <a class="nav-link">Events</a>
           </router-link>
-          <router-link :to="{name: 'userList'}" tag="li" active-class="nav-item">
+          <router-link :to="{name: 'userList'}" tag="li" active-class="nav-item" data-toggle="collapse" data-target=".navbar-collapse">
             <a class="nav-link">Users</a>
           </router-link>
           <router-link :to="{name: 'profile'}" tag="li" active-class="nav-item" v-if="isLoggedIn">
@@ -111,5 +111,6 @@ body {
 
 img {
   margin-top: -15px;
+  margin-left: -15px;
 }
 </style>
