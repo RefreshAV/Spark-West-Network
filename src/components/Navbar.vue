@@ -55,7 +55,8 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
+import { auth } from "firebase/app";
+
 export default {
   data() {
     return {
@@ -64,7 +65,7 @@ export default {
   },
   created() {
     var vm = this;
-    firebase.auth().onAuthStateChanged(function(user) {
+    auth().onAuthStateChanged(function(user) {
       if (user) {
         vm.isLoggedIn = true;
       } else {
@@ -74,8 +75,7 @@ export default {
   },
   methods: {
     logOut() {
-      firebase
-        .auth()
+      auth()
         .signOut()
         .then(
           function() {

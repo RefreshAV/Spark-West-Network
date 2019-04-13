@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <app-navbar/>
+    <navbar class="d-none d-lg-block shadow-lg"/>
+    <navbar-small class="d-lg-none shadow-lg"/>
     <router-view id="content"/>
     <app-footer id="footer"/>
   </div>
@@ -14,8 +15,8 @@ import Home from "./components/Main/Home.vue";
 
 export default {
   components: {
-    "app-navbar": Navbar,
-    "app-navbar-small": NavbarSmall,
+    "navbar": Navbar,
+    "navbar-small": NavbarSmall,
     "app-footer": Footer,
     "app-home": Home
   },

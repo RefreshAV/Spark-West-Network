@@ -4,7 +4,7 @@ import router from './router'
 import './registerServiceWorker'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import VueDisqus from 'vue-disqus'
-import firebase from 'firebase'
+import { auth } from "firebase/app";
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -19,7 +19,7 @@ Vue.use(VueGoogleMaps, {
 
 // Router guard checks if AuthRequired
 router.beforeEach((to, from, next) => {
-  let currentUser = firebase.auth().currentUser
+  let currentUser = auth().currentUser
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   if (requiresAuth && !currentUser) {
@@ -34,8 +34,7 @@ router.beforeEach((to, from, next) => {
 let app
 
 // Initialize the app after Firebase has iniitalized
-
-firebase.auth().onAuthStateChanged(function (user) {
+auth().onAuthStateChanged(function (user) {
   if (!app) {
     app = new Vue({
       el: '#app',
