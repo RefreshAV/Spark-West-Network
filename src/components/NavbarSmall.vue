@@ -4,7 +4,7 @@
     <div class="container">
       <a id="brand" active-class="navbar-brand" @click="closeNav">
         <img src="../assets/SPARKWEST_STACKED_COL.png" height="70" alt="logo">
-        <span id="badge" class="badge badge-secondary">beta</span>
+        <!-- <span id="badge" class="badge badge-secondary">beta</span> -->
       </a>
       <button
         class="navbar-toggler navbar-toggler-right"

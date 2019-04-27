@@ -5,7 +5,7 @@
         <div class="col">
           <router-link
             :to="{name: 'userDetail', params: {id: author.id}}"
-            class="media btn btn-light mb-3"
+            class="media btn btn-light mb-3 shadow-sm"
           >
             <img class="align-self-center mr-3" :src="author.img" alt="Generic placeholder image">
             <div class="media-body">
@@ -19,42 +19,50 @@
         </div>
       </div>
       <div class="row">
-        <div class="col align-middle">
-          <img id="eventImg" :src="image" alt="event image" class="rounded img-fluid">
+        <div class="col-md-6 mb-3">
+          <img id="eventImg" :src="image" alt="event image" class="rounded w-100">
         </div>
         <div class="col">
-          <h1>{{ title }}</h1>
-          <div class="row">
-            <div class="col-auto">
-              <h3 class="text-muted">{{ date.year }}-{{ date.month }}-{{ date.day }}</h3>
-              <h4>
-                <span class="badge badge-secondary">{{ time }}</span>
-              </h4>
-            </div>
-            <div class="col">
-              <div id="like" class="btn badge badge-pill border-0 text-danger" @click="likeEvent">
-                <span>
-                  <i class="fa fa-heart"/>
-                  {{ likes }}
-                </span>
+          <div class="card border-0 shadow">
+            <div class="card-body">
+              <h1>{{ title }}</h1>
+              <div class="row">
+                <div class="col-auto">
+                  <h3 class="text-muted">{{ date.year }}-{{ date.month }}-{{ date.day }}</h3>
+                  <h4>
+                    <span class="badge badge-secondary">{{ time }}</span>
+                  </h4>
+                </div>
+                <div class="col">
+                  <div
+                    id="like"
+                    class="btn badge badge-pill border-0 text-danger"
+                    @click="likeEvent"
+                  >
+                    <span>
+                      <i class="fa fa-heart"/>
+                      {{ likes }}
+                    </span>
+                  </div>
+                </div>
               </div>
+              <hr>
+              <h5>Description:</h5>
+              <p>{{ desc }}</p>
+              <h5>Location:</h5>
+              <p class="lead">
+                {{ locationName }}
+                <br>
+                <i>
+                  <a :href="'https://maps.google.com/?q=' + locationName">Get directions</a>
+                </i>
+              </p>
+              <span class="badge badge-primary">
+                <i class="fa fa-user"/>
+                {{ attendees }} People Attending
+              </span>
             </div>
           </div>
-          <hr>
-          <h5>Description:</h5>
-          <p>{{ desc }}</p>
-          <h5>Location:</h5>
-          <p class="lead">
-            {{ locationName }}
-            <br>
-            <i>
-              <a :href="'https://maps.google.com/?q=' + locationName">Get directions</a>
-            </i>
-          </p>
-          <span class="badge badge-primary">
-            <i class="fa fa-user"/>
-            {{ attendees }} People Attending
-          </span>
         </div>
       </div>
     </div>
@@ -66,11 +74,7 @@
         class="btn btn-primary"
         v-if="isAuthenticated || isAdmin"
       >Edit</router-link>
-      <button
-        @click="deleteEvent"
-        class="btn btn-danger"
-        v-if="isAuthenticated || isAdmin"
-      >Delete</button>
+      <button @click="deleteEvent" class="btn btn-danger" v-if="isAuthenticated || isAdmin">Delete</button>
     </div>
     <hr>
     <app-comments class="mb-3"/>
@@ -157,9 +161,7 @@ export default {
   mounted() {
     var that = this;
 
-    if (
-      firebase.auth().currentUser.uid == "KwDaa9UdSAe8Jnn8biRTr0rcRlk2"
-    ) {
+    if (firebase.auth().currentUser.uid == "KwDaa9UdSAe8Jnn8biRTr0rcRlk2") {
       this.isAdmin = true;
     } else {
       this.isAdmin = false;
@@ -338,10 +340,6 @@ export default {
 }
 
 .notLiked span {
-  background-image: linear-gradient(to left, #ff0844 0%, #ffb199 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: red;
+  color: #ff0844;
 }
 </style>

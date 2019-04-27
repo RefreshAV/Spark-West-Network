@@ -8,7 +8,7 @@
       >
     </div>
     <div v-if="events.length != 0">
-      <div class="card mb-3 bg-dark text-white">
+      <div class="card border-0 shadow mb-3 bg-dark text-white animated fadeInLeft">
         <div class="row no-gutters">
           <div class="col">
             <div class="card-block m-3 px-2">
@@ -31,28 +31,32 @@
       <div class="card-deck mb-3">
         <router-link
           :to="{name: 'event-detail', params: {id: events[1].id}}"
-          class="card bg-light text-dark"
+          class="card border-0 shadow bg-light text-dark animated fadeInLeft"
+          style="animation-delay:0.25s; text-decoration:none;"
         >
-          <div class="card-body">
+          <div class="card-header">
             <h1>{{ events[1].title }}</h1>
-            <hr>
+          </div>
+          <div class="card-body">
             <p class="my-3">{{ events[1].desc }}</p>
           </div>
         </router-link>
         <router-link
           :to="{name: 'event-detail', params: {id: events[2].id}}"
-          class="card bg-light text-dark"
+          class="card border-0 shadow bg-light text-dark animated fadeInLeft"
+          style="animation-delay:0.5s; text-decoration:none;"
         >
-          <div class="card-body">
+          <div class="card-header">
             <h1>{{ events[2].title }}</h1>
-            <hr>
+          </div>
+          <div class="card-body">
             <p class="my-3">{{ events[2].desc }}</p>
           </div>
         </router-link>
       </div>
 
       <!-- Horizontal Buttons -->
-      <div class="row d-none d-md-block">
+      <div class="row d-none d-md-block animated fadeIn">
         <div class="btn-group mb-3 col" style="width:100%;">
           <router-link to="/events/NewEvent" tag="button" class="btn btn-primary">
             <div class="row d-flex justify-content-center">

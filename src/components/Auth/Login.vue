@@ -22,15 +22,17 @@
                 placeholder="example@email.com"
                 class="form-control mb-4"
                 autocomplete="off"
-                @change="getProfPic()">
-                <label for="email">Password</label>
+                @input="getProfPic()"
+              >
+              <label for="email">Password</label>
               <input
                 type="password"
                 id="password"
                 v-model="password"
                 placeholder="Super Secret"
                 class="form-control mb-4"
-                autocomplete="off">
+                autocomplete="off"
+              >
             </div>
             <input type="submit" class="btn btn-primary" value="Login">
           </form>
@@ -40,7 +42,10 @@
       </div>
 
       <div class="row d-flex justify-content-center">
-        <p style="font-size:18px">Or <router-link to="/SignUp">Sign Up!</router-link></p>
+        <p style="font-size:18px">
+          Or
+          <router-link to="/SignUp">Sign Up!</router-link>
+        </p>
       </div>
     </div>
     <!-- <div id="firebaseui-auth-container"></div> -->
@@ -49,7 +54,6 @@
 
 <script>
 import firebase from "firebase/app";
-import firebaseui from "firebaseui";
 import db from "../../Firebase/firebaseInit";
 
 export default {
@@ -65,7 +69,11 @@ export default {
     // title will be injected into parent titleTemplate
     title: "Login",
     meta: [
-      { vmid: 'description', name: 'description', content: 'Login to your account' }
+      {
+        vmid: "description",
+        name: "description",
+        content: "Login to your account"
+      }
     ]
   },
   methods: {
@@ -82,9 +90,11 @@ export default {
               this.profPic = doc.data().user.photo;
               this.name = doc.data().user.name;
             });
-          });
+          })
+          .catch((this.name = ""), (this.profPic = ""));
       } else {
         this.profPic = "";
+        this.name = "";
       }
     },
     login() {
@@ -96,9 +106,8 @@ export default {
           var errorCode = error.code;
           var errorMessage = error.message;
           // ...
-        }).then(
-          this.$router.push('/')
-        )
+        })
+        .then(this.$router.push("/"));
     }
   }
   // mounted() {

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <navbar class="d-none d-lg-block shadow-lg"/>
-    <navbar-small class="d-lg-none shadow-lg"/>
+    <navbar class="d-none d-lg-block shadow"/>
+    <navbar-small class="d-lg-none shadow"/>
     <router-view id="content"/>
     <app-footer id="footer"/>
   </div>

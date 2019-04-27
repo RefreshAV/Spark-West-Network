@@ -9,7 +9,7 @@
         aria-expanded="false"
       >
         Organizations
-        <span class="badge badge-danger badge-pill">WIP</span>
+        <!-- <span class="badge badge-danger badge-pill">WIP</span> -->
       </button>
       <div class="dropdown-menu">
         <router-link class="dropdown-item" to="/Users">Users</router-link>
@@ -19,10 +19,11 @@
 
     <div class="list-group list-group-flush mb-3">
       <button
-        v-for="organization in organizations"
+        v-for="(organization, index) in organizations"
         :key="organization.id"
         @click="loadOrganization(organization.id)"
         class="list-group-item list-group-item-action media"
+        :style="'animation-delay:' + (index * 0.25) + 's'"
       >
         <div class="row">
           <div class="col-auto">
