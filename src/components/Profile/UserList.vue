@@ -33,7 +33,7 @@
             >
             <div class="media-body">
               <h5 class="mb-0">{{ profile.name }}</h5>
-              <p class="mb-0">{{ profile.email }}</p>
+              <p class="mb-0">{{ profile.about }}</p>
               <span class="badge badge-primary">
                 <i class="fa fa-user"/> n Followers
               </span>
@@ -46,28 +46,28 @@
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase'
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase";
 
 export default {
-  data () {
+  data() {
     return {
       profiles: []
-    }
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'Users',
+    title: "Users",
     meta: [
       {
-        vmid: 'description',
-        name: 'description',
-        content: 'Users on Spark West Network'
+        vmid: "description",
+        name: "description",
+        content: "Users on Spark West Network"
       }
     ]
   },
-  created () {
-    db.collection('users')
+  created() {
+    db.collection("users")
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -76,18 +76,23 @@ export default {
             uid: doc.data().user.UserUID,
             name: doc.data().user.name,
             img: doc.data().user.photo,
-            email: doc.data().user.email
+            email: doc.data().user.email,
+            about: doc.data().user.about
+          };
+
+          if(data.about.length > 30) {
+            data.about = data.about.substring(0,30) + "..."
           }
-          this.profiles.push(data)
-        })
-      })
+          this.profiles.push(data);
+        });
+      });
   },
   methods: {
-    loadProfile (uid, id) {
-      this.$router.push('Users/user/' + id)
+    loadProfile(uid, id) {
+      this.$router.push("Users/user/" + id);
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -95,14 +100,11 @@ img {
   max-width: 84px;
 }
 
-  .btn-light {
-    transition: 0.25s;
-  }
+.btn-light {
+  transition: 0.25s;
+}
 
-  .btn-light:hover {
-    background: #ffdd15;
-    border-color: #ffdd15;
-    color: black;
-    transform: scale(1.05, 1.05);
-  }
+.btn-light:hover {
+  transform: scale(1.05, 1.05);
+}
 </style>

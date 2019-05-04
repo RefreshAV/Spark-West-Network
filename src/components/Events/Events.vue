@@ -21,10 +21,7 @@
               >Find out more...</router-link>
             </div>
           </div>
-          <div
-            class="col-4"
-            :style="'background: url(' + images[0] + '); background-size:cover; background-position:center; background-repeat: no-repeat;'"
-          ></div>
+          <div id="big-img" class="col-4 rounded" :style="'background: url(' + images[0] + ');'"></div>
         </div>
       </div>
 
@@ -199,5 +196,11 @@ export default {
 .overllay-text {
   color: white;
   mix-blend-mode: difference;
+}
+
+#big-img {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 </style>
