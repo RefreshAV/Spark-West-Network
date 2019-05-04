@@ -329,126 +329,126 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
-import pushid from "pushid";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
+import 'firebase/firestore'
+import pushid from 'pushid'
 
 export default {
-  data() {
+  data () {
     return {
-      bannerImg: "",
-      bannerPreImg: "https://picsum.photos/930/300/?random",
+      bannerImg: '',
+      bannerPreImg: 'https://picsum.photos/930/300/?random',
       bannerKey: null,
-      image: "",
-      preImg: "https://picsum.photos/150/150/?random",
+      image: '',
+      preImg: 'https://picsum.photos/150/150/?random',
       imageKey: null,
-      name: "",
-      website: "",
-      description: "",
-      email: "",
-      phone: "",
-      other: "",
+      name: '',
+      website: '',
+      description: '',
+      email: '',
+      phone: '',
+      other: '',
       location: null,
       locationPos: {
         lat: 0,
         lng: 0
       },
-      locationName: "",
+      locationName: '',
       users: [],
       user: {
         id: null,
-        img: "https://picsum.photos/200/200/?random",
-        name: "Current User",
-        email: "",
-        role: "Admin"
+        img: 'https://picsum.photos/200/200/?random',
+        name: 'Current User',
+        email: '',
+        role: 'Admin'
       },
-      searchTerm: "",
+      searchTerm: '',
       profiles: [],
       searching: false
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "New Organization",
+    title: 'New Organization',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Create a new organization account"
+        vmid: 'description',
+        name: 'description',
+        content: 'Create a new organization account'
       }
     ]
   },
-  mounted() {
-    db.collection("users")
-      .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+  mounted () {
+    db.collection('users')
+      .where('user.UserUID', '==', firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          this.user.name = doc.data().user.name;
-          this.user.img = doc.data().user.photo;
-          this.user.email = doc.data().user.email;
-          this.user.id = doc.data().user.UserUID;
-        });
-      });
+          this.user.name = doc.data().user.name
+          this.user.img = doc.data().user.photo
+          this.user.email = doc.data().user.email
+          this.user.id = doc.data().user.UserUID
+        })
+      })
   },
   methods: {
-    submit() {
-      //location things
+    submit () {
+      // location things
       if (this.location) {
-        this.locationPos.lat = this.location.geometry.location.lat();
-        this.locationPos.lng = this.location.geometry.location.lng();
-        this.locationName = this.location.formatted_address;
+        this.locationPos.lat = this.location.geometry.location.lat()
+        this.locationPos.lng = this.location.geometry.location.lng()
+        this.locationName = this.location.formatted_address
       } else {
-        console.error("Location error for: " + this.location);
+        console.error('Location error for: ' + this.location)
       }
 
-      //image uploads
-      var key1 = pushid();
-      var key2 = pushid();
+      // image uploads
+      var key1 = pushid()
+      var key2 = pushid()
 
-      this.imageKey = key1;
-      this.bannerKey = key2;
+      this.imageKey = key1
+      this.bannerKey = key2
 
-      var ref1 = firebase.storage().ref("organizations/logo/" + this.imageKey);
-      var file1 = this.image;
-      var upload1 = ref1.put(file1);
+      var ref1 = firebase.storage().ref('organizations/logo/' + this.imageKey)
+      var file1 = this.image
+      var upload1 = ref1.put(file1)
 
-      var ref2 = firebase.storage().ref("organizations/banner/" + this.bannerKey);
-      var file2 = this.bannerImg;
-      var upload2 = ref2.put(file2);
+      var ref2 = firebase.storage().ref('organizations/banner/' + this.bannerKey)
+      var file2 = this.bannerImg
+      var upload2 = ref2.put(file2)
 
       upload1.on(
-        "state_changed",
-        function progress(snapshot) {
+        'state_changed',
+        function progress (snapshot) {
           var percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         },
-        function error(err) {},
-        function complete() {}
-      );
+        function error (err) {},
+        function complete () {}
+      )
 
       upload2.on(
-        "state_changed",
-        function progress(snapshot) {
+        'state_changed',
+        function progress (snapshot) {
           var percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         },
-        function error(err) {},
-        function complete() {}
-      );
+        function error (err) {},
+        function complete () {}
+      )
 
-      //information upload
+      // information upload
       this.users.push(
         {
           id: this.user.id,
           img: this.user.img,
           name: this.user.name,
-          role: "Admin"
+          role: 'Admin'
         }
-      );
+      )
 
-      db.collection("organizations").add({
+      db.collection('organizations').add({
         organization: {
           name: this.name,
           website: this.website,
@@ -467,73 +467,73 @@ export default {
           bannerKey: this.bannerKey,
           users: this.users
         }
-      }).catch(function() {
+      }).catch(function () {
         this.users.pop()
       }).then(this.$router.push('/Users/organizations'))
     },
-    loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var imgURL = window.URL.createObjectURL(input.files[0]);
-      this.preImg = imgURL;
-      this.image = input.files[0];
+    loadFile: function () {
+      var input = document.querySelector('.bUp')
+      var imgURL = window.URL.createObjectURL(input.files[0])
+      this.preImg = imgURL
+      this.image = input.files[0]
     },
-    bannerUpload() {
-      var input = document.querySelector(".bUp2");
-      var imgURL = window.URL.createObjectURL(input.files[0]);
-      this.bannerImg = input.files[0];
-      this.bannerPreImg = imgURL;
+    bannerUpload () {
+      var input = document.querySelector('.bUp2')
+      var imgURL = window.URL.createObjectURL(input.files[0])
+      this.bannerImg = input.files[0]
+      this.bannerPreImg = imgURL
     },
-    search() {
-      const that = this;
-      this.searching = false;
-      this.profiles = [];
-      var search = this.searchTerm;
-      db.collection("users")
-        .where("user.email", "==", search.trim())
+    search () {
+      const that = this
+      this.searching = false
+      this.profiles = []
+      var search = this.searchTerm
+      db.collection('users')
+        .where('user.email', '==', search.trim())
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
             const data = {
               id: doc.id,
               name: doc.data().user.name,
-              img: doc.data().user.photo,
-            };
-            this.profiles.push(data);
-          });
+              img: doc.data().user.photo
+            }
+            this.profiles.push(data)
+          })
         })
-        .then(function() {
-          that.searching = true;
-        });
+        .then(function () {
+          that.searching = true
+        })
     },
-    addUser(id, name, img) {
-      var found = this.users.find(function(value) {
-        return (value.name = name);
-      });
+    addUser (id, name, img) {
+      var found = this.users.find(function (value) {
+        return (value.name = name)
+      })
 
       if (!found && name != this.user.email) {
         var user = {
           id,
           name,
           img,
-          role: "User"
-        };
-        this.users.push(user);
+          role: 'User'
+        }
+        this.users.push(user)
       }
     },
-    removeUser(id, name, img) {
-      var filtered = this.users.filter(function(value, index, arr) {
-        return value.name != name;
-      });
-      this.users = filtered;
+    removeUser (id, name, img) {
+      var filtered = this.users.filter(function (value, index, arr) {
+        return value.name != name
+      })
+      this.users = filtered
     },
-    createOrganization() {
-      db.collection("organizations");
+    createOrganization () {
+      db.collection('organizations')
     },
-    setLocation(location) {
-      this.location = location;
+    setLocation (location) {
+      this.location = location
     }
   }
-};
+}
 </script>
 
 <style scoped>

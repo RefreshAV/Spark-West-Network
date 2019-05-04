@@ -105,90 +105,90 @@
 </template>
 
 <script scoped>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
 
 export default {
-  data() {
+  data () {
     return {
       events: [],
       images: [],
       isLoggedIn: false
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Events"
+    title: 'Events'
   },
-  created() {
-    db.collection("events")
-      .orderBy("likes", "desc")
+  created () {
+    db.collection('events')
+      .orderBy('likes', 'desc')
       .limit(3)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           // truncate description
-          var desc;
+          var desc
           if (
             doc.data().event.description.length > 180 &&
             this.events.length > 0
           ) {
-            var trunc = doc.data().event.description;
-            desc = trunc.substring(0, 181) + " . . .";
+            var trunc = doc.data().event.description
+            desc = trunc.substring(0, 181) + ' . . .'
           } else {
-            desc = doc.data().event.description;
+            desc = doc.data().event.description
           }
 
           // compile and push data as object
-          var day = doc.data().event.date.day;
-          var month = doc.data().event.date.month;
-          var year = doc.data().event.date.year;
+          var day = doc.data().event.date.day
+          var month = doc.data().event.date.month
+          var year = doc.data().event.date.year
 
           const data = {
             id: doc.id,
             title: doc.data().event.title,
-            date: year + "-" + month + "-" + day,
+            date: year + '-' + month + '-' + day,
             time: doc.data().event.time,
             email: doc.data().event.email,
             desc: desc,
             imageKey: doc.data().event.imageKey
-          };
-          this.events.push(data);
-        });
-      });
-    var vm = this;
-    firebase.auth().onAuthStateChanged(function(user) {
+          }
+          this.events.push(data)
+        })
+      })
+    var vm = this
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        vm.isLoggedIn = true;
+        vm.isLoggedIn = true
       } else {
-        vm.isLoggedIn = false;
+        vm.isLoggedIn = false
       }
-    });
+    })
   },
   watch: {
-    events: "fetchImage",
+    events: 'fetchImage',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "The top events on Spark West Network"
+        vmid: 'description',
+        name: 'description',
+        content: 'The top events on Spark West Network'
       }
     ]
   },
   methods: {
-    fetchImage() {
-      var images = [];
+    fetchImage () {
+      var images = []
       for (var i = 0; i < this.events.length; i++) {
         var url =
-          "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
+          'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
           this.events[i].imageKey +
-          "?alt=media&token";
-        images.push(url);
+          '?alt=media&token'
+        images.push(url)
       }
-      this.images = images;
+      this.images = images
     }
   }
-};
+}
 </script>
 
 <style scoped>

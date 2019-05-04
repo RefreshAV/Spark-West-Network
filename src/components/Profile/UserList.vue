@@ -1,67 +1,73 @@
 <template>
-  <div class="container">
-    <div class="btn-group my-3">
-      <button
-        class="btn btn-secondary btn-lg dropdown-toggle"
-        type="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >Users</button>
-      <div class="dropdown-menu">
-        <router-link class="dropdown-item" to="/Users">Users</router-link>
-        <router-link class="dropdown-item" to="/Organizations">Organizations</router-link>
+  <div class="bg-grad">
+    <div class="container">
+      <div class="btn-group my-3">
+        <button
+          class="btn btn-secondary btn-lg dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >Users</button>
+        <div class="dropdown-menu">
+          <router-link class="dropdown-item" to="/Users">Users</router-link>
+          <router-link class="dropdown-item" to="/Organizations">Organizations</router-link>
+        </div>
       </div>
-    </div>
 
-    <div
-      class="mb-3 row text-dark animated fadeInLeft"
-      v-for="(profile, index) in profiles"
-      :key="profile.id"
-      :style="'animation-delay:' + (index * 0.25) + 's'"
-    >
-      <div class="col">
-        <router-link
-          :to="{name: 'userDetail', params: {id: profile.id}}"
-          class="media btn btn-light shadow-sm"
-        >
-          <img class="align-self-center rounded mr-3" :src="profile.img" alt="Generic placeholder image">
-          <div class="media-body">
-            <h5 class="mb-0">{{ profile.name }}</h5>
-            <p class="mb-0 text-muted">{{ profile.email }}</p>
-            <span class="badge badge-primary">
-              <i class="fa fa-user"/> n Followers
-            </span>
-          </div>
-        </router-link>
+      <div
+        class="mb-3 row text-dark animated fadeInLeft"
+        v-for="(profile, index) in profiles"
+        :key="profile.id"
+        :style="'animation-delay:' + (index * 0.25) + 's'"
+      >
+        <div class="col">
+          <router-link
+            :to="{name: 'userDetail', params: {id: profile.id}}"
+            class="media btn btn-light shadow-sm"
+          >
+            <img
+              class="align-self-center rounded mr-3"
+              :src="profile.img"
+              alt="Generic placeholder image"
+            >
+            <div class="media-body">
+              <h5 class="mb-0">{{ profile.name }}</h5>
+              <p class="mb-0">{{ profile.email }}</p>
+              <span class="badge badge-primary">
+                <i class="fa fa-user"/> n Followers
+              </span>
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
 
 export default {
-  data() {
+  data () {
     return {
       profiles: []
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Users",
+    title: 'Users',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Users on Spark West Network"
+        vmid: 'description',
+        name: 'description',
+        content: 'Users on Spark West Network'
       }
     ]
   },
-  created() {
-    db.collection("users")
+  created () {
+    db.collection('users')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -71,21 +77,32 @@ export default {
             name: doc.data().user.name,
             img: doc.data().user.photo,
             email: doc.data().user.email
-          };
-          this.profiles.push(data);
-        });
-      });
+          }
+          this.profiles.push(data)
+        })
+      })
   },
   methods: {
-    loadProfile(uid, id) {
-      this.$router.push("Users/user/" + id);
+    loadProfile (uid, id) {
+      this.$router.push('Users/user/' + id)
     }
   }
-};
+}
 </script>
 
 <style scoped>
 img {
   max-width: 84px;
 }
+
+  .btn-light {
+    transition: 0.25s;
+  }
+
+  .btn-light:hover {
+    background: #ffdd15;
+    border-color: #ffdd15;
+    color: black;
+    transform: scale(1.05, 1.05);
+  }
 </style>

@@ -78,81 +78,85 @@
             class="row p-3 d-flex justify-content-center align-items-center socBanner shadow rounded-pill"
           >
             <div class="col text-center">
-              <button class="btn btn-info socialMedia rounded-circle">SM</button>
+              <button class="btn btn-light socialMedia rounded-circle text-center"><i class="m-0 fab fa-facebook-f"></i></button>
             </div>
             <div class="col text-center">
-              <button class="btn btn-info socialMedia rounded-circle">SM</button>
+              <button class="btn btn-light socialMedia rounded-circle text-center"><i class="m-0 fab fa-twitter"></i></button>
             </div>
             <div class="col text-center">
-              <button class="btn btn-info socialMedia rounded-circle">SM</button>
+              <button class="btn btn-light socialMedia rounded-circle text-center"><i class="m-0 fab fa-instagram"></i></button>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 </template>
 
 <script>
-import $ from "jquery";
+import $ from 'jquery'
 
 export default {
-  data: function() {
+  data: function () {
     return {
       contactRequest: {
-        name: "",
-        email: "",
-        phone: "",
-        message: ""
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
       },
       loaded: false
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Contact",
+    title: 'Contact',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Get in touch with us"
+        vmid: 'description',
+        name: 'description',
+        content: 'Get in touch with us'
       }
     ]
   },
   methods: {
-    load() {
-      this.loaded = true;
-      $("iframe").addClass("animated fadeIn");
+    load () {
+      this.loaded = true
+      $('iframe').addClass('animated fadeIn')
     }
   }
-};
+}
 </script>
 
-<style>
+<style scoped>
 textarea {
   resize: none;
 }
 
-.socialMedia {
+.btn-light {
   width: 8vmax;
   height: 8vmax;
   max-width: 80px;
   max-height: 80px;
+  color: #2f80ed;
 }
 
 .socBanner {
-  background: #12c2e9; /* fallback for old browsers */
+  background: #56ccf2; /* fallback for old browsers */
   background: -webkit-linear-gradient(
-    to right,
-    #f64f59,
-    #c471ed,
-    #12c2e9
+    45deg,
+    #2f80ed,
+    #56ccf2
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
-    to right,
-    #f64f59,
-    #c471ed,
-    #12c2e9
+    45deg,
+    #2f80ed,
+    #56ccf2
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.btn-light i {
+  font-size: 3rem;
 }
 </style>

@@ -20,7 +20,7 @@
       <div class="col-lg-6">
         <h2>About Us</h2>
         <p>
-          <b>Spark West Network</b> is an umbrella marketing platform that draws together, assists, and coordinates the various organizations, events, and people that define our region’s unique entrepreneurial opportunities. The Spark West website aims to act as a platform for hosting the unique events and opportunities that make up western Nova Scotia’s entrepreneurial ecosystem. 
+          <b>Spark West Network</b> is an umbrella marketing platform that draws together, assists, and coordinates the various organizations, events, and people that define our region’s unique entrepreneurial opportunities. The Spark West website aims to act as a platform for hosting the unique events and opportunities that make up western Nova Scotia’s entrepreneurial ecosystem.
         </p>
         <p>
           Our vision is to create a unified voice for entrepreneurship in the rural areas of western Nova Scotia. We want to make our region a friendlier place for entrepreneurs to connect with each other, get advice, become noticed, and build up their businesses and skill sets.
@@ -80,7 +80,7 @@
             <img class="modalImg" src="../../assets/alex.png" alt="Alex">
             <hr>
             <p>
-              My name is Alexander Plamenov Petkov. I am 15 years old and in the 10th grade attending Horton high school. I am interested in computer hardware and software and am knowledgable with Raspberry Pi's and the Python programming language. I hope to become a computer engineer, or a petroleum engineer, or a nautical archaeologist, or a theme park engineer, or a surgeon. I really don't know. By creating Spark West Network, along with my other group members, I hope to gain valuable knowledge and experience in entrepreneurship, as well as in figuring out what I want to do in the future. Even if Spark West fails as a business, the experiences and lessons I have learned will greatly benefit me in the future, and that, to me, is a great success.
+              Alexander Petkov is a high school student who attends Horton High School and is one of the co-founders of Spark West Network, a non-profit organization that aims to pull together the diverse organizations, events, and opportunities present in the Annapolis Valley. He is also the Chief Marketing Officer for Refresh Annapolis Valley. Upon meeting Alex, many people describe him as robotic because they say he looks and acts very serious. This is far from the truth. In fact, Alex behaves very humanly and has many human-like interests and engages in many human-like activities. He is an intermediate-level Python programmer and enjoys tinkering with electronics. He is also passionate about entrepreneurship, computer engineering, and world history. In his free time, he engages in typical human-like recreational activities such as watching YouTube or Netflix or playing video games. Also, Alex can and will kick your ass in any hack and slash, stealth, or grand strategy game.
             </p>
           </div>
         </div>
@@ -140,7 +140,7 @@
             <img class="modalImg" src="../../assets/hoang.png" alt="Alex">
             <hr>
             <p>
-              My name is Hoang Quoc Bun, a grade 12 student studying at Horton High School. I am an international student from Vietnam. Although I am new for these kinds of project, joining Spark West Network is a great honor for me as an international student. I don’t have any background of coding nor experiences in business, but with the help of Spark West team, I have gone a long way. I have a great interest in computer and business at the same time,  that’s why I’m trying all my best to help Spark West Network and the team itself 
+              My name is Hoang Quoc Bun, a grade 12 student studying at Horton High School. I am an international student from Vietnam. Although I am new for these kinds of project, joining Spark West Network is a great honor for me as an international student. I don’t have any background of coding nor experiences in business, but with the help of Spark West team, I have gone a long way. I have a great interest in computer and business at the same time,  that’s why I’m trying all my best to help Spark West Network and the team itself
             </p>
           </div>
         </div>
@@ -218,17 +218,17 @@
 export default {
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "About",
+    title: 'About',
     meta: [
       {
-        vmid: "description",
-        name: "description",
+        vmid: 'description',
+        name: 'description',
         content:
-          "Learn about Spark West Network, our customers, and the awesome"
+          'Learn about Spark West Network, our customers, and the awesome'
       }
     ]
   }
-};
+}
 </script>
 
 <style scoped>

@@ -53,61 +53,61 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
-import db from "../../Firebase/firebaseInit";
+import firebase from 'firebase/app'
+import db from '../../Firebase/firebaseInit'
 
 export default {
-  data() {
+  data () {
     return {
-      profPic: "",
-      name: "",
-      email: "",
-      password: ""
-    };
+      profPic: '',
+      name: '',
+      email: '',
+      password: ''
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Login",
+    title: 'Login',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Login to your account"
+        vmid: 'description',
+        name: 'description',
+        content: 'Login to your account'
       }
     ]
   },
   methods: {
-    getProfPic() {
-      const email = this.email;
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    getProfPic () {
+      const email = this.email
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
       if (re.test(String(email).toLowerCase())) {
-        db.collection("users")
-          .where("user.email", "==", email)
+        db.collection('users')
+          .where('user.email', '==', email)
           .get()
           .then(querySnapshot => {
             querySnapshot.forEach(doc => {
-              this.profPic = doc.data().user.photo;
-              this.name = doc.data().user.name;
-            });
+              this.profPic = doc.data().user.photo
+              this.name = doc.data().user.name
+            })
           })
-          .catch((this.name = ""), (this.profPic = ""));
+          .catch((this.name = ''), (this.profPic = ''))
       } else {
-        this.profPic = "";
-        this.name = "";
+        this.profPic = ''
+        this.name = ''
       }
     },
-    login() {
+    login () {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
-        .catch(function(error) {
+        .catch(function (error) {
           // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
+          var errorCode = error.code
+          var errorMessage = error.message
           // ...
         })
-        .then(this.$router.push("/"));
+        .then(this.$router.push('/'))
     }
   }
   // mounted() {
@@ -124,7 +124,7 @@ export default {
   //   var ui = new firebaseui.auth.AuthUI(firebase.auth())
   //   // ui.start("#firebaseui-auth-container", uiConfig);
   // }
-};
+}
 </script>
 
 <style scoped>

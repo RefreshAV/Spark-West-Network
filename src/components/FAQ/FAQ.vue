@@ -105,50 +105,50 @@
 </template>
 
 <script>
-import $ from "jquery";
+import $ from 'jquery'
 
 export default {
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "FAQ",
+    title: 'FAQ',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Frequently asked questions"
+        vmid: 'description',
+        name: 'description',
+        content: 'Frequently asked questions'
       }
     ]
   },
   methods: {
-    collapseOne() {
-      $("#btn1").toggleClass("active");
-      $("#btn2").removeClass("active");
-      $("#btn3").removeClass("active");
+    collapseOne () {
+      $('#btn1').toggleClass('active')
+      $('#btn2').removeClass('active')
+      $('#btn3').removeClass('active')
 
-      $("#icon1").toggleClass("fa-rotate-180");
-      $("#icon2").removeClass("fa-rotate-180");
-      $("#icon3").removeClass("fa-rotate-180");
+      $('#icon1').toggleClass('fa-rotate-180')
+      $('#icon2').removeClass('fa-rotate-180')
+      $('#icon3').removeClass('fa-rotate-180')
     },
-    collapseTwo() {
-      $("#btn2").toggleClass("active");
-      $("#btn1").removeClass("active");
-      $("#btn3").removeClass("active");
+    collapseTwo () {
+      $('#btn2').toggleClass('active')
+      $('#btn1').removeClass('active')
+      $('#btn3').removeClass('active')
 
-      $("#icon2").toggleClass("fa-rotate-180");
-      $("#icon1").removeClass("fa-rotate-180");
-      $("#icon3").removeClass("fa-rotate-180");
+      $('#icon2').toggleClass('fa-rotate-180')
+      $('#icon1').removeClass('fa-rotate-180')
+      $('#icon3').removeClass('fa-rotate-180')
     },
-    collapseThree() {
-      $("#btn3").toggleClass("active");
-      $("#btn1").removeClass("active");
-      $("#btn2").removeClass("active");
+    collapseThree () {
+      $('#btn3').toggleClass('active')
+      $('#btn1').removeClass('active')
+      $('#btn2').removeClass('active')
 
-      $("#icon3").toggleClass("fa-rotate-180");
-      $("#icon1").removeClass("fa-rotate-180");
-      $("#icon2").removeClass("fa-rotate-180");
+      $('#icon3').toggleClass('fa-rotate-180')
+      $('#icon1').removeClass('fa-rotate-180')
+      $('#icon2').removeClass('fa-rotate-180')
     }
   }
-};
+}
 </script>
 
 <style scoped>

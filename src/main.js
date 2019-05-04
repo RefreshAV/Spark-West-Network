@@ -4,7 +4,7 @@ import router from './router'
 import './registerServiceWorker'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import VueDisqus from 'vue-disqus'
-import { auth } from "firebase/app";
+import { auth } from 'firebase/app'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 

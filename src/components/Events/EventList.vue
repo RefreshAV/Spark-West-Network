@@ -76,7 +76,7 @@ export default {
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Event List",
+    title: 'Event List',
     meta: [
       { vmid: 'description', name: 'description', content: 'A list of the current and approching events on Spark West Network' }
     ]

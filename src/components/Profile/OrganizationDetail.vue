@@ -237,101 +237,101 @@
   </div>
 </template>
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
-import $ from "jquery";
-import { Carousel, Slide } from "vue-carousel";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
+import 'firebase/firestore'
+import $ from 'jquery'
+import { Carousel, Slide } from 'vue-carousel'
 
 export default {
-  data() {
+  data () {
     return {
-      name: "",
-      website: "",
-      twitter: "",
-      facebook: "",
-      instagram: "",
-      linkdin: "",
-      description: "",
-      description_small: "",
-      email: "",
-      other: "",
-      logo: "",
-      banner: "",
+      name: '',
+      website: '',
+      twitter: '',
+      facebook: '',
+      instagram: '',
+      linkdin: '',
+      description: '',
+      description_small: '',
+      email: '',
+      other: '',
+      logo: '',
+      banner: '',
       users: {},
       id: null,
       events: []
-    };
+    }
   },
   components: {
     Carousel,
     Slide
   },
   watch: {
-    description: function() {
+    description: function () {
       if (this.description.length > 200) {
-        this.description_small = this.description.slice(0, 200) + "...";
+        this.description_small = this.description.slice(0, 200) + '...'
       } else {
-        this.description_small = this.description;
+        this.description_small = this.description
       }
     }
   },
-  beforeRouteEnter(to, from, next) {
-    db.collection("organizations")
-      .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
+  beforeRouteEnter (to, from, next) {
+    db.collection('organizations')
+      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.name = doc.data().organization.name;
-            vm.website = doc.data().organization.website;
-            vm.description = doc.data().organization.description;
-            vm.email = doc.data().organization.contact.email;
-            vm.logo = doc.data().organization.imagekey;
-            vm.banner = doc.data().organization.bannerKey;
-            vm.instagram = doc.data().organization.contact.instagram;
-            vm.facbook = doc.data().organization.contact.facebook;
-            vm.twitter = doc.data().organization.contact.twitter;
-            vm.linkdin = doc.data().organization.contact.linkdin;
-            vm.users = doc.data().organization.users;
-            vm.id = doc.id;
-          });
-        });
-      });
+            vm.name = doc.data().organization.name
+            vm.website = doc.data().organization.website
+            vm.description = doc.data().organization.description
+            vm.email = doc.data().organization.contact.email
+            vm.logo = doc.data().organization.imagekey
+            vm.banner = doc.data().organization.bannerKey
+            vm.instagram = doc.data().organization.contact.instagram
+            vm.facbook = doc.data().organization.contact.facebook
+            vm.twitter = doc.data().organization.contact.twitter
+            vm.linkdin = doc.data().organization.contact.linkdin
+            vm.users = doc.data().organization.users
+            vm.id = doc.id
+          })
+        })
+      })
   },
-  mounted() {
+  mounted () {
     // get user info
-    db.collection("organizations")
+    db.collection('organizations')
       .where(
         firebase.firestore.FieldPath.documentId(),
-        "==",
+        '==',
         this.$route.params.id
       )
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          this.name = doc.data().organization.name;
-          this.website = doc.data().organization.website;
-          this.description = doc.data().organization.description;
-          this.email = doc.data().organization.contact.email;
+          this.name = doc.data().organization.name
+          this.website = doc.data().organization.website
+          this.description = doc.data().organization.description
+          this.email = doc.data().organization.contact.email
           this.banner =
-            "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Fbanner%2F" +
+            'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Fbanner%2F' +
             doc.data().organization.bannerKey +
-            "?alt=media&token";
-          this.instagram = doc.data().organization.contact.instagram;
-          this.facebook = doc.data().organization.contact.facebook;
-          this.twitter = doc.data().organization.contact.twitter;
-          this.linkdin = doc.data().organization.contact.linkdin;
-          this.users = doc.data().organization.users;
-          this.id = doc.id;
-        });
-      });
+            '?alt=media&token'
+          this.instagram = doc.data().organization.contact.instagram
+          this.facebook = doc.data().organization.contact.facebook
+          this.twitter = doc.data().organization.contact.twitter
+          this.linkdin = doc.data().organization.contact.linkdin
+          this.users = doc.data().organization.users
+          this.id = doc.id
+        })
+      })
 
-    for(var i = 0; i < 6 ;i++) {
-      this.events.push({id:i})
+    for (var i = 0; i < 6; i++) {
+      this.events.push({ id: i })
     }
   }
-};
+}
 </script>
 <style>
 .overllay-text {

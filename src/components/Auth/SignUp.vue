@@ -8,7 +8,7 @@
                 </div>
             </div>
 
-            <div class="row d-flex justify-content-center">            
+            <div class="row d-flex justify-content-center">
               <div class="col-md-5">
                   <h2>Welcome to Spark West Network!</h2>
                   <hr>
@@ -105,7 +105,7 @@
                     <div class="col-auto">
                       <button type="submit" class="btn btn-primary">
                         Sign Up! <i class="fas fa-cog fa-spin" v-if="upload"></i>
-                      </button> 
+                      </button>
                     </div>
                     <div class="col-m3">
                       <p>Or if you already have an account <router-link to="/Login">Login!</router-link></p>
@@ -121,104 +121,104 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
-import firebaseui from "firebaseui";
-import db from "../../Firebase/firebaseInit";
-import gravatarUrl from "gravatar-url";
+import firebase from 'firebase/app'
+import firebaseui from 'firebaseui'
+import db from '../../Firebase/firebaseInit'
+import gravatarUrl from 'gravatar-url'
 
-var check = firebase;
+var check = firebase
 
 export default {
-  data() {
+  data () {
     return {
-      profPic: "",
-      name: "",
-      email: "",
-      password: "",
-      preImg: "",
+      profPic: '',
+      name: '',
+      email: '',
+      password: '',
+      preImg: '',
       image: null,
       upload: false,
       blob: null
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Sign Up",
+    title: 'Sign Up',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Create your account on Spark West Network!"
+        vmid: 'description',
+        name: 'description',
+        content: 'Create your account on Spark West Network!'
       }
     ]
   },
   watch: {
-    upload: "createProfile"
+    upload: 'createProfile'
   },
   methods: {
-    signUp() {
-      const that = this;
+    signUp () {
+      const that = this
 
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
-        .then((this.upload = true));
-      firebase.auth().onAuthStateChanged(function(user) {
+        .then((this.upload = true))
+      firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-          db.collection("users").add({
+          db.collection('users').add({
             user: {
               UserUID: firebase.auth().currentUser.uid,
-              about: "",
+              about: '',
               email: that.email,
               name: that.name,
               photo:
-                "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/users%2F" +
+                'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/users%2F' +
                 firebase.auth().currentUser.uid +
-                "?alt=media&token",
-              website: ""
+                '?alt=media&token',
+              website: ''
             }
-          });
+          })
 
           var ref = firebase
             .storage()
-            .ref("users/" + firebase.auth().currentUser.uid);
-          var file = that.image;
+            .ref('users/' + firebase.auth().currentUser.uid)
+          var file = that.image
 
-          var upload = ref.put(file);
+          var upload = ref.put(file)
           upload
             .on(
-              "state_changed",
-              function progress(snapshot) {
+              'state_changed',
+              function progress (snapshot) {
                 var percentage =
-                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
               },
-              function error(err) {},
-              function complete() {}
+              function error (err) {},
+              function complete () {}
             )
-            .then(that.$router.push("/"));
+            .then(that.$router.push('/'))
         }
-      });
+      })
     },
-    createProfile() {},
-    loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var imgURL = window.URL.createObjectURL(input.files[0]);
-      this.preImg = imgURL;
-      this.image = input.files[0];
+    createProfile () {},
+    loadFile: function () {
+      var input = document.querySelector('.bUp')
+      var imgURL = window.URL.createObjectURL(input.files[0])
+      this.preImg = imgURL
+      this.image = input.files[0]
     },
-    gravatar() {
-      var img = gravatarUrl(this.email, { size: 200, d: "retro" });
+    gravatar () {
+      var img = gravatarUrl(this.email, { size: 200, d: 'retro' })
 
       fetch(img)
         .then(res => res.blob()) // Gets the response and returns it as a blob
         .then(blob => {
-          this.image = blob;
-          let objectURL = URL.createObjectURL(blob);
-          this.preImg = objectURL;
-        });
+          this.image = blob
+          let objectURL = URL.createObjectURL(blob)
+          this.preImg = objectURL
+        })
     }
   }
-};
+}
 </script>
 
 <style>

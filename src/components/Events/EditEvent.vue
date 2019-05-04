@@ -113,11 +113,11 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
+import 'firebase/firestore'
 export default {
-  data() {
+  data () {
     return {
       id: null,
       title: null,
@@ -127,142 +127,142 @@ export default {
       description: null,
       image: null,
       preImg:
-        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
+        'https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif',
       imageKey: null,
       characters: null,
       start: null,
       end: null,
       UID: null,
       submitDate: null,
-      locationName: "",
+      locationName: '',
       locationPos: {
         lat: 0,
         lng: 0
       },
       location: null
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Edit Event",
+    title: 'Edit Event',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Edit the details of an event"
+        vmid: 'description',
+        name: 'description',
+        content: 'Edit the details of an event'
       }
     ]
   },
-  metaInfo() {
+  metaInfo () {
     if (this.title) {
       return {
         title: this.title
-      };
+      }
     } else {
       return {
-        title: "Edit Event"
-      };
+        title: 'Edit Event'
+      }
     }
   },
-  beforeRouteEnter(to, from, next) {
-    db.collection("events")
-      .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
+  beforeRouteEnter (to, from, next) {
+    db.collection('events')
+      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.id = doc.id;
-            vm.title = doc.data().event.title;
-            vm.date = doc.data().event.date;
-            vm.time = doc.data().event.time;
-            vm.email = doc.data().event.email;
-            vm.description = doc.data().event.description;
-            vm.locationName = doc.data().event.locationName;
-            vm.imageKey = doc.data().event.imageKey;
-            vm.submitDate = doc.data().event.SubmitDate;
-            vm.UID = doc.data().event.UserUID;
-          });
-        });
-      });
+            vm.id = doc.id
+            vm.title = doc.data().event.title
+            vm.date = doc.data().event.date
+            vm.time = doc.data().event.time
+            vm.email = doc.data().event.email
+            vm.description = doc.data().event.description
+            vm.locationName = doc.data().event.locationName
+            vm.imageKey = doc.data().event.imageKey
+            vm.submitDate = doc.data().event.SubmitDate
+            vm.UID = doc.data().event.UserUID
+          })
+        })
+      })
   },
-  mounted() {
-    db.collection("events")
+  mounted () {
+    db.collection('events')
       .where(
         firebase.firestore.FieldPath.documentId(),
-        "==",
+        '==',
         this.$route.params.id
       )
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          let date = doc.data().event.date;
-          this.id = doc.id;
-          this.title = doc.data().event.title;
-          this.date = date.year + "-" + date.month + "-" + date.day;
-          this.time = doc.data().event.time;
-          this.email = doc.data().event.email;
-          this.desc = doc.data().event.description;
-          this.locationName = doc.data().event.locationName;
-          this.imageKey = doc.data().event.imageKey;
-          this.submitDate = doc.data().event.SubmitDate;
-          this.UID = doc.data().event.UserUID;
-        });
-      });
+          let date = doc.data().event.date
+          this.id = doc.id
+          this.title = doc.data().event.title
+          this.date = date.year + '-' + date.month + '-' + date.day
+          this.time = doc.data().event.time
+          this.email = doc.data().event.email
+          this.desc = doc.data().event.description
+          this.locationName = doc.data().event.locationName
+          this.imageKey = doc.data().event.imageKey
+          this.submitDate = doc.data().event.SubmitDate
+          this.UID = doc.data().event.UserUID
+        })
+      })
   },
   watch: {
-    id: "fetchImage",
-    description: "getChars"
+    id: 'fetchImage',
+    description: 'getChars'
   },
   methods: {
-    getChars() {
-      this.characters = this.description.length;
+    getChars () {
+      this.characters = this.description.length
     },
-    fetchImage() {
-      var ref = firebase.storage().ref("events/" + this.imageKey);
-      var that = this;
+    fetchImage () {
+      var ref = firebase.storage().ref('events/' + this.imageKey)
+      var that = this
 
-      ref.getDownloadURL().then(function(url, a) {
-        that.preImg = url;
-      });
+      ref.getDownloadURL().then(function (url, a) {
+        that.preImg = url
+      })
 
-      var time = this.time;
-      this.end = time.substring(6);
-      this.start = time.substring(0, 5);
+      var time = this.time
+      this.end = time.substring(6)
+      this.start = time.substring(0, 5)
     },
-    saveExit() {
+    saveExit () {
       if (this.location) {
-        this.locationPos.lat = this.location.geometry.location.lat();
-        this.locationPos.lng = this.location.geometry.location.lng();
-        this.locationName = this.location.formatted_address;
+        this.locationPos.lat = this.location.geometry.location.lat()
+        this.locationPos.lng = this.location.geometry.location.lng()
+        this.locationName = this.location.formatted_address
       }
-      var start = this.start;
-      var end = this.end;
+      var start = this.start
+      var end = this.end
 
-      this.time = start + "-" + end;
+      this.time = start + '-' + end
 
-      var ref = firebase.storage().ref("events/" + this.imageKey);
-      var file = this.image;
-      var that = this;
+      var ref = firebase.storage().ref('events/' + this.imageKey)
+      var file = this.image
+      var that = this
 
       if (file != null) {
-        console.log("Updating file");
-        var upload = ref.put(file);
+        console.log('Updating file')
+        var upload = ref.put(file)
 
         upload.on(
-          "state_changed",
-          function progress(snapshot) {
+          'state_changed',
+          function progress (snapshot) {
             var percentage =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           },
-          function error(err) {},
-          function complete() {}
-        );
+          function error (err) {},
+          function complete () {}
+        )
       }
 
-      db.collection("events")
+      db.collection('events')
         .where(
           firebase.firestore.FieldPath.documentId(),
-          "==",
+          '==',
           this.$route.params.id
         )
         .get()
@@ -288,24 +288,24 @@ export default {
                   lng: this.locationPos.lng
                 }
               }
-            });
-          });
+            })
+          })
         })
-        .then(that.$router.push("/events/event/" + that.id));
+        .then(that.$router.push('/events/event/' + that.id))
     },
-    loadFile: function() {
-      var input = document.querySelector(".bUp");
+    loadFile: function () {
+      var input = document.querySelector('.bUp')
 
-      var imgURL = window.URL.createObjectURL(input.files[0]);
+      var imgURL = window.URL.createObjectURL(input.files[0])
 
-      this.preImg = imgURL;
-      this.image = input.files[0];
+      this.preImg = imgURL
+      this.image = input.files[0]
     },
-    setLocation(location) {
-      this.location = location;
+    setLocation (location) {
+      this.location = location
     }
   }
-};
+}
 </script>
 
 <style scoped>

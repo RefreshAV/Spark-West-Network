@@ -96,55 +96,55 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
 
 export default {
-  data() {
+  data () {
     return {
       profiles: [],
       users: null,
-      searchTerm: "",
+      searchTerm: '',
       profiles: [],
       searching: false
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Members",
+    title: 'Members',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "The members of an organization"
+        vmid: 'description',
+        name: 'description',
+        content: 'The members of an organization'
       }
     ]
   },
-  created() {
-    db.collection("organizations")
+  created () {
+    db.collection('organizations')
       .where(
         firebase.firestore.FieldPath.documentId(),
-        "==",
+        '==',
         this.$route.params.id
       )
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          this.users = doc.data().organization.users;
-        });
-      });
+          this.users = doc.data().organization.users
+        })
+      })
   },
   methods: {
-    loadProfile(uid, id) {
-      this.$router.push({ name: "userDetail", params: { id: id } });
+    loadProfile (uid, id) {
+      this.$router.push({ name: 'userDetail', params: { id: id } })
     },
-    search() {
-      const that = this;
-      this.searching = false;
-      this.profiles = [];
-      var search = this.searchTerm;
-      db.collection("users")
-        .where("user.email", "==", search.trim())
+    search () {
+      const that = this
+      this.searching = false
+      this.profiles = []
+      var search = this.searchTerm
+      db.collection('users')
+        .where('user.email', '==', search.trim())
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -152,37 +152,37 @@ export default {
               id: doc.id,
               name: doc.data().user.name,
               img: doc.data().user.photo
-            };
-            this.profiles.push(data);
-          });
+            }
+            this.profiles.push(data)
+          })
         })
-        .then(function() {
-          that.searching = true;
-        });
+        .then(function () {
+          that.searching = true
+        })
     },
-    addUser(id, name, img) {
-      var found = this.users.find(function(value) {
-        return (value.name = name);
-      });
+    addUser (id, name, img) {
+      var found = this.users.find(function (value) {
+        return (value.name = name)
+      })
 
       if (!found && name != this.user.email) {
         var user = {
           id,
           name,
           img,
-          role: "User"
-        };
-        this.users.push(user);
+          role: 'User'
+        }
+        this.users.push(user)
       }
     },
-    removeUser(id, name, img) {
-      var filtered = this.users.filter(function(value, index, arr) {
-        return value.name != name;
-      });
-      this.users = filtered;
+    removeUser (id, name, img) {
+      var filtered = this.users.filter(function (value, index, arr) {
+        return value.name != name
+      })
+      this.users = filtered
     }
   }
-};
+}
 </script>
 
 <style scoped>

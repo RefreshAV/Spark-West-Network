@@ -135,11 +135,11 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
+import 'firebase/firestore'
 export default {
-  data() {
+  data () {
     return {
       name: null,
       email: null,
@@ -153,11 +153,11 @@ export default {
       pages: [],
       currentPage: [],
       pageLength: 4
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "User",
+    title: 'User',
     meta: [
       { vmid: 'description', name: 'description', content: 'The description of a user on Spark West Network' }
     ]
@@ -167,61 +167,61 @@ export default {
       title: this.name
     }
   },
-  beforeRouteEnter(to, from, next) {
-    var UserUID;
+  beforeRouteEnter (to, from, next) {
+    var UserUID
 
-    db.collection("users")
-      .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
+    db.collection('users')
+      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.name = doc.data().user.name;
-            vm.email = doc.data().user.email;
-            vm.img = doc.data().user.photo;
-            vm.about = doc.data().user.about;
-            vm.website = doc.data().user.website;
-            UserUID = doc.data().user.UserUID;
+            vm.name = doc.data().user.name
+            vm.email = doc.data().user.email
+            vm.img = doc.data().user.photo
+            vm.about = doc.data().user.about
+            vm.website = doc.data().user.website
+            UserUID = doc.data().user.UserUID
             if (UserUID == firebase.auth().currentUser.uid) {
-              next("/Profile");
+              next('/Profile')
             }
-          });
-        });
-      });
+          })
+        })
+      })
   },
-  mounted() {
+  mounted () {
     // get user info
-    db.collection("users")
+    db.collection('users')
       .where(
         firebase.firestore.FieldPath.documentId(),
-        "==",
+        '==',
         this.$route.params.id
       )
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          this.name = doc.data().user.name;
-          this.email = doc.data().user.email;
-          this.img = doc.data().user.photo;
-          this.about = doc.data().user.about;
-          this.website = doc.data().user.website;
-          this.UserUID = doc.data().user.UserUID;
-        });
-      });
+          this.name = doc.data().user.name
+          this.email = doc.data().user.email
+          this.img = doc.data().user.photo
+          this.about = doc.data().user.about
+          this.website = doc.data().user.website
+          this.UserUID = doc.data().user.UserUID
+        })
+      })
   },
   watch: {
-    page: "updateCurrent",
-    UserUID: "getEvents",
-    events: "createPages"
+    page: 'updateCurrent',
+    UserUID: 'getEvents',
+    events: 'createPages'
   },
   methods: {
-    getEvents() {
+    getEvents () {
       // get users eventstranslate
-      db.collection("events")
-        .where("event.UserUID", "==", this.UserUID)
-        .orderBy("event.date.year")
-        .orderBy("event.date.month")
-        .orderBy("event.date.day")
+      db.collection('events')
+        .where('event.UserUID', '==', this.UserUID)
+        .orderBy('event.date.year')
+        .orderBy('event.date.month')
+        .orderBy('event.date.day')
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -233,14 +233,14 @@ export default {
               email: doc.data().event.email,
               desc: doc.data().event.description,
               imageKey: doc.data().event.imageKey
-            };
-            this.events.push(data);
-          });
-        });
+            }
+            this.events.push(data)
+          })
+        })
 
       // get liked events
-      db.collection("events")
-        .where("likedBy", "array-contains", this.UserUID)
+      db.collection('events')
+        .where('likedBy', 'array-contains', this.UserUID)
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -252,45 +252,45 @@ export default {
               email: doc.data().event.email,
               desc: doc.data().event.description,
               imageKey: doc.data().event.imageKey
-            };
-            this.likedEvents.push(data);
-          });
-        });
+            }
+            this.likedEvents.push(data)
+          })
+        })
     },
-    nextPage() {
+    nextPage () {
       if (this.page < this.pages.length) {
-        this.page++;
+        this.page++
       }
     },
-    lastPage() {
+    lastPage () {
       if (this.page > 1) {
-        this.page--;
+        this.page--
       }
     },
-    createPages() {
-      var length = Math.ceil(this.events.length / this.pageLength);
+    createPages () {
+      var length = Math.ceil(this.events.length / this.pageLength)
       for (var i = 0; i < length; i++) {
         if (this.events.slice(i * 4) < 4) {
-          this.pages.push(this.events.slice(i * this.pageLength));
+          this.pages.push(this.events.slice(i * this.pageLength))
         } else {
           this.pages.push(
             this.events.slice(
               i * this.pageLength,
               i * this.pageLength + this.pageLength
             )
-          );
+          )
         }
       }
-      this.currentPage = this.pages[0];
+      this.currentPage = this.pages[0]
     },
-    updateCurrent() {
-      document.getElementById("page").readOnly = true;
+    updateCurrent () {
+      document.getElementById('page').readOnly = true
 
-      this.currentPage = [];
-      this.currentPage = this.pages[this.page - 1];
+      this.currentPage = []
+      this.currentPage = this.pages[this.page - 1]
     }
   }
-};
+}
 </script>
 
 <style>

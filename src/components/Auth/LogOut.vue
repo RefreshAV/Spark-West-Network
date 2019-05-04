@@ -12,7 +12,7 @@ export default {
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Log Out",
+    title: 'Log Out',
     meta: [
       { vmid: 'description', name: 'description', content: 'Log out of your account' }
     ]
