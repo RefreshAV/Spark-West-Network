@@ -25,7 +25,7 @@
     >
       <div class="col">
         <router-link
-          :to="{name: 'userDetail', params: {id: organization.id}}"
+          :to="'Organizations/organization/' + organization.id"
           class="media p-0 btn btn-light shadow-sm"
         >
           <div class="row w-100 m-0">

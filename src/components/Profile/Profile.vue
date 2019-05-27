@@ -134,11 +134,10 @@
 
                   <li
                     v-if="events.length == 0"
-                    class="list-group-item d-flex justify-content-center align-items-center"
-                    style="height:400px"
+                    id="placeholder"
+                    class="list-group-item border-0 text-white d-flex justify-content-center align-items-center"
                   >
                     <h3>Nothing Here!</h3>
-                    <i class="far fa-frown"></i>
                   </li>
                 </ul>
               </div>
@@ -649,9 +648,18 @@ li h3 {
   z-index: 100;
 }
 
-.fa-frown {
-  font-size: 20em;
-  color: rgba(38, 41, 45, 0.5);
-  z-index: 0;
+#placeholder {
+  height: 300px;
+  background: #009fff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    115deg,
+    #ec2f4b,
+    #009fff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    115deg,
+    #ec2f4b,
+    #009fff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 </style>
