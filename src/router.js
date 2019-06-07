@@ -23,7 +23,7 @@ import UserList from './components/Profile/UserList.vue'
 import UserDetail from './components/Profile/UserDetail.vue'
 import EventMap from './components/Events/EventLocations.vue'
 import EventGallery from './components/Events/EventGallery.vue'
-import firebase from 'firebase'
+import { auth } from 'firebase/app'
 
 Vue.use(Router)
 Vue.use(Meta)
@@ -178,7 +178,7 @@ const routes = [
     name: 'newOrganizationProfile',
     component: NewOrganizationProfile,
     beforeEnter: (to, from, next) => {
-      var user = firebase.auth().currentUser
+      var user = auth().currentUser
       if (user) {
         next()
       } else {
