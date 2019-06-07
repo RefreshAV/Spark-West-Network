@@ -179,4 +179,8 @@ export default {
 i {
   transition: 0.5s;
 }
+
+#accordion {
+  border-radius: 12px;
+}
 </style>

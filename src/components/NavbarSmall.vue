@@ -1,13 +1,13 @@
 <template>
   <!-- Navigation -->
-  <nav id="navbar" class="navbar navbar-expand-lg navbar-dark mt-0">
+  <nav id="navbar" class="navbar navbar-dark mt-0">
     <div class="container">
-      <a id="brand" active-class="navbar-brand" @click="closeNav">
+      <router-link to="/" id="brand" active-class="navbar-brand">
         <img src="../assets/SWN.png" height="70" alt="logo">
         <!-- <span id="badge" class="badge badge-secondary">beta</span> -->
-      </a>
+      </router-link>
       <button
-        class="navbar-toggler navbar-toggler-right"
+        class="btn btn-lg btn-light navbar-toggler-right align-middle"
         type="button"
         data-toggle="collapse"
         data-target="#navbarResponsive"
@@ -15,7 +15,7 @@
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-        <span class="navbar-toggler-icon"/>
+        <i class="fas fa-bars fa-lg"></i>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto text-dark">
@@ -70,14 +70,24 @@
           >
             <a class="nav-link">Users</a>
           </router-link>
-          <router-link class="nav-links" :to="{name: 'profile'}" tag="li" active-class="nav-item" v-if="isLoggedIn">
+          <router-link
+            class="nav-links"
+            :to="{name: 'profile'}"
+            tag="li"
+            active-class="nav-item"
+            v-if="isLoggedIn"
+          >
             <a class="nav-link">Profile</a>
           </router-link>
           <router-link :to="{name: 'login'}" tag="li" active-class="nav-item" v-if="!isLoggedIn">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+            <button class="btn btn-outline-light btn-block my-2 my-sm-0" type="submit">Login</button>
           </router-link>
           <router-link to="/" tag="li" active-class="nav-item" v-if="isLoggedIn">
-            <button @click="logOut" class="btn btn-light my-2 my-sm-0" type="submit">Log Out</button>
+            <button
+              @click="logOut"
+              class="btn btn-block btn-light my-2 my-sm-0"
+              type="submit"
+            >Log Out</button>
           </router-link>
         </ul>
       </div>
@@ -94,6 +104,11 @@ export default {
     return {
       isLoggedIn: false
     };
+  },
+  watch: {
+    $route (to, from) {
+      $("#navbarResponsive").collapse("hide");
+    }
   },
   created() {
     var vm = this;
@@ -135,6 +150,10 @@ body {
 
 .navbar {
   background: #fe3d61;
+}
+
+.btn-light i {
+  color: #fe3d61;
 }
 
 .nav-links {

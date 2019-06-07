@@ -1,16 +1,17 @@
 <template>
   <div>
     <!-- Slides -->
-    <div class="row d-flex justify-content-center">
+    <div class="d-none d-lg-flex w-100 justify-content-center">
       <carousel
-        class="bg-light shadow rounded px-0"
+        id="carousel-lg"
+        class="bg-light carousel p-0 shadow"
         :per-page="1"
         :autoplay="true"
         :autoplayTimeout="6000"
         :loop="true"
         :paginationPosition="'bottom-overlay'"
       >
-        <slide class="slide rounded">
+        <slide class="slide">
           <!-- Image Slide -->
           <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
             <div class="col-auto">
@@ -24,14 +25,15 @@
 
         <slide
           v-for="(event, index) in events"
+          v-show="events"
           :key="event.id"
-          class="slide rounded d-flex justify-content-center"
+          class="slide d-flex justify-content-center"
           :style="'background-image:' + backgrounds[index]"
         >
           <div class="w-100 d-flex justify-content-center align-items-center">
             <router-link
               :to="{name: 'event-detail', params: {id: event.id}}"
-              class="container text-dark card border-0 shadow"
+              class="w-100 text-dark card border-0 shadow"
             >
               <div class="card-body" style="text-overflow: ellipsis;">
                 <h3 class="text-info">{{ event.date }}:</h3>
@@ -42,7 +44,7 @@
           </div>
         </slide>
 
-        <slide class="slide rounded">
+        <slide class="slide shadow">
           <!-- Image Slide 2 -->
           <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
             <div class="col-auto">
@@ -57,22 +59,78 @@
     </div>
 
     <div>
-      <h1 class="d-lg-none mb-4 text-center banner-grad text-white py-4">
-        Welcome To:
-        <br>
-        <b class="text-white">Spark West Network</b>
-      </h1>
+      <div class="container">
+        <carousel
+          id="carousel-sm"
+          class="d-lg-none bg-light carousel p-0 shadow"
+          :per-page="1"
+          :autoplay="true"
+          :autoplayTimeout="6000"
+          :loop="true"
+          :paginationPosition="'bottom-overlay'"
+        >
+          <slide class="slide">
+            <!-- Image Slide -->
+            <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
+              <div class="col-auto">
+                <router-link
+                  to="/events/EventGallery"
+                  class="btn btn-success my-5"
+                >Check Out The Gallery</router-link>
+              </div>
+            </div>
+          </slide>
 
-      <div class="container py-1">
-        <h1 class="d-none d-lg-block my-4 text-center banner-grad text-white rounded-pill py-2">
-          Welcome To:
-          <b class="text-white">Spark West Network</b>
+          <slide
+            v-for="(event, index) in events"
+            v-show="events"
+            :key="event.id"
+            class="slide d-flex justify-content-center"
+            :style="'background-image:' + backgrounds[index]"
+          >
+            <div class="w-100 d-flex justify-content-center align-items-center">
+              <router-link
+                :to="{name: 'event-detail', params: {id: event.id}}"
+                class="w-100 text-dark mx-3 card border-0 shadow"
+              >
+                <div class="card-body" style="text-overflow: ellipsis;">
+                  <h3 class="text-info">{{ event.date }}:</h3>
+                  <h1>{{ event.title }}</h1>
+                  <p>{{ event.desc }}</p>
+                </div>
+              </router-link>
+            </div>
+          </slide>
+
+          <slide class="slide shadow">
+            <!-- Image Slide 2 -->
+            <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
+              <div class="col-auto">
+                <router-link
+                  to="/events/EventGallery"
+                  class="btn btn-success my-5"
+                >Check Out The Gallery</router-link>
+              </div>
+            </div>
+          </slide>
+        </carousel>
+
+        <div class="line bg-dark my-5"></div>
+
+        <h1 class="d-lg-block d-none text-center display-3 pb-5">
+          Welcome To
+          <br>Spark West Network
         </h1>
+
+        <h2 class="d-lg-none text-center pb-5">
+          Welcome To
+          <br>Spark West Network
+        </h2>
 
         <!-- Marketing Icons Section -->
         <div class="row">
           <div class="col-lg-4 mb-4">
-            <div class="card h-100 border-0 shadow animated fadeInLeft">
+            <div class="card card-info h-100 border-0 shadow animated fadeInLeft">
               <h4 class="card-header">
                 <i class="far fa-comments"></i> A Unified Voice
               </h4>
@@ -88,7 +146,7 @@
             </div>
           </div>
           <div class="col-lg-4 mb-4">
-            <div class="card h-100 border-0 shadow animated fadeInLeft delay1">
+            <div class="card card-info h-100 border-0 shadow animated fadeInLeft delay1">
               <h4 class="card-header">
                 <i class="fa fa-arrow-right"></i> An Access Ramp
               </h4>
@@ -104,7 +162,7 @@
             </div>
           </div>
           <div class="col-lg-4 mb-4">
-            <div class="card h-100 border-0 shadow animated fadeInLeft delay2">
+            <div class="card card-info h-100 border-0 shadow animated fadeInLeft delay2">
               <h4 class="card-header">
                 <i class="far fa-bell"></i> Attracting Talent
               </h4>
@@ -147,6 +205,7 @@ export default {
     titleTemplate: null
   },
   created() {
+    this.events = [];
     db.collection("events")
       .orderBy("event.date")
       .limit(3)
@@ -197,14 +256,21 @@ export default {
   margin-bottom: 30px;
 }
 
-.VueCarousel {
+#carousel-lg {
   margin: 15px;
   max-width: 1600px;
   width: 100%;
+  min-height: 350px;
+}
+
+#carousel-sm {
+  margin: 15px 0px 15px 0px;
 }
 
 .slide {
   height: 50vh;
+  min-height: 350px;
+  width: 100%;
   background-image: url("https://picsum.photos/1900/1080/?random");
   background-position: center;
   background-size: cover;
@@ -213,7 +279,16 @@ export default {
 
 .slide .card {
   transition: 0.5s;
+  border-radius: 12px;
   text-decoration: none !important;
+  max-width: 1000px;
+  max-height: calc(100% - 100px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.slide .card:hover {
+  background: rgb(240, 240, 240);
 }
 
 .btn-grad-blue {
@@ -240,22 +315,8 @@ export default {
   color: white;
 }
 
-.banner {
-  background: #ee4036;
-}
-
-.banner-grad {
-  background: #ee4036; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #ee4036,
-    #dd7596
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #ee4036,
-    #dd7596
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.welcome {
+  color: #ee4036;
 }
 
 .delay1 {
@@ -264,5 +325,30 @@ export default {
 
 .delay2 {
   animation-delay: 1s;
+}
+
+.slide,
+.carousel {
+  border-radius: 12px;
+}
+
+.card-info {
+  border-radius: 12px;
+}
+
+.card-info .card-header {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.card-info .btn {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.line {
+  width: 100;
+  height: 16px;
+  border-radius: 16px;
 }
 </style>
