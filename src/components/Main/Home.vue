@@ -1,58 +1,60 @@
 <template>
   <div>
     <!-- Slides -->
-    <carousel
-      class="bg-light shadow"
-      :per-page="1"
-      :autoplay="true"
-      :autoplayTimeout="6000"
-      :loop="true"
-      :paginationPosition="'bottom-overlay'"
-    >
-      <slide class="slide">
-        <!-- Image Slide -->
-        <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
-          <div class="col-auto">
-            <router-link
-              to="/events/EventGallery"
-              class="btn btn-success my-5"
-            >Check Out The Gallery</router-link>
-          </div>
-        </div>
-      </slide>
-
-      <slide
-        v-for="(event, index) in events"
-        :key="event.id"
-        class="slide d-flex justify-content-center"
-        :style="'background-image:' + backgrounds[index]"
+    <div class="row d-flex justify-content-center">
+      <carousel
+        class="bg-light shadow rounded px-0"
+        :per-page="1"
+        :autoplay="true"
+        :autoplayTimeout="6000"
+        :loop="true"
+        :paginationPosition="'bottom-overlay'"
       >
-        <div class="w-100 d-flex justify-content-center align-items-center">
-          <router-link
-            :to="{name: 'event-detail', params: {id: event.id}}"
-            class="container text-dark card border-0 shadow"
-          >
-            <div class="card-body" style="text-overflow: ellipsis;">
-              <h3 class="text-info">{{ event.date }}:</h3>
-              <h1>{{ event.title }}</h1>
-              <p>{{ event.desc }}</p>
+        <slide class="slide rounded">
+          <!-- Image Slide -->
+          <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
+            <div class="col-auto">
+              <router-link
+                to="/events/EventGallery"
+                class="btn btn-success my-5"
+              >Check Out The Gallery</router-link>
             </div>
-          </router-link>
-        </div>
-      </slide>
-
-      <slide class="slide">
-        <!-- Image Slide 2 -->
-        <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
-          <div class="col-auto">
-            <router-link
-              to="/events/EventGallery"
-              class="btn btn-success my-5"
-            >Check Out The Gallery</router-link>
           </div>
-        </div>
-      </slide>
-    </carousel>
+        </slide>
+
+        <slide
+          v-for="(event, index) in events"
+          :key="event.id"
+          class="slide rounded d-flex justify-content-center"
+          :style="'background-image:' + backgrounds[index]"
+        >
+          <div class="w-100 d-flex justify-content-center align-items-center">
+            <router-link
+              :to="{name: 'event-detail', params: {id: event.id}}"
+              class="container text-dark card border-0 shadow"
+            >
+              <div class="card-body" style="text-overflow: ellipsis;">
+                <h3 class="text-info">{{ event.date }}:</h3>
+                <h1>{{ event.title }}</h1>
+                <p>{{ event.desc }}</p>
+              </div>
+            </router-link>
+          </div>
+        </slide>
+
+        <slide class="slide rounded">
+          <!-- Image Slide 2 -->
+          <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
+            <div class="col-auto">
+              <router-link
+                to="/events/EventGallery"
+                class="btn btn-success my-5"
+              >Check Out The Gallery</router-link>
+            </div>
+          </div>
+        </slide>
+      </carousel>
+    </div>
 
     <div>
       <h1 class="d-lg-none mb-4 text-center banner-grad text-white py-4">
@@ -124,75 +126,81 @@
 </template>
 
 <script>
-import { Carousel, Slide } from 'vue-carousel'
-import db from '../../Firebase/firebaseInit'
+import { Carousel, Slide } from "vue-carousel";
+import db from "../../Firebase/firebaseInit";
 
 export default {
-  data () {
+  data() {
     return {
       events: [],
       images: [],
       backgrounds: []
-    }
+    };
   },
   components: {
     Carousel,
     Slide
   },
   metaInfo: {
-    title: 'Spark West Network',
+    title: "Spark West Network",
     // override the parent template and just use the above title only
     titleTemplate: null
   },
-  created () {
-    db.collection('events')
-      .orderBy('event.date')
+  created() {
+    db.collection("events")
+      .orderBy("event.date")
       .limit(3)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          var day = doc.data().event.date.day
-          var month = doc.data().event.date.month
-          var year = doc.data().event.date.year
+          var day = doc.data().event.date.day;
+          var month = doc.data().event.date.month;
+          var year = doc.data().event.date.year;
           const data = {
             id: doc.id,
             title: doc.data().event.title,
-            date: year + '-' + month + '-' + day,
+            date: year + "-" + month + "-" + day,
             time: doc.data().event.time,
             email: doc.data().event.email,
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          }
-          this.events.push(data)
-        })
-      })
+          };
+          this.events.push(data);
+        });
+      });
   },
   watch: {
-    events: 'fetchImages'
+    events: "fetchImages"
   },
   methods: {
-    fetchImages () {
-      var images = []
+    fetchImages() {
+      var images = [];
       for (var i = 0; i < this.events.length; i++) {
         let url =
-          'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
+          "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
           this.events[i].imageKey +
-          '?alt=media&token'
-        images.push(url)
+          "?alt=media&token";
+        images.push(url);
       }
-      this.images = images
+      this.images = images;
       for (let j = 0; j < this.images.length; j++) {
-        let url = "url('" + this.images[j] + "')"
-        this.backgrounds.push(url)
+        let url = "url('" + this.images[j] + "')";
+        this.backgrounds.push(url);
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
 .portfolio-item {
   margin-bottom: 30px;
+}
+
+.VueCarousel {
+  margin: 15px;
+  max-width: 1600px;
+  width: 100%;
 }
 
 .slide {
