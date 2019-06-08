@@ -7,7 +7,7 @@
         style="width:50px; height: 50px;"
       >
     </div>
-    <div v-if="events.length != 0">
+    <div v-if="events.length > 0">
       <div class="card border-0 shadow mb-3 bg-dark text-white animated fadeInLeft">
         <div class="row no-gutters">
           <div class="col">
@@ -25,8 +25,9 @@
         </div>
       </div>
 
-      <div class="card-deck mb-3">
+      <div v-if="events.length > 1" class="card-deck mb-3">
         <router-link
+          v-if="events.length > 2"
           :to="{name: 'event-detail', params: {id: events[1].id}}"
           class="card border-0 shadow bg-light text-dark animated fadeInLeft"
           style="animation-delay:0.25s; text-decoration:none;"
@@ -39,6 +40,7 @@
           </div>
         </router-link>
         <router-link
+          v-if="events.length > 2"
           :to="{name: 'event-detail', params: {id: events[2].id}}"
           class="card border-0 shadow bg-light text-dark animated fadeInLeft"
           style="animation-delay:0.5s; text-decoration:none;"
