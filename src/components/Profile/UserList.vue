@@ -23,7 +23,27 @@
       >
         <div class="col">
           <router-link
+            v-if="profile.isProfile === false"
             :to="{name: 'userDetail', params: {id: profile.id}}"
+            class="media btn btn-light shadow-sm"
+          >
+            <img
+              class="align-self-center rounded mr-3"
+              :src="profile.img"
+              alt="Generic placeholder image"
+            >
+            <div class="media-body">
+              <h5 class="mb-0">{{ profile.name }}</h5>
+              <p class="mb-0">{{ profile.about }}</p>
+              <span class="badge badge-primary">
+                <i class="fa fa-user"/> n Followers
+              </span>
+            </div>
+          </router-link>
+
+          <router-link
+            v-if="profile.isProfile === true"
+            :to="{name: 'profile'}"
             class="media btn btn-light shadow-sm"
           >
             <img
@@ -52,7 +72,8 @@ import firebase from "firebase";
 export default {
   data() {
     return {
-      profiles: []
+      profiles: [],
+      render: false
     };
   },
   metaInfo: {
@@ -71,17 +92,22 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
+          let isProfile = false;
+          if (doc.data().user.UserUID == firebase.auth().currentUser.uid) {
+            isProfile = true;
+          }
           const data = {
             id: doc.id,
             uid: doc.data().user.UserUID,
             name: doc.data().user.name,
             img: doc.data().user.photo,
             email: doc.data().user.email,
-            about: doc.data().user.about
+            about: doc.data().user.about,
+            isProfile: isProfile
           };
 
-          if(data.about.length > 30) {
-            data.about = data.about.substring(0,30) + "..."
+          if (data.about.length > 30) {
+            data.about = data.about.substring(0, 30) + "...";
           }
           this.profiles.push(data);
         });

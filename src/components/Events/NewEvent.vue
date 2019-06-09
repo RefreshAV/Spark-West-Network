@@ -319,7 +319,9 @@ export default {
               location: {
                 lat: this.event.locationPos.lat,
                 lng: this.event.locationPos.lng
-              }
+              },
+              likes: 0,
+              likedBy: []
             }
           })
           .then(this.$router.push('/events/list'))

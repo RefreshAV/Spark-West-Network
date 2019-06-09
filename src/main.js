@@ -9,11 +9,10 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 Vue.use(VueDisqus)
-
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyDlI-Xwfk5NCsv4cUeL7rNND7cYkanUdxw',
-    libraries: 'places' // necessary for places input
+    key: 'AIzaSyC4hgE393XANjwBWyxW6wEGI3U-TUnVt8c',
+    libraries: 'places'
   }
 })
 

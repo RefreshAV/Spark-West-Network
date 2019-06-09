@@ -57,7 +57,7 @@
       <!-- Horizontal Buttons -->
       <div class="row d-none d-md-block animated fadeIn">
         <div class="btn-group mb-3 col" style="width:100%;">
-          <router-link to="/events/NewEvent" tag="button" class="btn btn-primary">
+          <router-link to="/events/NewEvent" tag="button" class="btn btn-primary btn-left">
             <div class="row d-flex justify-content-center">
               <i class="fas fa-plus-circle fa-2x"></i>
             </div>
@@ -69,7 +69,7 @@
             </div>
             <div class="row d-flex justify-content-center">View All Events</div>
           </router-link>
-          <router-link to="/events/EventMap" tag="button" class="btn btn-danger">
+          <router-link to="/events/EventMap" tag="button" class="btn btn-danger btn-right">
             <div class="row d-flex justify-content-center">
               <i class="fas fa-map-marker-alt fa-2x"></i>
             </div>
@@ -80,7 +80,7 @@
 
       <!-- Vertical Button -->
       <div class="btn-group-vertical mb-3 d-md-none" style="width:100%;">
-        <router-link to="/events/NewEvent" tag="button" class="btn btn-primary">
+        <router-link to="/events/NewEvent" tag="button" class="btn btn-primary btn-top">
           <div class="row d-flex justify-content-center">
             <i class="fas fa-plus-circle fa-2x"></i>
           </div>
@@ -92,7 +92,7 @@
           </div>
           <div class="row d-flex justify-content-center">View All Events</div>
         </router-link>
-        <router-link to="/events/EventMap" tag="button" class="btn btn-danger">
+        <router-link to="/events/EventMap" tag="button" class="btn btn-danger btn-bottom">
           <div class="row d-flex justify-content-center">
             <i class="fas fa-map-marker-alt fa-2x"></i>
           </div>
@@ -208,14 +208,24 @@ export default {
   border-bottom-right-radius: 12px;
 }
 
-.btn-primary {
+.btn-left {
   border-top-left-radius: 80px;
   border-bottom-left-radius: 80px;
 }
 
-.btn-danger {
+.btn-right {
   border-top-right-radius: 80px;
   border-bottom-right-radius: 80px;
+}
+
+.btn-top {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.btn-bottom {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .card {

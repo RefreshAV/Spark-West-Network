@@ -171,7 +171,7 @@ export default {
     };
   },
   beforeRouteEnter(to, from, next) {
-    var UserUID;
+    // var UserUID;
 
     db.collection("users")
       .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
@@ -184,10 +184,10 @@ export default {
             vm.img = doc.data().user.photo;
             vm.about = doc.data().user.about;
             vm.website = doc.data().user.website;
-            UserUID = doc.data().user.UserUID;
-            if (UserUID == firebase.auth().currentUser.uid) {
-              next("/Profile");
-            }
+            // UserUID = doc.data().user.UserUID;
+            // if (UserUID == firebase.auth().currentUser.uid) {
+            //   next("/Profile");
+            // }
           });
         });
       });
