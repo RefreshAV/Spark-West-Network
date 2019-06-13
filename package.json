@@ -28,6 +28,7 @@
     "vue-disqus": "^3.0.5",
     "vue-meta": "^1.5.8",
     "vue-router": "^3.0.2",
+    "vue-scrollto": "^2.15.0",
     "vue2-google-maps": "^0.10.5"
   },
   "devDependencies": {

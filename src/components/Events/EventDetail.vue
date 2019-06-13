@@ -4,6 +4,7 @@
       <div class="row">
         <div class="col">
           <router-link
+            v-if="author.id"
             :to="{name: 'userDetail', params: {id: author.id}}"
             class="media btn btn-light mb-3 shadow-sm"
           >
@@ -72,7 +73,7 @@
       <router-link
         :to="{name: 'EditEvent', params: {id: id}}"
         class="btn btn-primary"
-        v-if="isAuthenticated || isAdmin"
+        v-if="isAuthenticated || isAdmin && id"
       >Edit</router-link>
       <button @click="deleteEvent" class="btn btn-danger" v-if="isAuthenticated || isAdmin">Delete</button>
     </div>

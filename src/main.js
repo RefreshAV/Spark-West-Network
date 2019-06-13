@@ -5,9 +5,11 @@ import './registerServiceWorker'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import VueDisqus from 'vue-disqus'
 import { auth } from 'firebase/app'
+import VueScrollTo from 'vue-scrollto'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+Vue.use(VueScrollTo)
 Vue.use(VueDisqus)
 Vue.use(VueGoogleMaps, {
   load: {
@@ -22,7 +24,7 @@ router.beforeEach((to, from, next) => {
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   if (requiresAuth && !currentUser) {
-    next('SignUp')
+    next('Login')
   } else if (!requiresAuth && currentUser) {
     next()
   } else {

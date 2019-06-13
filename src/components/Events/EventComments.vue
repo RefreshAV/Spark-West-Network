@@ -3,9 +3,3 @@
     <vue-disqus shortname="sparkwestnews"/>
   </div>
 </template>
-
-<script>
-export default {
-
-}
-</script>

@@ -30,10 +30,22 @@
         >
           <div class="row w-100 m-0">
             <div class="col-auto m-2 float-left">
+              <div
+                v-if="!organization.logo"
+                class="spinnerWrapper d-flex justify-content-center align-items-center"
+                style="width: 84px; height: 84px;"
+              >
+                <div class="spinner-border w-50 h-50 text-primary spinner-border-sm" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
               <img
                 class="align-self-center rounded mb-2 logo mr-3 shadow-sm"
-                :src="'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Flogo%2F' + organization.logo + '?alt=media&token'"
-                alt="Generic placeholder image"
+                v-if="organization.logo"
+                :src="organization.logo"
+                alt="Organization logo"
+                width="84"
+                height="84"
               >
               <div class="media-body">
                 <h5 class="mb-0">{{ organization.name }}</h5>
@@ -44,9 +56,18 @@
               </div>
             </div>
             <div
-              class="col pr-0"
+              class="col pr-0 d-flex justify-content-center align-items-center"
               :style="'background-image: url(' + organization.banner + '); background-position: center; background-size: cover; background-repeat: no-repeat;'"
-            ></div>
+            >
+              <div
+                v-if="!organization.banner"
+                class="spinner-border text-primary spinner-border-sm"
+                style="width: 84px; height: 84px;"
+                role="status"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
           </div>
         </router-link>
       </div>
@@ -81,7 +102,7 @@
           ></div>
         </div>
       </button>
-    </div> -->
+    </div>-->
   </div>
 </template>
 
@@ -111,11 +132,13 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          console.log(doc.data().organization.imagekey);
           const data = {
             id: doc.id,
             name: doc.data().organization.name,
-            logo: doc.data().organization.imagekey,
+            logo:
+              "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Flogo%2F" +
+              doc.data().organization.imagekey +
+              "?alt=media&token",
             banner:
               "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Fbanner%2F" +
               doc.data().organization.bannerKey +

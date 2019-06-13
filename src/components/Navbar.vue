@@ -1,8 +1,8 @@
 <template>
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark mt-0">
+  <nav id="nav" class="navbar navbar-expand-lg navbar-dark mt-0">
     <div class="container">
-      <router-link to="/" tag="a" active-class="navbar-brand">
+      <router-link id="logo" to="/" tag="a" active-class="navbar-brand">
         <img src="../assets/logoLG.svg" class="m-1" height="42" alt="logo">
         <!-- <span class="badge badge-secondary">beta</span> -->
       </router-link>
@@ -20,29 +20,47 @@
       <ul class="navbar-nav ml-auto bg-dark p-2 d-flex align-items-center rounded-pill">
         <!--Do this in for loop-->
         <router-link :to="{name: 'about'}" tag="li" active-class="nav-item">
-          <a class="nav-link">About</a>
+          <a id="about" class="nav-link">About</a>
         </router-link>
         <router-link :to="{name: 'faq'}" tag="li" active-class="nav-item">
-          <a class="nav-link">FAQ</a>
+          <a id="faq" class="nav-link">FAQ</a>
         </router-link>
         <router-link :to="{name: 'contact'}" tag="li" active-class="nav-item">
-          <a class="nav-link">Contact</a>
+          <a id="contact" class="nav-link">Contact</a>
         </router-link>
         <router-link :to="{name: 'events'}" tag="li" active-class="nav-item">
-          <a class="nav-link">Events</a>
+          <a id="events" class="nav-link">Events</a>
         </router-link>
         <router-link :to="{name: 'userList'}" tag="li" active-class="nav-item">
-          <a class="nav-link">Users</a>
+          <a id="userlist" class="nav-link">Users</a>
         </router-link>
         <router-link :to="{name: 'profile'}" tag="li" active-class="nav-item" v-if="isLoggedIn">
-          <a class="nav-link">Profile</a>
+          <a id="profile" class="nav-link">Profile</a>
         </router-link>
         <router-link :to="{name: 'login'}" tag="li" active-class="nav-item" v-if="!isLoggedIn">
           <button class="btn btn-danger rounded-pill" type="submit">Login</button>
         </router-link>
-        <router-link to="/" tag="li" active-class="nav-item" v-if="isLoggedIn">
-          <button @click="logOut" class="btn btn-danger rounded-pill" type="submit">Log Out</button>
-        </router-link>
+        <button
+          v-if="isLoggedIn"
+          @click="logOut"
+          class="nav-item btn btn-danger rounded-pill"
+          type="submit"
+        >Log Out</button>
+
+        <!-- <div class="dropdown">
+          <button
+            class="btn btn-danger dropdown-toggle"
+            type="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >Log Out</button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <p>Are you sure?</p>
+            <a class="dropdown-item" href="#">Yes</a>
+            <a class="dropdown-item" href="#">No/a>
+          </div>
+        </div>-->
       </ul>
     </div>
   </nav>
@@ -50,6 +68,8 @@
 
 <script>
 import { auth } from "firebase/app";
+import VueScrollTo from "vue-scrollto";
+import $ from "jquery";
 
 export default {
   data() {
@@ -67,13 +87,19 @@ export default {
       }
     });
   },
+  watch: {
+    $route(to, from) {
+      VueScrollTo.scrollTo(document.getElementById("nav"));
+    }
+  },
   methods: {
     logOut() {
+      let that = this;
       auth()
         .signOut()
         .then(
           function() {
-            console.log("Signed Out");
+            that.$router.push("/");
           },
           function(error) {
             console.error("Sign Out Error", error);
@@ -117,7 +143,26 @@ body {
   border-color: #e23655;
 }
 
+.btn-light {
+  color: #fd4260;
+  font-weight: bold;
+  height: 54px;
+}
+
 ul {
-  transition:1s;
+  transition: 1s;
+}
+
+#logo {
+  transition: 0.5s all;
+}
+
+#logo:hover {
+  transform: translateY(-4px);
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+}
+
+.router-link-exact-active {
+  font-weight: bold;
 }
 </style>

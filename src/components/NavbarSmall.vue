@@ -106,7 +106,7 @@ export default {
     };
   },
   watch: {
-    $route (to, from) {
+    $route(to, from) {
       $("#navbarResponsive").collapse("hide");
     }
   },
@@ -125,9 +125,7 @@ export default {
       auth()
         .signOut()
         .then(
-          function() {
-            console.log("Signed Out");
-          },
+          function() {},
           function(error) {
             console.error("Sign Out Error", error);
           }
@@ -135,7 +133,6 @@ export default {
     },
 
     closeNav() {
-      console.log("collapse");
       $("#navbarResponsive").collapse("hide");
       this.$router.push("/");
     }

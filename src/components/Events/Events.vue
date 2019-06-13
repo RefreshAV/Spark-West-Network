@@ -25,6 +25,8 @@
         </div>
       </div>
 
+      <div class="line my-3 animated fadeIn"></div>
+
       <div v-if="events.length > 1" class="card-deck mb-3">
         <router-link
           v-if="events.length > 2"
@@ -201,7 +203,7 @@ export default {
 }
 
 #big-img {
-  background-size: cover;
+  background-size: cover !important;
   background-position: center;
   background-repeat: no-repeat;
   border-top-right-radius: 12px;
@@ -230,5 +232,25 @@ export default {
 
 .card {
   border-radius: 12px;
+}
+
+.line {
+  width: 100;
+  height: 12px;
+  border-radius: 16px;
+
+  background: #ee4036; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    45deg,
+    #ff3a2b,
+    #fd4260,
+    #ee4036
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    45deg,
+    #ff3a2b,
+    #fd4260,
+    #ee4036
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 </style>
