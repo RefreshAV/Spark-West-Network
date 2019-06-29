@@ -1,51 +1,44 @@
 <template>
   <div class="container">
     <div class="row my-2 mt-5">
-      <div class="col-lg-4 order-lg-1 text-center">
+      <div class="col-lg-4 mb-3 order-lg-1 text-center">
         <img
           :src="user.photoUrl"
-          class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm"
+          class="mx-auto img-fluid d-block mb-2 shadow-sm"
           id="preview"
           alt="avatar"
         >
-        <div class="dUp file btn btn-primary">
-          <small>
-            Change
-            <i class="fa fa-camera"/>
-          </small>
-          <input
-            type="file"
-            id="imgUp"
-            class="bUp"
-            accept="image/x-png, image/gif, image/jpeg"
-            @change="loadFile"
-          >
-        </div>
+
+        <button
+          class="btn btn-sm btn-info rounded-pill"
+          data-toggle="modal"
+          data-target="#modal"
+        >Change</button>
       </div>
       <div class="col-lg-8 order-lg-2">
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a href data-target="#profile" data-toggle="tab" class="nav-link active">
-              <i class="fas fa-user-circle"></i>
-              <span class="d-none d-sm-inline"> Profile</span>
+              <i class="fas fa-lg fa-user-circle"></i>
+              <span class="d-none d-sm-inline">Profile</span>
             </a>
           </li>
           <li class="nav-item">
             <a href data-target="#likes" data-toggle="tab" class="nav-link">
-              <i class="fas fa-heart"></i>
-              <span class="d-none d-sm-inline"> Likes</span>
+              <i class="fas fa-lg fa-heart"></i>
+              <span class="d-none d-sm-inline">Likes</span>
             </a>
           </li>
           <li class="nav-item">
             <a href data-target="#edit" data-toggle="tab" class="nav-link">
-              <i class="fas fa-pencil-alt"></i>
-              <span class="d-none d-sm-inline"> Edit</span>
+              <i class="fas fa-lg fa-pencil-alt"></i>
+              <span class="d-none d-sm-inline">Edit</span>
             </a>
           </li>
           <li class="nav-item">
             <a href data-target="#messages" data-toggle="tab" class="nav-link">
-              <i class="fas fa-envelope"></i>
-              <span class="d-none d-sm-inline"> Messages</span>
+              <i class="fas fa-lg fa-envelope"></i>
+              <span class="d-none d-sm-inline">Messages</span>
             </a>
           </li>
         </ul>
@@ -266,48 +259,56 @@
               <!-- Facebook -->
               <div class="input-group-row mb-3 d-flex">
                 <div class="col p-0">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text text-white bg-primary"><i class="fab fa-facebook-f mx-1"></i></span>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text text-white bg-primary">
+                        <i class="fab fa-facebook-f mx-1"></i>
+                      </span>
+                    </div>
+                    <input type="url" class="form-control" v-model="user.facebook">
                   </div>
-                  <input type="url" class="form-control" v-model="user.facebook">
-                </div>
                 </div>
               </div>
 
               <!-- Twitter -->
               <div class="input-group-row mb-3 d-flex">
                 <div class="col p-0">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text text-white bg-info"><i class="fab fa-twitter"></i></span>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text text-white bg-info">
+                        <i class="fab fa-twitter"></i>
+                      </span>
+                    </div>
+                    <input type="url" class="form-control" v-model="user.twitter">
                   </div>
-                  <input type="url" class="form-control" v-model="user.twitter">
-                </div>
                 </div>
               </div>
 
               <!-- Instagram -->
               <div class="input-group-row mb-3 d-flex">
                 <div class="col p-0">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text text-white bg-danger"><i class="fab fa-instagram"></i></span>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text text-white bg-danger">
+                        <i class="fab fa-instagram"></i>
+                      </span>
+                    </div>
+                    <input type="url" class="form-control" v-model="user.instagram">
                   </div>
-                  <input type="url" class="form-control" v-model="user.instagram">
-                </div>
                 </div>
               </div>
 
               <!-- Linkedin -->
               <div class="input-group-row mb-3 d-flex">
                 <div class="col p-0">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text text-white bg-primary"><i class="fab fa-linkedin-in"></i></span>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text text-white bg-primary">
+                        <i class="fab fa-linkedin-in"></i>
+                      </span>
+                    </div>
+                    <input type="url" class="form-control" v-model="user.linkedin">
                   </div>
-                  <input type="url" class="form-control" v-model="user.linkedin">
-                </div>
                 </div>
               </div>
 
@@ -356,26 +357,94 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0">
+          <div class="modal-header">
+            <h1 class="modal-title text-center w-100" id="exampleModalLongTitle">Profile Picture</h1>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col text-center">
+                <!-- <img
+                  :src="newImage"
+                  class="mx-auto img-fluid d-block mb-2 shadow-sm"
+                  id="newImage"
+                  alt="avatar"
+                >-->
+
+                <VueCropper
+                  id="newImage"
+                  class="mb-2"
+                  ref="cropper"
+                  :src="newImage"
+                  alt="Source Image"
+                  :cropmove="cropImage"
+                ></VueCropper>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-center">
+                <div class="dUp file btn btn-primary rounded-pill">
+                  Upload Image <i class="fas fa-arrow-up"></i>
+                  <input
+                    type="file"
+                    id="imgUp"
+                    class="bUp"
+                    accept="image/x-png, image/gif, image/jpeg"
+                    @change="loadFile"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer px-0 d-flex justify-content-center">
+            <div class="row w-100">
+              <div class="col">
+                <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">Cancle</button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-block btn-success">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase/app'
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase/app";
+import VueCropper from "vue-cropperjs";
+import "cropperjs/dist/cropper.css";
+
 export default {
-  data () {
+  data() {
     return {
       user: {
-        name: '',
-        email: '',
-        photoUrl: '',
-        website: '',
-        facebook: '',
-        twitter: '',
-        instagram: '',
-        linkedin: '',
-        about: ''
+        name: "",
+        email: "",
+        photoUrl: "",
+        website: "",
+        facebook: "",
+        twitter: "",
+        instagram: "",
+        linkedin: "",
+        about: ""
       },
+      newImage: null,
+      cropImage: null,
       image: null,
       events: [],
       likedEvents: [],
@@ -387,63 +456,67 @@ export default {
       currentLikePage: [],
       pageLength: 4,
       likePageLength: 4
-    }
+    };
+  },
+  components: {
+    'VueCropper': VueCropper
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'Profile',
+    title: "Profile",
     meta: [
       {
-        vmid: 'description',
-        name: 'description',
-        content: 'Your personal account on Spark West Network'
+        vmid: "description",
+        name: "description",
+        content: "Your personal account on Spark West Network"
       }
     ]
   },
-  metaInfo () {
+  metaInfo() {
     if (this.user.name) {
       return {
         title: this.user.name
-      }
+      };
     } else {
       return {
-        title: 'Profile'
-      }
+        title: "Profile"
+      };
     }
   },
   watch: {
-    page: 'updateCurrent',
-    likePage: 'updateCurrentLiked',
-    events: 'createPages',
-    likedEvents: 'createLikePages'
+    page: "updateCurrent",
+    likePage: "updateCurrentLiked",
+    events: "createPages",
+    likedEvents: "createLikePages"
   },
   methods: {
-    loadFile: function () {
-      var input = document.querySelector('.bUp')
+    loadFile: function() {
+      var input = document.querySelector(".bUp");
 
-      var imgURL = window.URL.createObjectURL(input.files[0])
-      this.user.photoUrl = imgURL
-      this.image = input.files[0]
+      var imgURL = window.URL.createObjectURL(input.files[0]);
+      this.user.photoUrl = imgURL;
+      this.newImage = imgURL;
+      this.image = input.files[0];
 
       var ref = firebase
         .storage()
-        .ref('users/' + firebase.auth().currentUser.uid)
-      var file = this.image
+        .ref("users/" + firebase.auth().currentUser.uid);
+      var file = this.image;
 
-      var upload = ref.put(file)
+      var upload = ref.put(file);
       upload.on(
-        'state_changed',
-        function progress (snapshot) {
+        "state_changed",
+        function progress(snapshot) {
           var percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
-        function error (err) {},
-        function complete () {}
-      )
+        function error(err) {},
+        function complete() {}
+      );
     },
-    writeUserData () {
-      db.collection('users')
-        .where('user.UserUID', '==', firebase.auth().currentUser.uid)
+    writeUserData() {
+      db.collection("users")
+        .where("user.UserUID", "==", firebase.auth().currentUser.uid)
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -460,101 +533,102 @@ export default {
                 UserUID: firebase.auth().currentUser.uid,
                 photo: this.user.photoUrl
               }
-            })
-          })
-        })
+            });
+          });
+        });
     },
-    updateCurrentLiked () {
+    updateCurrentLiked() {
       // console.log("update")
       // document.getElementById("likePage").readOnly = true;
 
-      this.currentLikePage = []
-      this.currentLikePage = this.likePages[this.likePage - 1]
+      this.currentLikePage = [];
+      this.currentLikePage = this.likePages[this.likePage - 1];
     },
-    nextPage () {
+    nextPage() {
       if (this.page < this.pages.length) {
-        this.page++
+        this.page++;
       }
     },
-    lastPage () {
+    lastPage() {
       if (this.page > 1) {
-        this.page--
+        this.page--;
       }
     },
-    nextPageL () {
+    nextPageL() {
       if (this.likePage < this.likePages.length) {
-        this.likePage++
+        this.likePage++;
       }
     },
-    lastPageL () {
+    lastPageL() {
       if (this.likePage > 1) {
-        this.likePage--
+        this.likePage--;
       }
     },
-    createPages () {
-      var length = Math.ceil(this.events.length / this.pageLength)
+    createPages() {
+      var length = Math.ceil(this.events.length / this.pageLength);
       for (var i = 0; i < length; i++) {
         if (this.events.slice(i * 4) < 4) {
-          this.pages.push(this.events.slice(i * this.pageLength))
+          this.pages.push(this.events.slice(i * this.pageLength));
         } else {
           this.pages.push(
             this.events.slice(
               i * this.pageLength,
               i * this.pageLength + this.pageLength
             )
-          )
+          );
         }
       }
-      this.currentPage = this.pages[0]
+      this.currentPage = this.pages[0];
     },
-    createLikePages () {
-      var length = Math.ceil(this.likedEvents.length / this.pageLength)
+    createLikePages() {
+      var length = Math.ceil(this.likedEvents.length / this.pageLength);
 
       for (var l = 0; l < length; l++) {
         if (this.likedEvents.slice(l * 4) < 4) {
-          this.likePages.push(this.likedEvents.slice(l * this.pageLength))
+          this.likePages.push(this.likedEvents.slice(l * this.pageLength));
         } else {
           this.likePages.push(
             this.likedEvents.slice(
               l * this.pageLength,
               l * this.pageLength + this.pageLength
             )
-          )
+          );
         }
       }
-      this.currentLikePage = this.likePages[0]
+      this.currentLikePage = this.likePages[0];
     },
-    updateCurrent () {
-      document.getElementById('page').readOnly = true
+    updateCurrent() {
+      document.getElementById("page").readOnly = true;
 
-      this.currentPage = []
-      this.currentPage = this.pages[this.page - 1]
+      this.currentPage = [];
+      this.currentPage = this.pages[this.page - 1];
     }
   },
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter(to, from, next) {
     // Get user data
-    db.collection('users')
-      .where('user.UserUID', '==', firebase.auth().currentUser.uid)
+    db.collection("users")
+      .where("user.UserUID", "==", firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.user.name = doc.data().user.name
-            vm.user.email = doc.data().user.email
-            vm.user.photoUrl = doc.data().user.photo
-            vm.user.website = doc.data().user.website
-            vm.user.about = doc.data().user.about
-          })
-        })
-      })
+            vm.user.name = doc.data().user.name;
+            vm.user.email = doc.data().user.email;
+            vm.user.photoUrl = doc.data().user.photo;
+            vm.newImage = doc.data().user.photo;
+            vm.user.website = doc.data().user.website;
+            vm.user.about = doc.data().user.about;
+          });
+        });
+      });
   },
-  created () {
+  created() {
     // get events created by user
-    db.collection('events')
-      .where('event.UserUID', '==', firebase.auth().currentUser.uid)
-      .orderBy('event.date.year')
-      .orderBy('event.date.month')
-      .orderBy('event.date.day')
+    db.collection("events")
+      .where("event.UserUID", "==", firebase.auth().currentUser.uid)
+      .orderBy("event.date.year")
+      .orderBy("event.date.month")
+      .orderBy("event.date.day")
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -566,14 +640,14 @@ export default {
             email: doc.data().event.email,
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          }
-          this.events.push(data)
-        })
-      })
+          };
+          this.events.push(data);
+        });
+      });
 
     // get liked events
-    db.collection('events')
-      .where('likedBy', 'array-contains', firebase.auth().currentUser.uid)
+    db.collection("events")
+      .where("likedBy", "array-contains", firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -585,12 +659,12 @@ export default {
             email: doc.data().event.email,
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          }
-          this.likedEvents.push(data)
-        })
-      })
+          };
+          this.likedEvents.push(data);
+        });
+      });
   }
-}
+};
 </script>
 
 <style>
@@ -601,7 +675,6 @@ export default {
 
 .bUp {
   position: absolute;
-  font-size: 50px;
   opacity: 0;
   right: 0;
   top: 0;
@@ -613,7 +686,6 @@ export default {
   margin-top: 20px;
   margin-left: 5px;
   margin-bottom: 5px;
-  font-size: 15px;
 }
 
 #preview {
@@ -661,5 +733,9 @@ li h3 {
     #ec2f4b,
     #009fff
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#newImage img {
+  border-radius: 12px;
 }
 </style>
