@@ -117,7 +117,10 @@
                 </div>
                 <hr />
                 <div class="row">
-                  <div class="col-md-6">
+                  <div
+                    class="col-md-6"
+                    v-if="user.about || user.facebook || user.twitter || user.instagram || user.linkden || user.website"
+                  >
                     <!-- About -->
                     <div v-if="user.about" class="row">
                       <div class="mb-2 col">
@@ -211,6 +214,16 @@
                       </div>
                     </div>
                   </div>
+                  <div class="col-md-6" v-else>
+                    <i>
+                      Add details about yourself in
+                      <a
+                        href="#"
+                        @click="changeTab('#profileTab', '#editTab')"
+                        data-toggle="tab"
+                      >Edit</a>
+                    </i>
+                  </div>
                   <!-- <div class="col-md-6">
                     <h6>Recent badges</h6>
                     <a href="#" class="badge badge-dark badge-pill mx-1">example1</a>
@@ -255,7 +268,7 @@
                       <li
                         v-if="loading"
                         id="loader"
-                        class="list-group-item d-flex justify-content-center align-items-center"
+                        class="list-group-item d-flex justify-content-center align-items-center mb-2"
                       >
                         <div class="spinner-border text-primary" role="status">
                           <span class="sr-only">Loading...</span>
@@ -523,7 +536,11 @@
                   </li>
                 </ul>
                 <button class="btn btn-dark">Send a message</button>-->
-                <div class="alert alert-primary animated fadeIn" role="alert" style="border-radius: 12px;">
+                <div
+                  class="alert alert-primary animated fadeIn"
+                  role="alert"
+                  style="border-radius: 12px;"
+                >
                   <div class="row mb-2">
                     <div class="col">
                       <p>Messaging is not yet a finished feature. To get notified of new features, sign up for our newsletter and follow us on social media:</p>
@@ -707,6 +724,9 @@ export default {
     likedEvents: "createLikePages"
   },
   methods: {
+    changeTab: function(oldTab, newTab) {
+      $("[data-target='" + newTab + "']").tab("show");
+    },
     loadFile: function() {
       var input = document.querySelector(".bUp");
 
@@ -755,9 +775,6 @@ export default {
         });
     },
     updateCurrentLiked() {
-      // console.log("update")
-      // document.getElementById("likePage").readOnly = true;
-
       this.currentLikePage = [];
       this.currentLikePage = this.likePages[this.likePage - 1];
     },
@@ -835,10 +852,18 @@ export default {
             vm.user.photoUrl = doc.data().user.photo;
             vm.newImage = doc.data().user.photo;
             vm.user.website = doc.data().user.website;
-            vm.user.twitter = doc.data().user.twitter;
-            vm.user.facebook = doc.data().user.facebook;
-            vm.user.instagram = doc.data().user.instagram;
-            vm.user.linkedin = doc.data().user.linkedin;
+            if (doc.data().user.twitter) {
+              vm.user.twitter = doc.data().user.twitter;
+            }
+            if (doc.data().user.facebook) {
+              vm.user.facebook = doc.data().user.facebook;
+            }
+            if (doc.data().user.instagram) {
+              vm.user.instagram = doc.data().user.instagram;
+            }
+            if (doc.data().user.linkedin) {
+              vm.user.linkedin = doc.data().user.linkedin;
+            }
             vm.user.about = doc.data().user.about;
           });
         });
@@ -866,7 +891,8 @@ export default {
           };
           this.events.push(data);
         });
-      });
+      })
+      .then((this.loading = false));
 
     // get liked events
     db.collection("events")
