@@ -51,16 +51,17 @@
                   </h4>
                 </div>
                 <div class="col">
-                  <div
+                  <button
                     id="like"
                     class="btn badge badge-pill border-0 text-danger"
                     @click="likeEvent"
+                    :disabled="!isLoggedIn"
                   >
                     <span>
                       <i class="fa fa-heart" />
                       {{ likes }}
                     </span>
-                  </div>
+                  </button>
                 </div>
               </div>
               <hr />
@@ -89,9 +90,9 @@
       <router-link
         :to="{name: 'EditEvent', params: {id: id}}"
         class="btn btn-primary"
-        v-if="isAuthenticated || isAdmin && id"
+        v-if="isAuthor || isAdmin && id"
       >Edit</router-link>
-      <button @click="deleteEvent" class="btn btn-danger" v-if="isAuthenticated || isAdmin">Delete</button>
+      <button @click="deleteEvent" class="btn btn-danger" v-if="isAuthor || isAdmin && id">Delete</button>
     </div>
     <hr />
     <app-comments class="mb-3" />
@@ -135,8 +136,9 @@ export default {
       attending: false,
       attendees: Math.floor(Math.random() * 100),
       peopleAttending: [],
-      isAuthenticated: false,
-      isAdmin: false
+      isAuthor: false,
+      isAdmin: false,
+      isLoggedIn: false
     };
   },
   metaInfo: {
@@ -180,10 +182,19 @@ export default {
   mounted() {
     var that = this;
 
-    if (firebase.auth().currentUser.uid == "KwDaa9UdSAe8Jnn8biRTr0rcRlk2") {
+    if (
+      firebase.auth().currentUser &&
+      firebase.auth().currentUser.uid == "KwDaa9UdSAe8Jnn8biRTr0rcRlk2"
+    ) {
       this.isAdmin = true;
     } else {
       this.isAdmin = false;
+    }
+
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+    } else {
+      this.isLoggedIn = false;
     }
 
     db.collection("events")
@@ -212,7 +223,10 @@ export default {
       })
       .then(function() {
         var button = document.getElementById("like");
-        if (that.likedBy.includes(firebase.auth().currentUser.uid)) {
+        if (
+          firebase.auth().currentUser &&
+          that.likedBy.includes(firebase.auth().currentUser.uid)
+        ) {
           that.liked = true;
           button.classList.add("liked", "animated", "heartBeat");
         } else {
@@ -220,11 +234,6 @@ export default {
           button.classList.add("notLiked");
         }
       });
-  },
-  updated() {
-    if (firebase.auth().currentUser.uid == this.UserUID) {
-      this.isAuthenticated = true;
-    }
   },
   watch: {
     title: "fetchImage",
@@ -262,6 +271,15 @@ export default {
             this.author.img = doc.data().user.photo;
             this.author.email = doc.data().user.email;
           });
+
+          if (
+            firebase.auth().currentUser &&
+            firebase.auth().currentUser.uid == this.author.uid
+          ) {
+            this.isAuthor = true;
+          } else {
+            this.isAuthor = false;
+          }
         })
         .then(() => {
           db.collection("events")
@@ -294,41 +312,43 @@ export default {
       // Add join Event logic here
     },
     likeEvent() {
-      if (this.likedBy == null) {
-        this.likedBy = [];
-      }
-      if (this.likes == null) {
-        this.likes = 0;
-      }
+      if (firebase.auth().currentUser) {
+        if (this.likedBy == null) {
+          this.likedBy = [];
+        }
+        if (this.likes == null) {
+          this.likes = 0;
+        }
 
-      if (this.liked) {
-        // remove like
-        this.liked = false;
-        this.likes--;
+        if (this.liked) {
+          // remove like
+          this.liked = false;
+          this.likes--;
 
-        var remove = this.likedBy.filter(
-          uid => uid !== firebase.auth().currentUser.uid
-        );
-        this.likedBy = remove;
+          var remove = this.likedBy.filter(
+            uid => uid !== firebase.auth().currentUser.uid
+          );
+          this.likedBy = remove;
 
-        db.collection("events")
-          .doc(this.id)
-          .update({
-            likes: this.likes,
-            likedBy: this.likedBy
-          });
-      } else {
-        // add like
-        this.liked = true;
-        this.likes++;
-        this.likedBy.push(firebase.auth().currentUser.uid);
+          db.collection("events")
+            .doc(this.id)
+            .update({
+              likes: this.likes,
+              likedBy: this.likedBy
+            });
+        } else {
+          // add like
+          this.liked = true;
+          this.likes++;
+          this.likedBy.push(firebase.auth().currentUser.uid);
 
-        db.collection("events")
-          .doc(this.id)
-          .update({
-            likes: this.likes,
-            likedBy: this.likedBy
-          });
+          db.collection("events")
+            .doc(this.id)
+            .update({
+              likes: this.likes,
+              likedBy: this.likedBy
+            });
+        }
       }
     }
   },

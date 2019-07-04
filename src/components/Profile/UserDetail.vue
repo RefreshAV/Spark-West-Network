@@ -1,131 +1,148 @@
 <template>
-  <div class="container">
-    <div class="row my-2 mt-5">
-      <div class="col-lg-4 order-lg-1 text-center">
-        <img
-          :src="img"
-          class="mx-auto img-fluid img-circle d-block mb-2 shadow-sm"
-          id="preview"
-          alt="avatar"
-        >
-      </div>
-      <div class="col-lg-8 order-lg-2">
-        <div class="tab-content py-4">
-          <div class="tab-pane active" id="profile">
-            <h2 class="mb-3">{{ name }}</h2>
-            <hr>
-            <div class="row">
-              <div class="col-md-6">
-                <strong>About</strong>
-                <p>{{ about }}</p>
-                <strong>More info</strong>
-                <p>
-                  Website:
-                  <a target="_blank" :href="website">{{ website }}</a>
-                </p>
-              </div>
-              <div class="col-md-6">
-                <h6>Recent badges</h6>
-                <a href="#" class="badge badge-dark badge-pill">example1</a>
-                <a href="#" class="badge badge-dark badge-pill">coffee</a>
-                <a href="#" class="badge badge-dark badge-pill">examples</a>
-                <a href="#" class="badge badge-dark badge-pill">more examples</a>
-                <hr>
-                <span class="badge badge-primary">
-                  <i class="fa fa-user"/> n Followers
-                </span>
-                <span class="badge badge-success">
-                  <i class="fa fa-cog"/> n Forks
-                </span>
-                <span class="badge badge-danger">
-                  <i class="fa fa-heart"/>
-                  {{ likedEvents.length }} Liked Events
-                </span>
-              </div>
-              <div class="col-md-12">
-                <hr>
-                <h5 class="mt-2">
-                  <span class="float-right badge badge-primary badge-pill">
-                    <i class="fa fa-calendar"/>
-                    {{ events.length }}
-                  </span>
-                  {{ name }}'s Events:
-                </h5>
-
-                <ul class="list-group border-0 shadow mb-3">
-                  <router-link
-                    class="list-group-item card text-white bg-dark mb-1"
-                    v-for="event in currentPage"
-                    :key="event.id"
-                    :to="{name: 'event-detail', params: {id: event.id}}"
-                  >
-                    <div>
-                      <h5>{{ event.title }}</h5>
-                      <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
+  <div>
+    <img id="backdrop" class="animated fadeIn" src="../../assets/backdrop02.svg" />
+    <div class="container">
+      <div class="row my-2 mt-5">
+        <div class="col-lg-4 order-lg-1 text-center">
+          <img
+            :src="img"
+            class="mx-auto img-fluid img-circle d-block mb-3 shadow"
+            id="preview"
+            alt="avatar"
+          />
+        </div>
+        <div class="col-lg-8 order-lg-2 mb-3">
+          <div class="card border-0 shadow" style="border-radius:12px;">
+            <div class="card-body">
+              <div class="tab-content py-4">
+                <div class="tab-pane active" id="profile">
+                  <h2 class="mb-3">{{ name }}</h2>
+                  <hr />
+                  <div class="row">
+                    <div class="col-md-6">
+                      <strong>About</strong>
+                      <p>{{ about }}</p>
+                      <strong>More info</strong>
+                      <p>
+                        Website:
+                        <a target="_blank" :href="website">{{ website }}</a>
+                      </p>
                     </div>
-                  </router-link>
+                    <div class="col-md-6">
+                      <h6>Recent badges</h6>
+                      <a href="#" class="badge badge-dark badge-pill">example1</a>
+                      <a href="#" class="badge badge-dark badge-pill">coffee</a>
+                      <a href="#" class="badge badge-dark badge-pill">examples</a>
+                      <a href="#" class="badge badge-dark badge-pill">more examples</a>
+                      <hr />
+                      <span class="badge badge-primary">
+                        <i class="fa fa-user" /> n Followers
+                      </span>
+                      <span class="badge badge-success">
+                        <i class="fa fa-cog" /> n Forks
+                      </span>
+                      <span class="badge badge-danger">
+                        <i class="fa fa-heart" />
+                        {{ likedEvents.length }} Liked Events
+                      </span>
+                    </div>
+                    <div class="col-md-12">
+                      <hr />
+                      <h5 class="mt-2">
+                        <span class="float-right badge badge-primary badge-pill">
+                          <i class="fa fa-calendar" />
+                          {{ events.length }}
+                        </span>
+                        {{ name }}'s Events:
+                      </h5>
 
-                  <li
-                    v-if="events.length == 0"
-                    id="placeholder"
-                    class="list-group-item border-0 text-white d-flex justify-content-center align-items-center"
-                  >
-                    <h3>Nothing Here!</h3>
-                  </li>
-                </ul>
-              </div>
+                      <ul class="list-group border-0 mb-3">
+                        <router-link
+                          class="list-group-item event shadow-sm mb-1 card event text-white bg-dark"
+                          v-for="event in currentPage"
+                          :key="event.id"
+                          :to="{name: 'event-detail', params: {id: event.id}}"
+                        >
+                          <div>
+                            <h5>{{ event.title }}</h5>
+                            <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
+                          </div>
+                        </router-link>
 
-              <div class="col-md-12 d-flex justify-content-end">
-                <div class="btn-group">
-                  <button class="btn btn-outline-primary" @click="lastPage">
-                    <i class="fa fa-angle-double-left"/>
-                  </button>
-                  <input
-                    id="page"
-                    type="number"
-                    class="btn btn-outline-primary"
-                    v-model="page"
-                    style="max-width:4rem;"
-                    min="0"
-                    :max="pages.length"
-                    readonly
-                  >
-                  <button class="btn btn-outline-primary" @click="nextPage">
-                    <i class="fa fa-angle-double-right"/>
-                  </button>
+                        <li
+                          v-if="events.length == 0 && !loading"
+                          id="placeholder"
+                          class="list-group-item border-0 shadow text-white d-flex justify-content-center align-items-center"
+                        >
+                          <h3>Nothing Here!</h3>
+                        </li>
+
+                        <li
+                          v-if="loading"
+                          id="loader"
+                          class="list-group-item d-flex justify-content-center align-items-center"
+                        >
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="col-md-12 d-flex justify-content-end">
+                      <div class="btn-group">
+                        <button class="btn btn-outline-primary" @click="lastPage">
+                          <i class="fa fa-angle-double-left" />
+                        </button>
+                        <input
+                          id="page"
+                          type="number"
+                          class="btn btn-outline-primary"
+                          v-model="page"
+                          style="max-width:4rem;"
+                          min="0"
+                          :max="pages.length"
+                          readonly
+                        />
+                        <button class="btn btn-outline-primary" @click="nextPage">
+                          <i class="fa fa-angle-double-right" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!--/row-->
+                </div>
+                <div class="tab-pane" id="messages">
+                  <div class="alert alert-info alert-dismissable">
+                    <a class="panel-close close" data-dismiss="alert">×</a> This is an example bootstrap
+                    <strong>.alert</strong> Put Important message here.
+                  </div>
+                  <table class="table table-hover table-striped">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="float-right font-weight-bold">3 hrs ago</span> New Weekly events updated
+                        </td>
+                      </tr>
+                      <td>
+                        <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id dolor. Morbi venenatis lacinia rhoncus.
+                      </td>
+                      <tr />
+                      <tr>
+                        <td>
+                          <span class="float-right font-weight-bold">9/4</span> Vestibulum tincidunt ullamcorper eros eget luctus.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="float-right font-weight-bold">9/4</span> Maxamillion ais the fix for tibulum tincidunt ullamcorper eros.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-            <!--/row-->
-          </div>
-          <div class="tab-pane" id="messages">
-            <div class="alert alert-info alert-dismissable">
-              <a class="panel-close close" data-dismiss="alert">×</a> This is an example bootstrap
-              <strong>.alert</strong> Put Important message here.
-            </div>
-            <table class="table table-hover table-striped">
-              <tbody>
-                <tr>
-                  <td>
-                    <span class="float-right font-weight-bold">3 hrs ago</span> New Weekly events updated
-                  </td>
-                </tr>
-                <td>
-                  <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id dolor. Morbi venenatis lacinia rhoncus.
-                </td>
-                <tr/>
-                <tr>
-                  <td>
-                    <span class="float-right font-weight-bold">9/4</span> Vestibulum tincidunt ullamcorper eros eget luctus.
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <span class="float-right font-weight-bold">9/4</span> Maxamillion ais the fix for tibulum tincidunt ullamcorper eros.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
@@ -151,7 +168,8 @@ export default {
       page: 1,
       pages: [],
       currentPage: [],
-      pageLength: 4
+      pageLength: 4,
+      loading: true
     };
   },
   metaInfo: {
@@ -219,7 +237,8 @@ export default {
   },
   methods: {
     getEvents() {
-      // get users eventstranslate
+      // get users events
+      this.loading = true;
       db.collection("events")
         .where("event.UserUID", "==", this.UserUID)
         .orderBy("event.date.year")
@@ -239,7 +258,8 @@ export default {
             };
             this.events.push(data);
           });
-        });
+        })
+        .then((this.loading = false));
 
       // get liked events
       db.collection("events")
@@ -296,7 +316,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .dUp {
   position: relative;
   overflow: hidden;
@@ -325,7 +345,7 @@ export default {
   border-radius: 100%;
 }
 
-.card p {
+.event p {
   margin: 0px;
 }
 
@@ -341,7 +361,8 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 #placeholder {
-  height: 300px;
+  height: 344px;
+  border-radius: 12px;
   background: #009fff; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     115deg,
@@ -353,5 +374,25 @@ input[type="number"]::-webkit-outer-spin-button {
     #ec2f4b,
     #009fff
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#loader {
+  height: 344px;
+  border-radius: 12px;
+}
+
+#loader .spinner-border {
+  width: 100px;
+  max-width: 100%;
+  height: 100px;
+  max-height: 100%;
+}
+
+#backdrop {
+  position: absolute;
+  width: 100%;
+  z-index: -1000 !important;
+  bottom: 220px;
+  right: 0;
 }
 </style>

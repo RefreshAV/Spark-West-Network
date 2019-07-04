@@ -58,7 +58,7 @@ const routes = [
     name: 'event-detail',
     component: EventDetail,
     meta: {
-      requiresAuth: true
+      requiresAuth: false
     }
   },
   {
@@ -66,7 +66,7 @@ const routes = [
     name: 'events-list',
     component: EventList,
     meta: {
-      requiresAuth: true
+      requiresAuth: false
     }
   },
   {
@@ -154,7 +154,7 @@ const routes = [
     name: 'userDetail',
     component: UserDetail,
     meta: {
-      requiresAuth: true
+      requiresAuth: false
     }
   },
   {

@@ -1,5 +1,5 @@
 <template>
-  <div class="px-5 bg-light text-center">
+  <div class="px-5 bg-light border text-center">
     <div class="row my-3">
       <div class="col text-center">
         <p class="mb-0 font-weight-bold">Check out our newsletter:</p>
