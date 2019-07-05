@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="w-100">
+    <!-- <img id="backdrop" class="animated fadeIn d-md-inline d-none" src="../../assets/backdrop04.svg" /> -->
     <!-- Slides -->
     <div class="d-none d-lg-flex w-100 justify-content-center">
       <carousel
@@ -119,18 +120,18 @@
 
         <h1 class="d-lg-block d-none text-center display-3 pb-5">
           Welcome To
-          <br>Spark West Network
+          <br />Spark West Network
         </h1>
 
         <h2 class="d-lg-none text-center pb-5">
           Welcome To
-          <br>Spark West Network
+          <br />Spark West Network
         </h2>
 
         <!-- Marketing Icons Section -->
         <div class="row">
           <div class="col-lg-4 mb-4">
-            <div class="card card-info h-100 border-0 shadow animated fadeInLeft">
+            <div class="card card-info h-100 shadow animated fadeInLeft">
               <h4 class="card-header">
                 <i class="far fa-comments"></i> A Unified Voice
               </h4>
@@ -146,7 +147,7 @@
             </div>
           </div>
           <div class="col-lg-4 mb-4">
-            <div class="card card-info h-100 border-0 shadow animated fadeInLeft delay1">
+            <div class="card card-info h-100 shadow animated fadeInLeft delay1">
               <h4 class="card-header">
                 <i class="fa fa-arrow-right"></i> An Access Ramp
               </h4>
@@ -162,7 +163,7 @@
             </div>
           </div>
           <div class="col-lg-4 mb-4">
-            <div class="card card-info h-100 border-0 shadow animated fadeInLeft delay2">
+            <div class="card card-info h-100 shadow animated fadeInLeft delay2">
               <h4 class="card-header">
                 <i class="far fa-bell"></i> Attracting Talent
               </h4>
@@ -350,5 +351,15 @@ export default {
   width: 100;
   height: 16px;
   border-radius: 16px;
+}
+
+#backdrop {
+  position: absolute;
+  width: 100%;
+  max-height: 50vmax;
+  max-width: 1900px;
+  z-index: -1000 !important;
+  bottom: 220px;
+  left: 0px;
 }
 </style>
