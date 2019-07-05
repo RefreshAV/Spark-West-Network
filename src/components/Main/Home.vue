@@ -179,6 +179,28 @@
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col text-center">
+            <h1>
+              Recent Tweets:
+            </h1>
+          </div>
+        </div>
+
+        <div class="row d-flex justify-content-center mb-5">
+          <div class="col-8">
+            <div class="card shadow" id="twitter-card">
+              <div class="card-body p-0">
+                <Timeline
+                  id="SparkWestNet"
+                  sourceType="profile"
+                  :options="{ tweetLimit: '3', theme: 'dark' }"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -186,6 +208,7 @@
 
 <script>
 import { Carousel, Slide } from "vue-carousel";
+import { Timeline } from "vue-tweet-embed";
 import db from "../../Firebase/firebaseInit";
 
 export default {
@@ -198,7 +221,8 @@ export default {
   },
   components: {
     Carousel,
-    Slide
+    Slide,
+    Timeline
   },
   metaInfo: {
     title: "Spark West Network",
@@ -361,5 +385,15 @@ export default {
   z-index: -1000 !important;
   bottom: 220px;
   left: 0px;
+}
+
+#twitter-card {
+  border-radius: 12px !important;
+  max-height: 440px;
+  overflow: hidden;
+}
+
+#twitter-card .card-body {
+  overflow-y: scroll;
 }
 </style>
