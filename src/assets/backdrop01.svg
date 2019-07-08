@@ -15,10 +15,26 @@
    viewBox="0 0 508 285.74997"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   inkscape:version="0.92.4 (33fec40, 2019-01-16)"
    sodipodi:docname="backdrop01.svg">
   <defs
      id="defs2">
+    <linearGradient
+       id="linearGradient2249"
+       inkscape:collect="always">
+      <stop
+         id="stop2243"
+         offset="0"
+         style="stop-color:#2ab7ca;stop-opacity:1" />
+      <stop
+         style="stop-color:#fd4260;stop-opacity:1"
+         offset="0.51966298"
+         id="stop2245" />
+      <stop
+         id="stop2247"
+         offset="1"
+         style="stop-color:#fed766;stop-opacity:1" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient6063">
@@ -47,14 +63,14 @@
        gradientTransform="matrix(3.7795276,0,0,3.7795276,0,-42.519761)" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient6063"
+       xlink:href="#linearGradient2249"
        id="linearGradient2417"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(3.7795276,0,0,3.7795276,0,-42.51976)"
-       x1="376.84225"
-       y1="312.11905"
-       x2="307.67264"
-       y2="113.3036" />
+       x1="392.34387"
+       y1="380.54004"
+       x2="326.91605"
+       y2="120.2526" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -63,9 +79,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="784.10163"
-     inkscape:cy="195.76868"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="1101.1359"
+     inkscape:cy="463.4285"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -73,9 +89,9 @@
      inkscape:snap-page="true"
      inkscape:object-paths="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1025"
-     inkscape:window-x="1680"
-     inkscape:window-y="25"
+     inkscape:window-height="1016"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="false"
      inkscape:object-nodes="true"
@@ -100,7 +116,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

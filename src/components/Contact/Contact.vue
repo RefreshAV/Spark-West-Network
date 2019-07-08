@@ -1,132 +1,217 @@
 <template>
   <section id="contact">
-    <div class="container">
-      <h1 class="mt-4 mb-3 text-center">Contact Us</h1>
-      <div class="row">
-        <div class="col">
-          <div class="card bg-white border-0 mb-3 shadow animated fadeInLeft">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-7 rounded">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22534.894807880497!2d-64.37648732789971!3d45.08859451133002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4b585508649b3e03%3A0xb991fdcccab87245!2sWolfville%2C+NS!5e0!3m2!1sen!2sca!4v1531401712394"
-                    frameborder="0"
-                    @load="load"
-                    v-show="loaded"
-                    class="w-100 h-100 border-0 rounded"
-                    allowfullscreen
-                  />
+    <div class="wrapper">
+      <div class="container">
+        <h1 class="mt-4 mb-3 text-center">Contact Us</h1>
+        <div class="row">
+          <div class="col">
+            <div class="card bg-white shadow animated fadeInLeft">
+              <div class="card-body pb-0">
+                <div class="row">
+                  <div class="col-md col-12 mb-3">
+                    <div class="map">
+                      <MglMap
+                        :accessToken="accessToken"
+                        :mapStyle="mapStyle"
+                        :center="coordinates"
+                        :zoom="12"
+                        @load="onMapLoaded"
+                      >
+                        <MglNavigationControl position="top-right" />
+                        <MglMarker :coordinates="coordinates" color="#fd4260">
+                          <MglPopup>
+                            <div>
+                              <h5>Patterson Hall</h5>
+                              <p>
+                                24 University Ave
+                                Wolfville
+                              </p>
+                            </div>
+                          </MglPopup>
+                        </MglMarker>
+                      </MglMap>
+                    </div>
+                  </div>
+
+                  <div class="col-md-5 col-12 mb-3">
+                    <form @submit.prevent="mail">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Name"
+                          v-model="contactRequest.name"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Subject"
+                          v-model="contactRequest.subject"
+                          required
+                        />
+                      </div>
+                      <!-- <div class="form-group">
+                        <input
+                          type="tel"
+                          class="form-control"
+                          placeholder="Phone"
+                          v-model="contactRequest.phone"
+                        />
+                        <small class="form-text text-muted ml-1">optional</small>
+                      </div> -->
+                      <div class="form-group">
+                        <textarea
+                          class="form-control"
+                          rows="8"
+                          placeholder="Message"
+                          v-model="contactRequest.message"
+                          style="resize:none;"
+                          required
+                        />
+                      </div>
+                      <button class="btn btn-block btn-primary" type="submit" name="button">
+                        Send
+                        <i class="fas fa-paper-plane"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="row d-flex justify-content-center mb-4">
+          <div class="col-md-auto col">
+            <div class="card border-info text-info shadow">
+              <div class="card-body">
+                <div class="row mb-3">
+                  <div class="col text-center">
+                    <h3>Or Follow Us</h3>
+                  </div>
                 </div>
 
-                <div class="col-md-5">
-                  <form>
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name
-                        value
-                        placeholder="Name"
-                        v-model="contactRequest.name"
+                <div class="row">
+                  <div class="col text-center">
+                    <div class="btn-group d-none d-sm-inline">
+                      <a
+                        href="https://twitter.com/SparkWestNet/media"
+                        target="_"
+                        class="btn btn-info btn-lg"
                       >
-                    </div>
-                    <div class="form-group">
-                      <input
-                        type="email"
-                        class="form-control"
-                        name
-                        value
-                        placeholder="E-mail"
-                        v-model="contactRequest.email"
+                        Twitter
+                        <i class="fab fa-twitter fa-lg"></i>
+                      </a>
+                      <a
+                        href="https://fb.me/sparkwestnetwork"
+                        target="_"
+                        class="btn btn-primary btn-lg"
                       >
-                    </div>
-                    <div class="form-group">
-                      <input
-                        type="tel"
-                        class="form-control"
-                        name
-                        value
-                        placeholder="Phone"
-                        v-model="contactRequest.phone"
+                        Facebook
+                        <i class="fab fa-facebook fa-lg"></i>
+                      </a>
+                      <a
+                        href="https://www.instagram.com/sparkwestnetwork/"
+                        target="_"
+                        class="btn btn-danger btn-lg"
                       >
+                        Instagram
+                        <i class="fab fa-instagram fa-lg"></i>
+                      </a>
                     </div>
-                    <div class="form-group">
-                      <textarea
-                        class="form-control"
-                        name
-                        rows="4"
-                        placeholder="Message"
-                        v-model="contactRequest.message"
-                        style="resize:none;"
-                      />
+
+                    <div class="btn-group-vertical d-inline d-sm-none">
+                      <a
+                        href="https://twitter.com/SparkWestNet/media"
+                        target="_"
+                        class="btn btn-info btn-lg"
+                      >
+                        Twitter
+                        <i class="fab fa-twitter fa-lg"></i>
+                      </a>
+                      <a
+                        href="https://fb.me/sparkwestnetwork"
+                        target="_"
+                        class="btn btn-primary btn-lg"
+                      >
+                        Facebook
+                        <i class="fab fa-facebook fa-lg"></i>
+                      </a>
+                      <a
+                        href="https://www.instagram.com/sparkwestnetwork/"
+                        target="_"
+                        class="btn btn-danger btn-lg"
+                      >
+                        Instagram
+                        <i class="fab fa-instagram fa-lg"></i>
+                      </a>
                     </div>
-                    <button class="btn btn-block btn-primary" type="submit" name="button">
-                      Send
-                      <i class="fas fa-paper-plane"></i>
-                    </button>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="row mb-3 px-3 d-flex justify-content-center align-items-center">
-        <div class="col-8">
-          <div
-            class="row p-3 d-flex justify-content-center align-items-center socBanner shadow rounded-pill"
-          >
-            <div class="col text-center">
-              <button class="btn btn-light socialMedia rounded-circle text-center"><i class="m-0 fab fa-facebook-f"></i></button>
-            </div>
-            <div class="col text-center">
-              <button class="btn btn-light socialMedia rounded-circle text-center"><i class="m-0 fab fa-twitter"></i></button>
-            </div>
-            <div class="col text-center">
-              <button class="btn btn-light socialMedia rounded-circle text-center"><i class="m-0 fab fa-instagram"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 </template>
 
 <script>
-import $ from 'jquery'
+import $ from "jquery";
+import { MglMap, MglMarker, MglNavigationControl, MglPopup } from "vue-mapbox";
 
 export default {
-  data: function () {
+  data: function() {
     return {
       contactRequest: {
-        name: '',
-        email: '',
-        phone: '',
-        message: ''
+        name: "",
+        subject: "",
+        phone: "",
+        message: ""
       },
+      accessToken:
+        "pk.eyJ1IjoiY3VwcGFqb2VtYW4iLCJhIjoiY2prMTY5MHJrMGU5ejNycXFvdXpnMG84aSJ9.s6Pvs5N-dITfrDFAgEWbng",
+      mapStyle: "mapbox://styles/mapbox/dark-v9",
+      coordinates: [-64.36834, 45.08829],
       loaded: false
-    }
+    };
+  },
+  components: {
+    MglMap,
+    MglMarker,
+    MglPopup,
+    MglNavigationControl
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'Contact',
+    title: "Contact",
     meta: [
       {
-        vmid: 'description',
-        name: 'description',
-        content: 'Get in touch with us'
+        vmid: "description",
+        name: "description",
+        content: "Get in touch with us"
       }
     ]
   },
   methods: {
-    load () {
-      this.loaded = true
-      $('iframe').addClass('animated fadeIn')
+    onMapLoaded() {
+      this.loaded = true;
+      $("iframe").addClass("animated fadeIn");
+    },
+    mail() {
+      let subject = this.contactRequest.name + ': ' + this.contactRequest.subject
+      let body = this.contactRequest.message
+
+      window.open('mailto:info@sparkwest.network?subject=' + subject + '&body=' + body);
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -134,29 +219,30 @@ textarea {
   resize: none;
 }
 
-.btn-light {
-  width: 8vmax;
-  height: 8vmax;
-  max-width: 80px;
-  max-height: 80px;
-  color: #2f80ed;
+.card {
+  border-radius: 12px;
 }
 
-.socBanner {
-  background: #56ccf2; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    45deg,
-    #2f80ed,
-    #56ccf2
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    45deg,
-    #2f80ed,
-    #56ccf2
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.map {
+  border-radius: 12px !important;
+  min-height: 200px;
+  height: 100%;
+  overflow: hidden;
 }
 
-.btn-light i {
-  font-size: 3rem;
+.mapboxgl-popup {
+  transform: translateY(100px);
+}
+
+input {
+  border-radius: 40px;
+}
+
+textarea {
+  border-radius: 12px;
+}
+
+form button {
+  border-radius: 12px;
 }
 </style>
