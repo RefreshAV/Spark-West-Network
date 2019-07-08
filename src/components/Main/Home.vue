@@ -1,6 +1,7 @@
 <template>
   <div class="w-100">
-    <!-- <img id="backdrop" class="animated fadeIn d-md-inline d-none" src="../../assets/backdrop04.svg" /> -->
+    <img id="backdrop" class="animated fadeIn d-md-inline d-none" src="../../assets/backdrop04.svg" />
+    <img id="backdrop-small" class="animated fadeIn d-md-none" src="../../assets/backdrop07.svg" />
     <!-- Slides -->
     <div class="d-none d-lg-flex w-100 justify-content-center">
       <carousel
@@ -118,15 +119,11 @@
 
         <div class="line bg-dark my-5"></div>
 
-        <h1 class="d-lg-block d-none text-center display-3 pb-5">
+        <h1 id="swn" class="text-center display-3 pb-5">
           Welcome To
-          <br />Spark West Network
+          <br />
+          <b>Spark West Network</b>
         </h1>
-
-        <h2 class="d-lg-none text-center pb-5">
-          Welcome To
-          <br />Spark West Network
-        </h2>
 
         <!-- Marketing Icons Section -->
         <div class="row">
@@ -180,23 +177,215 @@
           </div>
         </div>
 
-        <div class="row">
+        <hr />
+
+        <div class="row mb-3">
           <div class="col text-center">
-            <h1>
-              Recent Tweets:
-            </h1>
+            <h1>Spark West Social:</h1>
           </div>
         </div>
 
         <div class="row d-flex justify-content-center mb-5">
-          <div class="col-8">
-            <div class="card shadow" id="twitter-card">
-              <div class="card-body p-0">
-                <Timeline
-                  id="SparkWestNet"
-                  sourceType="profile"
-                  :options="{ tweetLimit: '3', theme: 'dark' }"
-                />
+          <!-- Twitter feed -->
+          <div class="col mb-3">
+            <div class="row mb-2">
+              <div class="col text-center">
+                <h3>
+                  <span class="badge badge-pill badge-primary">
+                    Twitter
+                    <i class="fab fa-twitter"></i>
+                  </span>
+                </h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="card bg-dark card-social shadow">
+                  <div class="card-body p-0">
+                    <Timeline
+                      id="SparkWestNet"
+                      class="mb-0"
+                      sourceType="profile"
+                      :options="{ tweetLimit: '5', theme: 'dark' }"
+                    />
+                    <div class="p-3 w-100">
+                      <a
+                        class="btn btn-grad-blue btn-block font-weight-bold"
+                        href="https://www.twitter.com/sparkwestnet/"
+                        target="_"
+                      >See more on Twitter</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instagram feed -->
+          <div class="col">
+            <div class="row mb-2">
+              <div class="col text-center">
+                <h3>
+                  <span class="badge badge-pill badge-danger">
+                    Instagram
+                    <i class="fab fa-instagram"></i>
+                  </span>
+                </h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="card bg-light card-social shadow">
+                  <div class="card-body p-0">
+                    <vue-instagram
+                      token="10717756500.1677ed0.fbf63b282dac4d59a22d2abd141c7320"
+                      :count="5"
+                    >
+                      <template slot="feeds" slot-scope="props">
+                        <a
+                          class="card mb-3 card-insta text-dark"
+                          :href="props.feed.link"
+                          target="_"
+                        >
+                          <div class="card-header">
+                            <div class="row d-flex align-items-center">
+                              <div class="col-auto">
+                                <img
+                                  :src="props.feed.user.profile_picture"
+                                  alt="prof pics"
+                                  class="rounded-circle shadow-sm"
+                                  width="80"
+                                />
+                              </div>
+                              <div class="col-auto">
+                                <div class="row">
+                                  <div class="col">
+                                    <h5>
+                                      <a
+                                        :href="'https://www.instagram.com/' + props.feed.user.username"
+                                        target="_"
+                                      >{{ props.feed.user.full_name }}</a>
+                                    </h5>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col">
+                                    <p>@{{ props.feed.user.username }}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <img
+                            :src="props.feed.images.standard_resolution.url"
+                            alt="Image"
+                            class="card-img-top"
+                          />
+                          <!-- <div class="card-body">{{ props.feed.caption.text }}</div> -->
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-muted">
+                              {{props.feed.likes.count}} people
+                              <i
+                                class="fas fa-heart fa-lg"
+                                style="color: #FD4260;"
+                              ></i> this
+                            </li>
+                            <li class="list-group-item">
+                              <div class="row">
+                                <div class="col">{{ props.feed.caption.text }}</div>
+                              </div>
+                              <!-- <div class="row">
+                            <div class="col-auto" v-for="(tag, index) in props.feed.tags" :key="index">
+                              <h3><span class="badge badge-info">{{ tag }}</span></h3>
+                            </div>
+                              </div>-->
+                            </li>
+                          </ul>
+                        </a>
+                      </template>
+                    </vue-instagram>
+
+                    <div class="px-3 pb-3 w-100">
+                      <a
+                        class="btn btn-grad-blue btn-block font-weight-bold"
+                        href="https://www.instagram.com/sparkwestnetwork/"
+                        target="_"
+                      >See more on instagram</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row d-flex justify-content-center mb-5">
+          <div class="col-auto">
+            <div class="card shadow">
+              <div class="card-body">
+                <div class="row mb-3">
+                  <div class="col text-center">
+                    <h3>Follow Us!</h3>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col text-center">
+                    <div class="btn-group d-none d-sm-inline">
+                      <a
+                        href="https://twitter.com/SparkWestNet/media"
+                        target="_"
+                        class="btn btn-info btn-lg"
+                      >
+                        Twitter
+                        <i class="fab fa-twitter fa-lg"></i>
+                      </a>
+                      <a
+                        href="https://fb.me/sparkwestnetwork"
+                        target="_"
+                        class="btn btn-primary btn-lg"
+                      >
+                        Facebook
+                        <i class="fab fa-facebook fa-lg"></i>
+                      </a>
+                      <a
+                        href="https://www.instagram.com/sparkwestnetwork/"
+                        target="_"
+                        class="btn btn-danger btn-lg"
+                      >
+                        Instagram
+                        <i class="fab fa-instagram fa-lg"></i>
+                      </a>
+                    </div>
+
+                    <div class="btn-group-vertical d-inline d-sm-none">
+                      <a
+                        href="https://twitter.com/SparkWestNet/media"
+                        target="_"
+                        class="btn btn-info btn-lg"
+                      >
+                        Twitter
+                        <i class="fab fa-twitter fa-lg"></i>
+                      </a>
+                      <a
+                        href="https://fb.me/sparkwestnetwork"
+                        target="_"
+                        class="btn btn-primary btn-lg"
+                      >
+                        Facebook
+                        <i class="fab fa-facebook fa-lg"></i>
+                      </a>
+                      <a
+                        href="https://www.instagram.com/sparkwestnetwork/"
+                        target="_"
+                        class="btn btn-danger btn-lg"
+                      >
+                        Instagram
+                        <i class="fab fa-instagram fa-lg"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -209,6 +398,7 @@
 <script>
 import { Carousel, Slide } from "vue-carousel";
 import { Timeline } from "vue-tweet-embed";
+import VueInstagram from "vue-instagram";
 import db from "../../Firebase/firebaseInit";
 
 export default {
@@ -222,7 +412,8 @@ export default {
   components: {
     Carousel,
     Slide,
-    Timeline
+    Timeline,
+    VueInstagram
   },
   metaInfo: {
     title: "Spark West Network",
@@ -277,6 +468,30 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 766px) {
+  #swn {
+    font-size: 3em;
+  }
+}
+
+#swn b {
+  background: -webkit-linear-gradient(
+    45deg,
+    #fd4260,
+    #fed766
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    45deg,
+    #fd4260,
+    #fed766
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-position: center;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
 .portfolio-item {
   margin-bottom: 30px;
 }
@@ -387,13 +602,43 @@ export default {
   left: 0px;
 }
 
-#twitter-card {
+#backdrop-small {
+  position: absolute;
+  width: 100%;
+  z-index: -1000 !important;
+  bottom: 220px;
+  left: 0px;
+}
+
+.card-social {
   border-radius: 12px !important;
   max-height: 440px;
   overflow: hidden;
 }
 
-#twitter-card .card-body {
+.card-social .card-body {
   overflow-y: scroll;
+}
+
+.card-insta {
+  text-decoration: none !important;
+}
+
+.btn-danger {
+  background: #fe3d61;
+  border-color: #fe3d61;
+}
+
+.btn-danger:hover {
+  background: #e23655;
+  border-color: #e23655;
+}
+
+.badge-danger {
+  background: #fe3d61;
+}
+
+.card {
+  border-radius: 12px;
 }
 </style>
