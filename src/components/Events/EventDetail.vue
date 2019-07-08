@@ -1,101 +1,107 @@
 <template>
-  <div class="container mt-3">
-    <div id="event" v-if="id != null">
-      <div class="row">
-        <div class="col">
-          <router-link
-            v-if="author.id"
-            :to="{name: 'userDetail', params: {id: author.id}}"
-            class="media p-2 btn btn-light mb-3 shadow-sm border"
-          >
-            <img
-              id="author"
-              class="align-self-center mr-3"
-              :src="author.img"
-              alt="Generic placeholder image"
-            />
-            <div class="media-body">
-              <h5 class="mb-0">{{ author.name }}</h5>
-              <div class="row">
-                <div class="col">
-                  <span class="badge badge-primary">
-                    <i class="fa fa-user" /> n Followers
-                  </span>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <span class="badge badge-pill badge-info">
-                    <i class="fa fa-calendar" />
-                    {{ author.events }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 col-sm-12 mb-3">
-          <img id="eventImg" :src="image" alt="event image" class="w-100" />
-        </div>
-        <div class="col-md-6 col-sm-12">
-          <div class="card border-0 shadow">
-            <div class="card-body">
-              <h1>{{ title }}</h1>
-              <div class="row">
-                <div class="col-auto">
-                  <h3 class="text-muted">{{ date.year }}-{{ date.month }}-{{ date.day }}</h3>
-                  <h4>
-                    <span class="badge badge-secondary">{{ time }}</span>
-                  </h4>
-                </div>
-                <div class="col">
-                  <button
-                    id="like"
-                    class="btn badge badge-pill border-0 text-danger"
-                    @click="likeEvent"
-                    :disabled="!isLoggedIn"
-                  >
-                    <span>
-                      <i class="fa fa-heart" />
-                      {{ likes }}
+  <div class="container h-100 mt-3">
+    <div v-if="event">
+      <div id="event" v-if="id != null">
+        <div class="row">
+          <div class="col">
+            <router-link
+              v-if="author.id"
+              :to="{name: 'userDetail', params: {id: author.id}}"
+              class="media p-2 btn btn-light mb-3 shadow-sm border"
+            >
+              <img
+                id="author"
+                class="align-self-center mr-3"
+                :src="author.img"
+                alt="Generic placeholder image"
+              />
+              <div class="media-body">
+                <h5 class="mb-0">{{ author.name }}</h5>
+                <div class="row">
+                  <div class="col">
+                    <span class="badge badge-primary">
+                      <i class="fa fa-user" /> n Followers
                     </span>
-                  </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <span class="badge badge-pill badge-info">
+                      <i class="fa fa-calendar" />
+                      {{ author.events }}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <hr />
-              <h5>Description:</h5>
-              <p>{{ desc }}</p>
-              <h5>Location:</h5>
-              <p class="lead">
-                {{ locationName }}
-                <br />
-                <i>
-                  <a :href="'https://maps.google.com/?q=' + locationName">Get directions</a>
-                </i>
-              </p>
-              <span class="badge badge-primary">
-                <i class="fa fa-user" />
-                {{ attendees }} People Attending
-              </span>
+            </router-link>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-12 mb-3">
+            <img id="eventImg" :src="image" alt="event image" class="w-100" />
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <div class="card shadow">
+              <div class="card-body">
+                <h1>{{ title }}</h1>
+                <div class="row">
+                  <div class="col-auto">
+                    <h3 class="text-muted">{{ date.year }}-{{ date.month }}-{{ date.day }}</h3>
+                    <h4>
+                      <span class="badge badge-secondary">{{ time }}</span>
+                    </h4>
+                  </div>
+                  <div class="col">
+                    <button
+                      id="like"
+                      class="btn badge badge-pill border-0 text-danger"
+                      @click="likeEvent"
+                      :disabled="!isLoggedIn"
+                    >
+                      <span>
+                        <i class="fa fa-heart" />
+                        {{ likes }}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <hr />
+                <h5>Description:</h5>
+                <p>{{ desc }}</p>
+                <h5>Location:</h5>
+                <p class="lead">
+                  {{ locationName }}
+                  <br />
+                  <i>
+                    <a :href="'https://maps.google.com/?q=' + locationName">Get directions</a>
+                  </i>
+                </p>
+                <span class="badge badge-primary">
+                  <i class="fa fa-user" />
+                  {{ attendees }} People Attending
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <hr />
+      <div class="btn-group">
+        <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
+        <router-link
+          :to="{name: 'EditEvent', params: {id: id}}"
+          class="btn btn-primary"
+          v-if="isAuthor || isAdmin && id"
+        >Edit</router-link>
+        <button @click="deleteEvent" class="btn btn-danger" v-if="isAuthor || isAdmin && id">Delete</button>
+      </div>
+      <hr />
+      <app-comments class="mb-3" />
     </div>
-    <hr />
-    <div class="btn-group">
-      <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
-      <router-link
-        :to="{name: 'EditEvent', params: {id: id}}"
-        class="btn btn-primary"
-        v-if="isAuthor || isAdmin && id"
-      >Edit</router-link>
-      <button @click="deleteEvent" class="btn btn-danger" v-if="isAuthor || isAdmin && id">Delete</button>
+    <div v-else id="no-event" class="animated shake" style="aanimation-delay: 0.5s;">
+      <h1>No event found :(</h1>
+      <router-link to="/events" class="btn btn-outline-info rounded-pill">Go back to events</router-link>
     </div>
-    <hr />
-    <app-comments class="mb-3" />
   </div>
 </template>
 
@@ -110,7 +116,7 @@ export default {
   data() {
     return {
       id: null,
-      title: null,
+      title: "Event",
       date: null,
       time: null,
       email: null,
@@ -138,7 +144,8 @@ export default {
       peopleAttending: [],
       isAuthor: false,
       isAdmin: false,
-      isLoggedIn: false
+      isLoggedIn: false,
+      event: true
     };
   },
   metaInfo: {
@@ -156,28 +163,6 @@ export default {
     return {
       title: this.title
     };
-  },
-  beforeRouteEnter(to, from, next) {
-    db.collection("events")
-      .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          next(vm => {
-            vm.id = doc.id;
-            vm.title = doc.data().event.title;
-            vm.date = doc.data().event.date;
-            vm.time = doc.data().event.time;
-            vm.email = doc.data().event.email;
-            vm.desc = doc.data().event.description;
-            vm.imageKey = doc.data().event.imageKey;
-            vm.submitDate = doc.data().event.SubmitDate;
-            vm.UserUID = doc.data().event.UserUID;
-            vm.likes = doc.data().likes;
-            vm.likedBy = doc.data().likedBy;
-          });
-        });
-      });
   },
   mounted() {
     var that = this;
@@ -205,21 +190,26 @@ export default {
       )
       .get()
       .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          (this.id = doc.id),
-            (this.title = doc.data().event.title),
-            (this.date = doc.data().event.date),
-            (this.time = doc.data().event.time),
-            (this.email = doc.data().event.email),
-            (this.desc = doc.data().event.description),
-            (this.imageKey = doc.data().event.imageKey),
-            (this.submitDate = doc.data().event.SubmitDate),
-            (this.UserUID = doc.data().event.UserUID),
-            (this.likes = doc.data().likes),
-            (this.likedBy = doc.data().likedBy),
-            (this.location = doc.data().event.location),
-            (this.locationName = doc.data().event.locationName);
-        });
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach(doc => {
+            (this.id = doc.id),
+              (this.title = doc.data().event.title),
+              (this.date = doc.data().event.date),
+              (this.time = doc.data().event.time),
+              (this.email = doc.data().event.email),
+              (this.desc = doc.data().event.description),
+              (this.imageKey = doc.data().event.imageKey),
+              (this.submitDate = doc.data().event.SubmitDate),
+              (this.UserUID = doc.data().event.UserUID),
+              (this.likes = doc.data().likes),
+              (this.likedBy = doc.data().likedBy),
+              (this.location = doc.data().event.location),
+              (this.locationName = doc.data().event.locationName);
+            this.event = true;
+          });
+        } else {
+          this.event = false;
+        }
       })
       .then(function() {
         var button = document.getElementById("like");
@@ -398,5 +388,75 @@ export default {
 
 .notLiked span {
   color: #ff0844;
+}
+
+#no-event {
+  text-align: center;
+  margin-top: calc(50vh - 220px);
+}
+
+#no-event h1 {
+  font-size: 4em;
+  background: -webkit-linear-gradient(
+    45deg,
+    #2ab7ca,
+    #fd4260,
+    #fed766
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    45deg,
+    #2ab7ca,
+    #fd4260,
+    #fed766
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-position: center;
+  background-size: 200%;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: scroll 20s ease infinite;
+  -moz-animation: scroll 20s ease infinite;
+  animation: scroll 20s ease infinite;
+}
+
+@-webkit-keyframes scroll {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@-moz-keyframes scroll {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes scroll {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (max-width: 500px) {
+  #no-event h1 {
+    font-size: 2em;
+  }
 }
 </style>
