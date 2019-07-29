@@ -21,8 +21,9 @@
       <div class="col">
         <p>
           Created by
-          <a class="text-info" href="https://github.com/cuppajoeman" target="blank">Callum</a> &
-          <a class="text-info" href="https://www.github.com/jellycream" target="blank">Max</a>.
+          <a class="text-info" href="https://github.com/cuppajoeman" target="blank">Callum</a>,
+          <a class="text-info" href="https://www.github.com/jellycream" target="blank">Max</a>
+          <a class="text-info nathaniel" href="https://nathfreder.dev" target="blank"><span class="sr-only"> & Nathaniel</span></a>.
         </p>
       </div>
     </div>
@@ -36,5 +37,9 @@ export default {}
 <style scoped>
 .col-md-8 {
   max-width: 800px;
+}
+
+.nathaniel {
+  text-indent :-9999px
 }
 </style>
