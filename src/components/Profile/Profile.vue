@@ -639,7 +639,7 @@
           <div class="modal-footer px-0 d-flex justify-content-center">
             <div class="row w-100">
               <div class="col">
-                <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">Cancle</button>
+                <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">Cancel</button>
               </div>
               <div class="col">
                 <button type="button" class="btn btn-block btn-success">Save changes</button>
@@ -653,25 +653,25 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase/app";
-import VueCropper from "vue-cropperjs";
-import "cropperjs/dist/cropper.css";
-import $ from "jquery";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase/app'
+import VueCropper from 'vue-cropperjs'
+import 'cropperjs/dist/cropper.css'
+import $ from 'jquery'
 
 export default {
-  data() {
+  data () {
     return {
       user: {
-        name: "",
-        email: "",
-        photoUrl: "",
-        website: "",
-        facebook: "",
-        twitter: "",
-        instagram: "",
-        linkedin: "",
-        about: ""
+        name: '',
+        email: '',
+        photoUrl: '',
+        website: '',
+        facebook: '',
+        twitter: '',
+        instagram: '',
+        linkedin: '',
+        about: ''
       },
       loading: true,
       newImage: null,
@@ -687,73 +687,73 @@ export default {
       currentLikePage: [],
       pageLength: 4,
       likePageLength: 4
-    };
+    }
   },
   components: {
     VueCropper: VueCropper
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Profile",
+    title: 'Profile',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Your personal account on Spark West Network"
+        vmid: 'description',
+        name: 'description',
+        content: 'Your personal account on Spark West Network'
       }
     ]
   },
-  metaInfo() {
+  metaInfo () {
     if (this.user.name) {
       return {
         title: this.user.name
-      };
+      }
     } else {
       return {
-        title: "Profile"
-      };
+        title: 'Profile'
+      }
     }
   },
-  mounted() {
-    $("body").tooltip({ selector: "[data-toggle=tooltip]" });
+  mounted () {
+    $('body').tooltip({ selector: '[data-toggle=tooltip]' })
   },
   watch: {
-    page: "updateCurrent",
-    likePage: "updateCurrentLiked",
-    events: "createPages",
-    likedEvents: "createLikePages"
+    page: 'updateCurrent',
+    likePage: 'updateCurrentLiked',
+    events: 'createPages',
+    likedEvents: 'createLikePages'
   },
   methods: {
-    changeTab: function(oldTab, newTab) {
-      $("[data-target='" + newTab + "']").tab("show");
+    changeTab: function (oldTab, newTab) {
+      $("[data-target='" + newTab + "']").tab('show')
     },
-    loadFile: function() {
-      var input = document.querySelector(".bUp");
+    loadFile: function () {
+      var input = document.querySelector('.bUp')
 
-      var imgURL = window.URL.createObjectURL(input.files[0]);
-      this.user.photoUrl = imgURL;
-      this.newImage = imgURL;
-      this.image = input.files[0];
+      var imgURL = window.URL.createObjectURL(input.files[0])
+      this.user.photoUrl = imgURL
+      this.newImage = imgURL
+      this.image = input.files[0]
 
       var ref = firebase
         .storage()
-        .ref("users/" + firebase.auth().currentUser.uid);
-      var file = this.image;
+        .ref('users/' + firebase.auth().currentUser.uid)
+      var file = this.image
 
-      var upload = ref.put(file);
+      var upload = ref.put(file)
       upload.on(
-        "state_changed",
-        function progress(snapshot) {
+        'state_changed',
+        function progress (snapshot) {
           var percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         },
-        function error(err) {},
-        function complete() {}
-      );
+        function error (err) {},
+        function complete () {}
+      )
     },
-    writeUserData() {
-      db.collection("users")
-        .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+    writeUserData () {
+      db.collection('users')
+        .where('user.UserUID', '==', firebase.auth().currentUser.uid)
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
@@ -770,113 +770,113 @@ export default {
                 UserUID: firebase.auth().currentUser.uid,
                 photo: this.user.photoUrl
               }
-            });
-          });
-        });
+            })
+          })
+        })
     },
-    updateCurrentLiked() {
-      this.currentLikePage = [];
-      this.currentLikePage = this.likePages[this.likePage - 1];
+    updateCurrentLiked () {
+      this.currentLikePage = []
+      this.currentLikePage = this.likePages[this.likePage - 1]
     },
-    nextPage() {
+    nextPage () {
       if (this.page < this.pages.length) {
-        this.page++;
+        this.page++
       }
     },
-    lastPage() {
+    lastPage () {
       if (this.page > 1) {
-        this.page--;
+        this.page--
       }
     },
-    nextPageL() {
+    nextPageL () {
       if (this.likePage < this.likePages.length) {
-        this.likePage++;
+        this.likePage++
       }
     },
-    lastPageL() {
+    lastPageL () {
       if (this.likePage > 1) {
-        this.likePage--;
+        this.likePage--
       }
     },
-    createPages() {
-      var length = Math.ceil(this.events.length / this.pageLength);
+    createPages () {
+      var length = Math.ceil(this.events.length / this.pageLength)
       for (var i = 0; i < length; i++) {
         if (this.events.slice(i * 4) < 4) {
-          this.pages.push(this.events.slice(i * this.pageLength));
+          this.pages.push(this.events.slice(i * this.pageLength))
         } else {
           this.pages.push(
             this.events.slice(
               i * this.pageLength,
               i * this.pageLength + this.pageLength
             )
-          );
+          )
         }
       }
-      this.currentPage = this.pages[0];
-      this.loading = false;
+      this.currentPage = this.pages[0]
+      this.loading = false
     },
-    createLikePages() {
-      var length = Math.ceil(this.likedEvents.length / this.pageLength);
+    createLikePages () {
+      var length = Math.ceil(this.likedEvents.length / this.pageLength)
 
       for (var l = 0; l < length; l++) {
         if (this.likedEvents.slice(l * 4) < 4) {
-          this.likePages.push(this.likedEvents.slice(l * this.pageLength));
+          this.likePages.push(this.likedEvents.slice(l * this.pageLength))
         } else {
           this.likePages.push(
             this.likedEvents.slice(
               l * this.pageLength,
               l * this.pageLength + this.pageLength
             )
-          );
+          )
         }
       }
-      this.currentLikePage = this.likePages[0];
+      this.currentLikePage = this.likePages[0]
     },
-    updateCurrent() {
-      document.getElementById("page").readOnly = true;
+    updateCurrent () {
+      document.getElementById('page').readOnly = true
 
-      this.currentPage = [];
-      this.currentPage = this.pages[this.page - 1];
+      this.currentPage = []
+      this.currentPage = this.pages[this.page - 1]
     }
   },
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     // Get user data
-    db.collection("users")
-      .where("user.UserUID", "==", firebase.auth().currentUser.uid)
+    db.collection('users')
+      .where('user.UserUID', '==', firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.user.name = doc.data().user.name;
-            vm.user.email = doc.data().user.email;
-            vm.user.photoUrl = doc.data().user.photo;
-            vm.newImage = doc.data().user.photo;
-            vm.user.website = doc.data().user.website;
+            vm.user.name = doc.data().user.name
+            vm.user.email = doc.data().user.email
+            vm.user.photoUrl = doc.data().user.photo
+            vm.newImage = doc.data().user.photo
+            vm.user.website = doc.data().user.website
             if (doc.data().user.twitter) {
-              vm.user.twitter = doc.data().user.twitter;
+              vm.user.twitter = doc.data().user.twitter
             }
             if (doc.data().user.facebook) {
-              vm.user.facebook = doc.data().user.facebook;
+              vm.user.facebook = doc.data().user.facebook
             }
             if (doc.data().user.instagram) {
-              vm.user.instagram = doc.data().user.instagram;
+              vm.user.instagram = doc.data().user.instagram
             }
             if (doc.data().user.linkedin) {
-              vm.user.linkedin = doc.data().user.linkedin;
+              vm.user.linkedin = doc.data().user.linkedin
             }
-            vm.user.about = doc.data().user.about;
-          });
-        });
-      });
+            vm.user.about = doc.data().user.about
+          })
+        })
+      })
   },
-  created() {
+  created () {
     // get events created by user
-    this.loading = true;
-    db.collection("events")
-      .where("event.UserUID", "==", firebase.auth().currentUser.uid)
-      .orderBy("event.date.year")
-      .orderBy("event.date.month")
-      .orderBy("event.date.day")
+    this.loading = true
+    db.collection('events')
+      .where('event.UserUID', '==', firebase.auth().currentUser.uid)
+      .orderBy('event.date.year')
+      .orderBy('event.date.month')
+      .orderBy('event.date.day')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -888,15 +888,15 @@ export default {
             email: doc.data().event.email,
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          };
-          this.events.push(data);
-        });
+          }
+          this.events.push(data)
+        })
       })
-      .then((this.loading = false));
+      .then((this.loading = false))
 
     // get liked events
-    db.collection("events")
-      .where("likedBy", "array-contains", firebase.auth().currentUser.uid)
+    db.collection('events')
+      .where('likedBy', 'array-contains', firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -908,12 +908,12 @@ export default {
             email: doc.data().event.email,
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          };
-          this.likedEvents.push(data);
-        });
-      });
+          }
+          this.likedEvents.push(data)
+        })
+      })
   }
-};
+}
 </script>
 
 <style>

@@ -96,48 +96,48 @@
 </template>
 
 <script>
-import { auth } from "firebase/app";
-import $ from "jquery";
+import { auth } from 'firebase/app'
+import $ from 'jquery'
 
 export default {
-  data() {
+  data () {
     return {
       isLoggedIn: false
-    };
-  },
-  watch: {
-    $route(to, from) {
-      $("#navbarResponsive").collapse("hide");
     }
   },
-  created() {
-    var vm = this;
-    auth().onAuthStateChanged(function(user) {
+  watch: {
+    $route (to, from) {
+      $('#navbarResponsive').collapse('hide')
+    }
+  },
+  created () {
+    var vm = this
+    auth().onAuthStateChanged(function (user) {
       if (user) {
-        vm.isLoggedIn = true;
+        vm.isLoggedIn = true
       } else {
-        vm.isLoggedIn = false;
+        vm.isLoggedIn = false
       }
-    });
+    })
   },
   methods: {
-    logOut() {
+    logOut () {
       auth()
         .signOut()
         .then(
-          function() {},
-          function(error) {
-            console.error("Sign Out Error", error);
+          function () {},
+          function (error) {
+            console.error('Sign Out Error', error)
           }
-        );
+        )
     },
 
-    closeNav() {
-      $("#navbarResponsive").collapse("hide");
-      this.$router.push("/");
+    closeNav () {
+      $('#navbarResponsive').collapse('hide')
+      this.$router.push('/')
     }
   }
-};
+}
 </script>
 
 <style scoped>

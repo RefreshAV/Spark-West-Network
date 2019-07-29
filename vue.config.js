@@ -2,16 +2,12 @@ module.exports = {
   pwa: {
     name: 'Spark West Network'
   },
-
-  lintOnSave: undefined,
-  baseUrl: undefined,
-  outputDir: undefined,
-  assetsDir: undefined,
-  runtimeCompiler: undefined,
-  productionSourceMap: undefined,
-  parallel: undefined,
-
   css: {
     extract: false
+  },
+  devServer: {
+    // In some browsers, Firestore will only load if the local server is running on HTTPS.
+    // To enable: HTTPS=true npm run serve
+    https: process.env.HTTPS ? true : false,
   }
 }

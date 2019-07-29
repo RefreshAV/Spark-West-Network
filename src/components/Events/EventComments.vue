@@ -8,22 +8,22 @@
 </template>
 
 <script>
-import { auth } from "firebase/app";
+import { auth } from 'firebase/app'
 
 export default {
-  data() {
+  data () {
     return {
       isLoggedIn: false
-    };
+    }
   },
-  mounted() {
+  mounted () {
     if (auth().currentUser) {
-      this.isLoggedIn = true;
+      this.isLoggedIn = true
     } else {
-      this.isLoggedIn = false;
+      this.isLoggedIn = false
     }
   }
-};
+}
 </script>
 
 <style scoped>

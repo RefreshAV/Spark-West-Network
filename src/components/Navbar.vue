@@ -67,47 +67,47 @@
 </template>
 
 <script>
-import { auth } from "firebase/app";
-import VueScrollTo from "vue-scrollto";
-import $ from "jquery";
+import { auth } from 'firebase/app'
+import VueScrollTo from 'vue-scrollto'
+import $ from 'jquery'
 
 export default {
-  data() {
+  data () {
     return {
       isLoggedIn: false
-    };
+    }
   },
-  created() {
-    var vm = this;
-    auth().onAuthStateChanged(function(user) {
+  created () {
+    var vm = this
+    auth().onAuthStateChanged(function (user) {
       if (user) {
-        vm.isLoggedIn = true;
+        vm.isLoggedIn = true
       } else {
-        vm.isLoggedIn = false;
+        vm.isLoggedIn = false
       }
-    });
+    })
   },
   watch: {
-    $route(to, from) {
-      VueScrollTo.scrollTo(document.getElementById("nav"));
+    $route (to, from) {
+      VueScrollTo.scrollTo(document.getElementById('nav'))
     }
   },
   methods: {
-    logOut() {
-      let that = this;
+    logOut () {
+      let that = this
       auth()
         .signOut()
         .then(
-          function() {
-            that.$router.push("/");
+          function () {
+            that.$router.push('/')
           },
-          function(error) {
-            console.error("Sign Out Error", error);
+          function (error) {
+            console.error('Sign Out Error', error)
           }
-        );
+        )
     }
   }
-};
+}
 </script>
 
 <style scoped>

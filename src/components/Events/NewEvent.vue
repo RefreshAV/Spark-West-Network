@@ -191,22 +191,22 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
-import pushid from "pushid";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
+import 'firebase/firestore'
+import pushid from 'pushid'
 export default {
-  data() {
+  data () {
     return {
       event: {
-        title: "",
-        date: "",
-        time: "",
-        email: "",
-        description: "",
-        imageKey: "",
+        title: '',
+        date: '',
+        time: '',
+        email: '',
+        description: '',
+        imageKey: '',
         UserUID: firebase.auth().currentUser.uid,
-        locationName: "",
+        locationName: '',
         locationPos: {
           lat: 0,
           lng: 0
@@ -214,74 +214,74 @@ export default {
       },
       isSubmitted: false,
       characters: 500,
-      preImg: "http://via.placeholder.com/1920x1080",
-      image: "",
+      preImg: 'http://via.placeholder.com/1920x1080',
+      image: '',
       uploaded: false,
       start: null,
       end: null,
       location: null
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "New Event",
+    title: 'New Event',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Create a new event on Spark West Network"
+        vmid: 'description',
+        name: 'description',
+        content: 'Create a new event on Spark West Network'
       }
     ]
   },
-  mounted() {},
+  mounted () {},
   computed: {
-    message() {
-      return this.event.description;
+    message () {
+      return this.event.description
     }
   },
   watch: {
-    message() {
-      var char = this.event.description.length;
-      var maxChar = 500;
-      this.characters = maxChar - char;
+    message () {
+      var char = this.event.description.length
+      var maxChar = 500
+      this.characters = maxChar - char
     },
-    end: "time"
+    end: 'time'
   },
   methods: {
-    submit() {
+    submit () {
       if (this.location) {
-        this.event.locationPos.lat = this.location.geometry.location.lat();
-        this.event.locationPos.lng = this.location.geometry.location.lng();
-        this.event.locationName = this.location.formatted_address;
+        this.event.locationPos.lat = this.location.geometry.location.lat()
+        this.event.locationPos.lng = this.location.geometry.location.lng()
+        this.event.locationName = this.location.formatted_address
       }
-      var desc = this.event.description;
-      var imgSize = this.image.size;
+      var desc = this.event.description
+      var imgSize = this.image.size
 
       if (desc > 500 || imgSize == 1000000) {
-        $("#warning").modal("toggle");
+        $('#warning').modal('toggle')
       } else {
-        var key = pushid();
-        this.isSubmitted = true;
-        this.event.imageKey = key;
-        var ref = firebase.storage().ref("events/" + this.event.imageKey);
-        var file = this.image;
-        var upload = ref.put(file);
+        var key = pushid()
+        this.isSubmitted = true
+        this.event.imageKey = key
+        var ref = firebase.storage().ref('events/' + this.event.imageKey)
+        var file = this.image
+        var upload = ref.put(file)
 
         upload.on(
-          "state_changed",
-          function progress(snapshot) {
+          'state_changed',
+          function progress (snapshot) {
             var percentage =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           },
-          function error(err) {},
-          function complete() {}
-        );
-        var d = new Date();
-        var year = d.getUTCFullYear();
-        var month = d.getUTCMonth();
-        var day = d.getUTCDate();
-        var date = year + "-" + month + "-" + day;
-        db.collection("events")
+          function error (err) {},
+          function complete () {}
+        )
+        var d = new Date()
+        var year = d.getUTCFullYear()
+        var month = d.getUTCMonth()
+        var day = d.getUTCDate()
+        var date = year + '-' + month + '-' + day
+        db.collection('events')
           .add({
             event: {
               title: this.event.title,
@@ -304,37 +304,37 @@ export default {
               }
             }
           })
-          .then(this.$router.push("/events/list"));
+          .then(this.$router.push('/events/list'))
       }
     },
-    saveExit() {
-      var desc = this.characters.length;
-      var imgSize = this.image.size;
+    saveExit () {
+      var desc = this.characters.length
+      var imgSize = this.image.size
       if (desc > 500 || imgSize == 1000000) {
-        alert("Event size exceeds limit!");
+        alert('Event size exceeds limit!')
       } else {
-        var key = pushid();
-        this.isSubmitted = false;
-        this.event.imageKey = key;
-        var ref = firebase.storage().ref("events/" + this.event.imageKey);
-        var file = this.image;
-        var upload = ref.put(file);
+        var key = pushid()
+        this.isSubmitted = false
+        this.event.imageKey = key
+        var ref = firebase.storage().ref('events/' + this.event.imageKey)
+        var file = this.image
+        var upload = ref.put(file)
 
         upload.on(
-          "state_changed",
-          function progress(snapshot) {
+          'state_changed',
+          function progress (snapshot) {
             var percentage =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           },
-          function error(err) {},
-          function complete() {}
-        );
-        var d = new Date();
-        var year = d.getUTCFullYear();
-        var month = d.getUTCMonth();
-        var day = d.getUTCDate();
-        var date = year + "-" + month + "-" + day;
-        db.collection("events")
+          function error (err) {},
+          function complete () {}
+        )
+        var d = new Date()
+        var year = d.getUTCFullYear()
+        var month = d.getUTCMonth()
+        var day = d.getUTCDate()
+        var date = year + '-' + month + '-' + day
+        db.collection('events')
           .add({
             event: {
               title: this.event.title,
@@ -359,25 +359,25 @@ export default {
               likedBy: []
             }
           })
-          .then(this.$router.push("/events/list"));
+          .then(this.$router.push('/events/list'))
       }
     },
-    loadFile: function() {
-      var input = document.querySelector(".bUp");
-      var imgURL = window.URL.createObjectURL(input.files[0]);
-      this.preImg = imgURL;
-      this.image = input.files[0];
+    loadFile: function () {
+      var input = document.querySelector('.bUp')
+      var imgURL = window.URL.createObjectURL(input.files[0])
+      this.preImg = imgURL
+      this.image = input.files[0]
     },
-    time() {
-      var start = this.start;
-      var end = this.end;
-      this.event.time = start + "-" + end;
+    time () {
+      var start = this.start
+      var end = this.end
+      this.event.time = start + '-' + end
     },
-    setLocation(location) {
-      this.location = location;
+    setLocation (location) {
+      this.location = location
     }
   }
-};
+}
 </script>
 
 <style scoped>
