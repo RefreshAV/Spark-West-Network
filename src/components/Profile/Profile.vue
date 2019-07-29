@@ -639,7 +639,7 @@
           <div class="modal-footer px-0 d-flex justify-content-center">
             <div class="row w-100">
               <div class="col">
-                <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">Cancle</button>
+                <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">Cancel</button>
               </div>
               <div class="col">
                 <button type="button" class="btn btn-block btn-success">Save changes</button>
