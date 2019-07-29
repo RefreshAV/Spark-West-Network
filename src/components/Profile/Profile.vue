@@ -632,7 +632,7 @@
                 <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">Cancel</button>
               </div>
               <div class="col">
-                <button type="button" class="btn btn-block btn-success">Save changes</button>
+                <button type="button" class="btn btn-block btn-success" data-dismiss="modal">Save changes</button>
               </div>
             </div>
           </div>
