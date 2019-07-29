@@ -29,18 +29,30 @@
                         {{ likes }}
                       </span>
                     </button>
+                    <button
+                      id="like"
+                      class="btn badge badge-pill border-0 text-info ml-3"
+                    >
+                      <span>
+                        <i class="fab fa-twitter" @click="shareTwitter" />
+                      </span>
+                    </button>
+                    <button
+                      id="like"
+                      class="btn badge badge-pill border-0 text-primary ml-2"
+                    >
+                    <span>
+                      <i class="fab fa-facebook" @click="shareFacebook"/>
+                    </span>
+                   </button>
                   </div>
                 </div>
-                <hr />
+                <hr>
                 <h5>Description:</h5>
                 <p>{{ desc }}</p>
-                <h5>Location:</h5>
                 <p class="lead">
-                  {{ locationName }}
                   <br />
-                  <i>
                     <a :href="'https://maps.google.com/?q=' + locationName">Get directions</a>
-                  </i>
                 </p>
                 <span class="badge badge-primary">
                   <i class="fa fa-user" />
@@ -342,6 +354,13 @@ export default {
             })
         }
       }
+    },
+    shareTwitter() {
+      window.open(`http://twitter.com/share?text=${this.title} – by ${this.author.name}&url=${window.location.href}&hashtags=#sparkwestnetwork
+`)
+    },
+    shareFacebook() {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`)
     }
   },
   components: {
