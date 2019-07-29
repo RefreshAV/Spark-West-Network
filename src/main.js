@@ -8,6 +8,7 @@ import { auth } from 'firebase/app'
 import VueScrollTo from 'vue-scrollto'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { firestorePlugin } from 'vuefire'
 
 Vue.use(VueScrollTo)
 Vue.use(VueDisqus)
@@ -17,6 +18,7 @@ Vue.use(VueGoogleMaps, {
     libraries: 'places'
   }
 })
+Vue.use(firestorePlugin)
 
 // Router guard checks if AuthRequired
 router.beforeEach((to, from, next) => {
