@@ -107,28 +107,28 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
 
 export default {
-  data() {
+  data () {
     return {
       organizations: []
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Organizations",
+    title: 'Organizations',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "The Organizations present on Spark West Network"
+        vmid: 'description',
+        name: 'description',
+        content: 'The Organizations present on Spark West Network'
       }
     ]
   },
-  created() {
-    db.collection("organizations")
+  created () {
+    db.collection('organizations')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -136,25 +136,25 @@ export default {
             id: doc.id,
             name: doc.data().organization.name,
             logo:
-              "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Flogo%2F" +
+              'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Flogo%2F' +
               doc.data().organization.imagekey +
-              "?alt=media&token",
+              '?alt=media&token',
             banner:
-              "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Fbanner%2F" +
+              'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/organizations%2Fbanner%2F' +
               doc.data().organization.bannerKey +
-              "?alt=media&token",
+              '?alt=media&token',
             email: doc.data().organization.contact.email
-          };
-          this.organizations.push(data);
-        });
-      });
+          }
+          this.organizations.push(data)
+        })
+      })
   },
   methods: {
-    loadOrganization(id) {
-      this.$router.push("Organizations/organization/" + id);
+    loadOrganization (id) {
+      this.$router.push('Organizations/organization/' + id)
     }
   }
-};
+}
 </script>
 
 <style scoped>

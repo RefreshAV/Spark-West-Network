@@ -105,52 +105,52 @@
 </template>
 
 <script>
-import $ from "jquery";
-import { setTimeout } from "timers";
+import $ from 'jquery'
+import { setTimeout } from 'timers'
 
 export default {
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "FAQ",
+    title: 'FAQ',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Frequently asked questions"
+        vmid: 'description',
+        name: 'description',
+        content: 'Frequently asked questions'
       }
     ]
   },
-  mounted() {
-    $(".list-group").on("animationend", () => {
-      $("#btn1").addClass("active");
-      $("#icon1").addClass("fa-rotate-180");
-      $("#collapse1").collapse("show");
-    });
+  mounted () {
+    $('.list-group').on('animationend', () => {
+      $('#btn1').addClass('active')
+      $('#icon1').addClass('fa-rotate-180')
+      $('#collapse1').collapse('show')
+    })
   },
   methods: {
-    collapse(num1, num2, num3) {
+    collapse (num1, num2, num3) {
       // define active btn and icon
-      let btn = $("#btn" + num1);
-      let icon = $("#icon" + num1);
-      let collapse = $("#collapse" + num1);
+      let btn = $('#btn' + num1)
+      let icon = $('#icon' + num1)
+      let collapse = $('#collapse' + num1)
 
       // deactivate all other btns and unrotate all other icons
-      $("#btn" + num2).removeClass("active");
-      $("#btn" + num3).removeClass("active");
-      $("#icon" + num2).removeClass("fa-rotate-180");
-      $("#icon" + num3).removeClass("fa-rotate-180");
+      $('#btn' + num2).removeClass('active')
+      $('#btn' + num3).removeClass('active')
+      $('#icon' + num2).removeClass('fa-rotate-180')
+      $('#icon' + num3).removeClass('fa-rotate-180')
 
       // toggle active and rotate btn and icon respectivly and add transitioning class
-      if (collapse.hasClass("show")) {
-        btn.removeClass("active");
-        icon.removeClass("fa-rotate-180");
+      if (collapse.hasClass('show')) {
+        btn.removeClass('active')
+        icon.removeClass('fa-rotate-180')
       } else {
-        btn.addClass("active");
-        icon.addClass("fa-rotate-180");
+        btn.addClass('active')
+        icon.addClass('fa-rotate-180')
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>

@@ -163,24 +163,24 @@
 </template>
 
 <script>
-import $ from "jquery";
-import { MglMap, MglMarker, MglNavigationControl, MglPopup } from "vue-mapbox";
+import $ from 'jquery'
+import { MglMap, MglMarker, MglNavigationControl, MglPopup } from 'vue-mapbox'
 
 export default {
-  data: function() {
+  data: function () {
     return {
       contactRequest: {
-        name: "",
-        subject: "",
-        phone: "",
-        message: ""
+        name: '',
+        subject: '',
+        phone: '',
+        message: ''
       },
       accessToken:
-        "pk.eyJ1IjoiY3VwcGFqb2VtYW4iLCJhIjoiY2prMTY5MHJrMGU5ejNycXFvdXpnMG84aSJ9.s6Pvs5N-dITfrDFAgEWbng",
-      mapStyle: "mapbox://styles/mapbox/dark-v9",
+        'pk.eyJ1IjoiY3VwcGFqb2VtYW4iLCJhIjoiY2prMTY5MHJrMGU5ejNycXFvdXpnMG84aSJ9.s6Pvs5N-dITfrDFAgEWbng',
+      mapStyle: 'mapbox://styles/mapbox/dark-v9',
       coordinates: [-64.36834, 45.08829],
       loaded: false
-    };
+    }
   },
   components: {
     MglMap,
@@ -190,28 +190,28 @@ export default {
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Contact",
+    title: 'Contact',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Get in touch with us"
+        vmid: 'description',
+        name: 'description',
+        content: 'Get in touch with us'
       }
     ]
   },
   methods: {
-    onMapLoaded() {
-      this.loaded = true;
-      $("iframe").addClass("animated fadeIn");
+    onMapLoaded () {
+      this.loaded = true
+      $('iframe').addClass('animated fadeIn')
     },
-    mail() {
+    mail () {
       let subject = this.contactRequest.name + ': ' + this.contactRequest.subject
       let body = this.contactRequest.message
 
-      window.open('mailto:info@sparkwest.network?subject=' + subject + '&body=' + body);
+      window.open('mailto:info@sparkwest.network?subject=' + subject + '&body=' + body)
     }
   }
-};
+}
 </script>
 
 <style scoped>

@@ -376,17 +376,17 @@
 export default {
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "About",
+    title: 'About',
     meta: [
       {
-        vmid: "description",
-        name: "description",
+        vmid: 'description',
+        name: 'description',
         content:
-          "Learn about Spark West Network, our customers, and the awesome"
+          'Learn about Spark West Network, our customers, and the awesome'
       }
     ]
   }
-};
+}
 </script>
 
 <style scoped>

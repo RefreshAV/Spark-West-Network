@@ -110,36 +110,36 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
 
 export default {
-  data() {
+  data () {
     return {
       profiles: [],
       events: [],
       render: false
-    };
+    }
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: "Users",
+    title: 'Users',
     meta: [
       {
-        vmid: "description",
-        name: "description",
-        content: "Users on Spark West Network"
+        vmid: 'description',
+        name: 'description',
+        content: 'Users on Spark West Network'
       }
     ]
   },
-  created() {
-    db.collection("users")
+  created () {
+    db.collection('users')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          let isProfile = false;
+          let isProfile = false
           if (doc.data().user.UserUID == firebase.auth().currentUser.uid) {
-            isProfile = true;
+            isProfile = true
           }
           const data = {
             id: doc.id,
@@ -150,34 +150,34 @@ export default {
             about: doc.data().user.about,
             events: 0,
             isProfile: isProfile
-          };
+          }
 
           if (data.about.length > 30) {
-            data.about = data.about.substring(0, 30) + "...";
+            data.about = data.about.substring(0, 30) + '...'
           }
-          this.profiles.push(data);
-        });
+          this.profiles.push(data)
+        })
       })
       .then(
         db
-          .collection("events")
+          .collection('events')
           .get()
           .then(querySnapshot => {
             querySnapshot.forEach(doc => {
               this.events.push({
                 uid: doc.data().event.UserUID
-              });
-            });
+              })
+            })
           })
           .then(() => {
-            console.log(this.profiles.length);
+            console.log(this.profiles.length)
             for (let i = 0; i < this.profiles.length; i++) {
-              let uid = this.profiles[i].uid;
-              let num = this.events.filter(event => event.uid === uid);
-              this.profiles[i].events = num.length;
+              let uid = this.profiles[i].uid
+              let num = this.events.filter(event => event.uid === uid)
+              this.profiles[i].events = num.length
             }
           })
-      );
+      )
   },
   // mounted() {
   //   let i = 0
@@ -188,14 +188,14 @@ export default {
   //   console.log(i)
   // },
   methods: {
-    loadProfile(uid, id) {
-      this.$router.push("Users/user/" + id);
+    loadProfile (uid, id) {
+      this.$router.push('Users/user/' + id)
     },
-    countEvents(profile) {
-      console.log("loaded");
+    countEvents (profile) {
+      console.log('loaded')
     }
   }
-};
+}
 </script>
 
 <style scoped>
