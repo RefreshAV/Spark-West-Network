@@ -26,3 +26,8 @@ npm run test
 ```
 npm run lint
 ```
+
+### Deploy to Firebase Hosting
+```
+npm run deploy
+```
