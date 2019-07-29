@@ -16,6 +16,11 @@
             <div class="card-body">
               <div class="tab-content py-4">
                 <div class="tab-pane active" id="profile">
+                  <button class="btn btn-primary float-right">
+                    <span>
+                      <i class="fa fa-user-plus"/> Follow
+                    </span>
+                  </button>
                   <h2 class="mb-3">{{ user.user.name }}</h2>
                   <hr />
                   <div class="row">
