@@ -254,7 +254,21 @@ export default {
       })
     },
     unfollowUser () {
-      console.log('unfollow')
+      const userRef = db.collection('users').doc(firebase.auth().currentUser.uid)
+
+      db.runTransaction(transaction => {
+        return transaction.get(userRef).then(doc => {
+            let following = doc.data().user.following
+            following = following.filter(i => i !== this.$route.params.id) // Remove user from array
+
+            transaction.update(userRef, {
+              user: {
+                ...doc.data().user,
+                following
+              }
+            })
+          })
+        })
     },
     nextPage () {
       if (this.page < this.pages.length) {
