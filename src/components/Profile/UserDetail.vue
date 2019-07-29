@@ -188,28 +188,6 @@ export default {
       title: this.name
     }
   },
-  beforeRouteEnter (to, from, next) {
-    // var UserUID;
-
-    db.collection('users')
-      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          next(vm => {
-            vm.name = doc.data().user.name
-            vm.email = doc.data().user.email
-            vm.img = doc.data().user.photo
-            vm.about = doc.data().user.about
-            vm.website = doc.data().user.website
-            // UserUID = doc.data().user.UserUID;
-            // if (UserUID == firebase.auth().currentUser.uid) {
-            //   next("/Profile");
-            // }
-          })
-        })
-      })
-  },
   mounted () {
     // get user info
     db.collection('users')
