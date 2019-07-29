@@ -12,7 +12,7 @@
                 <h1>{{ title }}</h1>
                 <div class="row">
                   <div class="col-auto">
-                    <h3 class="text-muted">{{ date.year }}-{{ date.month }}-{{ date.day }}</h3>
+                    <h3 class="text-muted">{{ dateString }}</h3>
                     <h4>
                       <span class="badge badge-secondary">{{ time }}</span>
                     </h4>
@@ -124,6 +124,7 @@ import db from '../../Firebase/firebaseInit'
 import firebase from 'firebase'
 import 'firebase/firestore'
 import Comments from './EventComments.vue'
+import 'datejs';
 
 export default {
   name: 'EventDetail',
@@ -361,6 +362,18 @@ export default {
     },
     shareFacebook() {
       window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`)
+    }
+  },
+  computed: {
+    dateString() {
+      // Format date so it can be parsed
+      let { year, month, day } = this.date;
+      const uglyDate = `${month}/${day}/${year}`;
+
+      // Parse the date and format it
+      const prettyDate = Date.parse(uglyDate).toString('MMMM dS, yyyy')
+
+      return prettyDate;
     }
   },
   components: {
