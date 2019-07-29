@@ -12,7 +12,7 @@
                 <h1>{{ title }}</h1>
                 <div class="row">
                   <div class="col-auto">
-                    <h3 class="text-muted">{{ date.year }}-{{ date.month }}-{{ date.day }}</h3>
+                    <h3 class="text-muted">{{ dateString }}</h3>
                     <h4>
                       <span class="badge badge-secondary">{{ time }}</span>
                     </h4>
@@ -29,18 +29,30 @@
                         {{ likes }}
                       </span>
                     </button>
+                    <button
+                      id="like"
+                      class="btn badge badge-pill border-0 text-info ml-3"
+                    >
+                      <span>
+                        <i class="fab fa-twitter" @click="shareTwitter" />
+                      </span>
+                    </button>
+                    <button
+                      id="like"
+                      class="btn badge badge-pill border-0 text-primary ml-2"
+                    >
+                    <span>
+                      <i class="fab fa-facebook" @click="shareFacebook"/>
+                    </span>
+                   </button>
                   </div>
                 </div>
-                <hr />
+                <hr>
                 <h5>Description:</h5>
                 <p>{{ desc }}</p>
-                <h5>Location:</h5>
                 <p class="lead">
-                  {{ locationName }}
                   <br />
-                  <i>
                     <a :href="'https://maps.google.com/?q=' + locationName">Get directions</a>
-                  </i>
                 </p>
                 <span class="badge badge-primary">
                   <i class="fa fa-user" />
@@ -112,6 +124,7 @@ import db from '../../Firebase/firebaseInit'
 import firebase from 'firebase'
 import 'firebase/firestore'
 import Comments from './EventComments.vue'
+import 'datejs';
 
 export default {
   name: 'EventDetail',
@@ -342,6 +355,25 @@ export default {
             })
         }
       }
+    },
+    shareTwitter() {
+      window.open(`http://twitter.com/share?text=${this.title} – by ${this.author.name}&url=${window.location.href}&hashtags=#sparkwestnetwork
+`)
+    },
+    shareFacebook() {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`)
+    }
+  },
+  computed: {
+    dateString() {
+      // Format date so it can be parsed
+      let { year, month, day } = this.date;
+      const uglyDate = `${month}/${day}/${year}`;
+
+      // Parse the date and format it
+      const prettyDate = Date.parse(uglyDate).toString('MMMM dS, yyyy')
+
+      return prettyDate;
     }
   },
   components: {
