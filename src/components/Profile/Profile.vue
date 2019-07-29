@@ -3,7 +3,7 @@
     <div class="row my-2 mt-5">
       <div class="col-lg-4 mb-3 order-lg-1 text-center">
         <img
-          :src="user.photoUrl"
+          :src="user.user.photo"
           class="mx-auto img-fluid d-block mb-2 shadow-sm"
           id="preview"
           alt="avatar"
@@ -56,7 +56,7 @@
               <div class="tab-pane fade show active" id="profileTab">
                 <div class="row no-gutters">
                   <div class="col">
-                    <h2>{{ user.name }}</h2>
+                    <h2>{{ user.user.name }}</h2>
                   </div>
                   <div class="col mr-3">
                     <!-- Organization large -->
@@ -119,13 +119,13 @@
                 <div class="row">
                   <div
                     class="col-md-6"
-                    v-if="user.about || user.facebook || user.twitter || user.instagram || user.linkden || user.website"
+                    v-if="user.user.about || user.user.facebook || user.user.twitter || user.user.instagram || user.user.linkden || user.website"
                   >
                     <!-- About -->
-                    <div v-if="user.about" class="row">
+                    <div v-if="user.user.about" class="row">
                       <div class="mb-2 col">
                         <strong>About</strong>
-                        <p>{{ user.about }}</p>
+                        <p>{{ user.user.about }}</p>
                       </div>
                     </div>
 
@@ -138,8 +138,8 @@
                           data-placement="top"
                           class="social"
                           title="Website"
-                          :href="user.website"
-                          v-if="user.website"
+                          :href="user.user.website"
+                          v-if="user.user.website"
                           target="_blank"
                         >
                           <span class="fa-stack fa-lg text-secondary">
@@ -154,8 +154,8 @@
                           data-placement="top"
                           class="social"
                           title="Twitter"
-                          :href="user.twitter"
-                          v-if="user.twitter"
+                          :href="user.user.twitter"
+                          v-if="user.user.twitter"
                           target="_blank"
                         >
                           <span class="fa-stack fa-lg text-info">
@@ -170,8 +170,8 @@
                           data-placement="top"
                           class="social"
                           title="Facebook"
-                          :href="user.facebook"
-                          v-if="user.facebook"
+                          :href="user.user.facebook"
+                          v-if="user.user.facebook"
                           target="_blank"
                         >
                           <span class="fa-stack fa-lg text-primary">
@@ -186,8 +186,8 @@
                           data-placement="top"
                           class="social"
                           title="Instagram"
-                          :href="user.instagram"
-                          v-if="user.instagram"
+                          :href="user.user.instagram"
+                          v-if="user.user.instagram"
                           target="_blank"
                         >
                           <span class="fa-stack fa-lg text-danger">
@@ -202,8 +202,8 @@
                           data-placement="top"
                           class="social"
                           title="Linkedin"
-                          :href="user.linkedin"
-                          v-if="user.linkedin"
+                          :href="user.user.linkedin"
+                          v-if="user.user.linkedin"
                           target="_blank"
                         >
                           <span class="fa-stack fa-lg">
@@ -249,7 +249,7 @@
                         <i class="fa fa-calendar" />
                         {{ events.length }}
                       </span>
-                      {{ user.name }}'s Events:
+                      {{ user.user.name }}'s Events:
                     </h5>
 
                     <ul class="list-group">
@@ -266,17 +266,7 @@
                       </router-link>
 
                       <li
-                        v-if="loading"
-                        id="loader"
-                        class="list-group-item d-flex justify-content-center align-items-center mb-2"
-                      >
-                        <div class="spinner-border text-primary" role="status">
-                          <span class="sr-only">Loading...</span>
-                        </div>
-                      </li>
-
-                      <li
-                        v-if="events.length == 0 && !loading"
+                        v-if="events.length == 0"
                         class="list-group-item border-0 text-white d-flex justify-content-center align-items-center mb-2 placeholder"
                       >
                         <h3>Nothing Here!</h3>
@@ -321,9 +311,9 @@
                     <h5 class="mt-2">
                       <span class="float-right badge badge-danger badge-pill">
                         <i class="fa fa-heart" />
-                        {{ likedEvents.length }}
+                        {{ likedEventsLength }}
                       </span>
-                      {{ user.name }}'s Liked Events:
+                      {{ user.user.name }}'s Liked Events:
                     </h5>
 
                     <ul class="list-group">
@@ -389,7 +379,7 @@
                         class="form-control rounded-pill"
                         type="text"
                         placeholder="username"
-                        v-model="user.name"
+                        v-model="user.user.name"
                         required
                       />
                     </div>
@@ -401,7 +391,7 @@
                         class="form-control rounded-pill"
                         type="email"
                         placeholder="email@gmail.com"
-                        v-model="user.email"
+                        v-model="user.user.email"
                         required
                       />
                     </div>
@@ -414,7 +404,7 @@
                         class="form-control rounded-pill"
                         type="url"
                         value
-                        v-model="user.website"
+                        v-model="user.user.website"
                       />
                     </div>
                   </div>
@@ -438,7 +428,7 @@
                           type="url"
                           class="form-control"
                           placeholder="https://facebook.com/"
-                          v-model="user.facebook"
+                          v-model="user.user.facebook"
                         />
                       </div>
                     </div>
@@ -457,7 +447,7 @@
                           type="url"
                           class="form-control"
                           placeholder="https://twitter.com/"
-                          v-model="user.twitter"
+                          v-model="user.user.twitter"
                         />
                       </div>
                     </div>
@@ -476,7 +466,7 @@
                           type="url"
                           class="form-control"
                           placeholder="https://www.instagram.com/"
-                          v-model="user.instagram"
+                          v-model="user.user.instagram"
                         />
                       </div>
                     </div>
@@ -495,7 +485,7 @@
                           type="url"
                           class="form-control"
                           placeholder="https://www.linkedin.com/"
-                          v-model="user.linkedin"
+                          v-model="user.user.linkedin"
                         />
                       </div>
                     </div>
@@ -503,7 +493,7 @@
 
                   <div class="form-group">
                     <label for="description">About Yourself</label>
-                    <textarea class="form-control" id="description" rows="3" v-model="user.about" />
+                    <textarea class="form-control" id="description" rows="3" v-model="user.user.about" />
                   </div>
                   <div class="form-group row">
                     <div class="col-lg-9">
@@ -663,17 +653,8 @@ export default {
   data () {
     return {
       user: {
-        name: '',
-        email: '',
-        photoUrl: '',
-        website: '',
-        facebook: '',
-        twitter: '',
-        instagram: '',
-        linkedin: '',
-        about: ''
+        user: {}
       },
-      loading: true,
       newImage: null,
       cropImage: null,
       image: null,
@@ -690,7 +671,7 @@ export default {
     }
   },
   components: {
-    VueCropper: VueCropper
+    VueCropper
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
@@ -704,9 +685,9 @@ export default {
     ]
   },
   metaInfo () {
-    if (this.user.name) {
+    if (this.user.user.name) {
       return {
-        title: this.user.name
+        title: this.user.user.name
       }
     } else {
       return {
@@ -716,12 +697,26 @@ export default {
   },
   mounted () {
     $('body').tooltip({ selector: '[data-toggle=tooltip]' })
+
+    this.$bind('user', db.collection('users').doc(firebase.auth().currentUser.uid))
+    this.$bind('events', db.collection('events')
+      .where('event.UserUID', '==', firebase.auth().currentUser.uid)
+      .orderBy('event.date.year')
+      .orderBy('event.date.month')
+      .orderBy('event.date.day')
+    )
+    this.$bind('likedEvents', db.collection('events').where('likedBy', 'array-contains', firebase.auth().currentUser.uid))
   },
   watch: {
     page: 'updateCurrent',
     likePage: 'updateCurrentLiked',
     events: 'createPages',
     likedEvents: 'createLikePages'
+  },
+  computed: {
+    likedEventsLength() {
+      return this.likedEvents.length
+    }
   },
   methods: {
     changeTab: function (oldTab, newTab) {
@@ -731,7 +726,7 @@ export default {
       var input = document.querySelector('.bUp')
 
       var imgURL = window.URL.createObjectURL(input.files[0])
-      this.user.photoUrl = imgURL
+      this.user.user.photo = imgURL
       this.newImage = imgURL
       this.image = input.files[0]
 
@@ -758,18 +753,7 @@ export default {
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
             doc.ref.update({
-              user: {
-                name: this.user.name,
-                email: this.user.email,
-                website: this.user.website,
-                facebook: this.user.facebook,
-                twitter: this.user.twitter,
-                instagram: this.user.instagram,
-                linkedin: this.user.linkedin,
-                about: this.user.about,
-                UserUID: firebase.auth().currentUser.uid,
-                photo: this.user.photoUrl
-              }
+              user: this.user.user
             })
           })
         })
@@ -813,7 +797,6 @@ export default {
         }
       }
       this.currentPage = this.pages[0]
-      this.loading = false
     },
     createLikePages () {
       var length = Math.ceil(this.likedEvents.length / this.pageLength)
@@ -838,80 +821,6 @@ export default {
       this.currentPage = []
       this.currentPage = this.pages[this.page - 1]
     }
-  },
-  beforeRouteEnter (to, from, next) {
-    // Get user data
-    db.collection('users')
-      .where('user.UserUID', '==', firebase.auth().currentUser.uid)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          next(vm => {
-            vm.user.name = doc.data().user.name
-            vm.user.email = doc.data().user.email
-            vm.user.photoUrl = doc.data().user.photo
-            vm.newImage = doc.data().user.photo
-            vm.user.website = doc.data().user.website
-            if (doc.data().user.twitter) {
-              vm.user.twitter = doc.data().user.twitter
-            }
-            if (doc.data().user.facebook) {
-              vm.user.facebook = doc.data().user.facebook
-            }
-            if (doc.data().user.instagram) {
-              vm.user.instagram = doc.data().user.instagram
-            }
-            if (doc.data().user.linkedin) {
-              vm.user.linkedin = doc.data().user.linkedin
-            }
-            vm.user.about = doc.data().user.about
-          })
-        })
-      })
-  },
-  created () {
-    // get events created by user
-    this.loading = true
-    db.collection('events')
-      .where('event.UserUID', '==', firebase.auth().currentUser.uid)
-      .orderBy('event.date.year')
-      .orderBy('event.date.month')
-      .orderBy('event.date.day')
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          const data = {
-            id: doc.id,
-            title: doc.data().event.title,
-            date: doc.data().event.date,
-            time: doc.data().event.time,
-            email: doc.data().event.email,
-            desc: doc.data().event.description,
-            imageKey: doc.data().event.imageKey
-          }
-          this.events.push(data)
-        })
-      })
-      .then((this.loading = false))
-
-    // get liked events
-    db.collection('events')
-      .where('likedBy', 'array-contains', firebase.auth().currentUser.uid)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          const data = {
-            id: doc.id,
-            title: doc.data().event.title,
-            date: doc.data().event.date,
-            time: doc.data().event.time,
-            email: doc.data().event.email,
-            desc: doc.data().event.description,
-            imageKey: doc.data().event.imageKey
-          }
-          this.likedEvents.push(data)
-        })
-      })
   }
 }
 </script>
