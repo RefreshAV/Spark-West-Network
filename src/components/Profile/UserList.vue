@@ -86,7 +86,7 @@
           />
           <div class="media-body">
             <h5 class="mb-0">{{ profile.name }}</h5>
-            <p class="mb-0">{{ profile.about }}</p>
+            <!-- <p class="mb-0">{{ profile.about }}</p> -->
             <div class="row">
               <div class="col">
                 <span class="badge badge-primary">
@@ -147,14 +147,14 @@ export default {
             name: doc.data().user.name,
             img: doc.data().user.photo,
             email: doc.data().user.email,
-            about: doc.data().user.about,
+            // about: doc.data().user.about,
             events: 0,
             isProfile: isProfile
           }
 
-          if (data.about.length > 30) {
-            data.about = data.about.substring(0, 30) + '...'
-          }
+          // if (data.about.length > 30) {
+          //   data.about = data.about.substring(0, 30) + '...'
+          // }
           this.profiles.push(data)
         })
       })
