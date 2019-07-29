@@ -714,7 +714,7 @@ export default {
     likedEvents: 'createLikePages'
   },
   computed: {
-    likedEventsLength() {
+    likedEventsLength () {
       return this.likedEvents.length
     }
   },

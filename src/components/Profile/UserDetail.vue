@@ -16,9 +16,18 @@
             <div class="card-body">
               <div class="tab-content py-4">
                 <div class="tab-pane active" id="profile">
-                  <button class="btn btn-primary float-right">
+                  <button
+                    class="btn btn-primary float-right"
+                    @click="unfollowUser"
+                    v-if="isFollowed"
+                  >
                     <span>
-                      <i class="fa fa-user-plus"/> Follow
+                      <i class="fa fa-user-minus" /> Unfollow
+                    </span>
+                  </button>
+                  <button class="btn btn-primary float-right" @click="followUser" v-else>
+                    <span>
+                      <i class="fa fa-user-plus" /> Follow
                     </span>
                   </button>
                   <h2 class="mb-3">{{ user.user.name }}</h2>
@@ -136,22 +145,25 @@
                   </table>
                 </div>
               </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
 import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase'
+import firebase, { firestore } from 'firebase'
 import 'firebase/firestore'
 export default {
   data () {
     return {
       user: {
+        user: {}
+      },
+      currentUser: {
         user: {}
       },
       events: [],
@@ -179,19 +191,71 @@ export default {
   },
   mounted () {
     this.$bind('user', db.collection('users').doc(this.$route.params.id))
-    this.$bind('events', db.collection('events')
-      .where('event.UserUID', '==', this.$route.params.id)
-      .orderBy('event.date.year')
-      .orderBy('event.date.month')
-      .orderBy('event.date.day')
+    this.$bind(
+      'currentUser',
+      db.collection('users').doc(firebase.auth().currentUser.uid)
     )
-    this.$bind('likedEvents', db.collection('events').where('likedBy', 'array-contains', this.$route.params.id))
+    this.$bind(
+      'events',
+      db
+        .collection('events')
+        .where('event.UserUID', '==', this.$route.params.id)
+        .orderBy('event.date.year')
+        .orderBy('event.date.month')
+        .orderBy('event.date.day')
+    )
+    this.$bind(
+      'likedEvents',
+      db
+        .collection('events')
+        .where('likedBy', 'array-contains', this.$route.params.id)
+    )
+  },
+  computed: {
+    isFollowed () {
+      if (
+        this.currentUser.user.following &&
+        this.currentUser.user.following.includes(this.$route.params.id)
+      ) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   watch: {
     page: 'updateCurrent',
     events: 'createPages'
   },
   methods: {
+    followUser () {
+      const userRef = db.collection('users').doc(firebase.auth().currentUser.uid)
+
+      db.runTransaction(transaction => {
+        return transaction.get(userRef).then(doc => {
+          if (!doc.data().user.following) {
+            transaction.set(userRef, {
+              user: {
+                ...doc.data().user,
+                following: [this.$route.params.id]
+              }
+            })
+          } else {
+            const following = doc.data().user.following
+            following.push(this.$route.params.id)
+            transaction.update(userRef, {
+              user: {
+                ...doc.data().user,
+                following
+              }
+            })
+          }
+        })
+      })
+    },
+    unfollowUser () {
+      console.log('unfollow')
+    },
     nextPage () {
       if (this.page < this.pages.length) {
         this.page++
