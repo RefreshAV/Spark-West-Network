@@ -11,6 +11,7 @@ import { firestorePlugin } from 'vuefire'
 
 Vue.use(VueScrollTo)
 Vue.use(VueDisqus)
+Vue.use(firestorePlugin)
 
 // Router guard checks if AuthRequired
 router.beforeEach((to, from, next) => {
