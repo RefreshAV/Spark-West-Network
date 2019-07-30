@@ -1,5 +1,6 @@
 {
   "projects": {
-    "staging": "spark-west"
+    "staging": "spark-west",
+    "default": "spark-west"
   }
 }
