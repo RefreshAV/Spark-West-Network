@@ -50,14 +50,11 @@
       </div>
     </div>
     <div class="row text-light" v-for="week in month" :key="week.key">
-      <div class="col p-2 day" v-for="day in week.days" :key="day.key">
+      <div class="col day" v-for="day in week.days" :key="day.key">
         <div
           :class="{'card':true, 'h-100':true, 'bg-dark':(day.currentMonth), 'bg-secondary':(!day.currentMonth)}"
         >
-          <div class="card-body">
-            <span v-if="day.num < 10">0</span>
-            {{ day.num }}
-          </div>
+          <div class="card-body">{{ calendarNum(day.num) }}</div>
         </div>
       </div>
     </div>
@@ -167,6 +164,13 @@ export default {
 
       var allDays = [];
 
+      let daysInPrevious
+      if(month - 1 < 0) {
+        daysInPrevious = new Date(year - 1, 12, 0).getDate()
+      } else {
+        daysInPrevious = new Date(year, month, 0).getDate()
+      }
+
       var d = new Date(year, month + 1, 0);
       const daysInCurrent = d.getDate();
       var startDay = d.getDay();
@@ -194,6 +198,8 @@ export default {
       for (var i = 1; i < weeksInMonth + 1; i++) {
         let week = { key: i + "w", days: [] };
         let emptyWeek = false;
+        let lmCount = 0;
+        let lm = false
         for (var k = 1; k < 8; k++) {
           if (i == 1) {
             // First week logic
@@ -205,6 +211,8 @@ export default {
                   num: "lastMonth",
                   currentMonth: false
                 });
+                lm = true
+                lmCount++
               } else {
                 week.days.push({
                   key: i * k + "d",
@@ -220,6 +228,8 @@ export default {
                   num: "lastMonth",
                   currentMonth: false
                 });
+                lm = true
+                lmCount++
               } else {
                 week.days.push({
                   key: i * k + "d",
@@ -232,9 +242,11 @@ export default {
           } else if (count > daysInCurrent) {
             week.days.push({
               key: i * k + "d",
-              num: "nextMonth",
+              num: count - daysInCurrent,
               currentMonth: false
             });
+
+            count++;
             if (k == 1) {
               emptyWeek = true;
             }
@@ -245,6 +257,11 @@ export default {
               currentMonth: true
             });
             count++;
+          }
+        }
+        if(lm) {
+          for(let j = 0; j < lmCount; j++) {
+            week.days[j].num = daysInPrevious - (lmCount - j) + 1
           }
         }
         if (!emptyWeek) {
@@ -284,6 +301,13 @@ export default {
         };
       }
       this.num = date;
+    },
+    calendarNum(num) {
+      if (num < 10) {
+        return "0" + num;
+      } else {
+        return num;
+      }
     }
   }
 };
@@ -299,5 +323,16 @@ export default {
 
 .day {
   height: 180px;
+  min-width: 0;
+  overflow: hidden;
+  padding: 6px !important;
+}
+
+@media only screen and (max-width: 800px) {
+  .day {
+    padding: 1px !important;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
 }
 </style>
