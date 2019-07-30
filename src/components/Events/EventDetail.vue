@@ -81,13 +81,6 @@
                 <h5 class="mb-0">{{ author.name }}</h5>
                 <div class="row">
                   <div class="col">
-                    <span class="badge badge-primary">
-                      <i class="fa fa-user" /> n Followers
-                    </span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
                     <span class="badge badge-pill badge-info">
                       <i class="fa fa-calendar" />
                       {{ author.events }}

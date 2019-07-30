@@ -17,9 +17,6 @@
         <div class="media-body">
           <h5 class="mb-0">{{ profile.name }}</h5>
           <p class="mb-0 text-muted">{{ profile.email }}</p>
-          <span class="badge badge-primary">
-            <i class="fa fa-user"/> n Followers
-          </span>
         </div>
       </button>
     </div>

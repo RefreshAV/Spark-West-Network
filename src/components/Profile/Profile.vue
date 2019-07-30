@@ -224,7 +224,7 @@
                       >Edit</a>
                     </i>
                   </div>
-                  <!-- <div class="col-md-6">
+                  <div class="col-md-6">
                     <h6>Recent badges</h6>
                     <a href="#" class="badge badge-dark badge-pill mx-1">example1</a>
                     <a href="#" class="badge badge-dark badge-pill mx-1">coffee</a>
@@ -232,7 +232,7 @@
                     <a href="#" class="badge badge-dark badge-pill">more examples</a>
                     <hr />
                     <span class="badge badge-primary mx-1">
-                      <i class="fa fa-user" /> n Followers
+                      <i class="fa fa-user" /> {{ followerCount }} Follower<span v-if="followerCount.length > 1 || !followerCount.length">s</span>
                     </span>
                     <span class="badge badge-success mx-1">
                       <i class="fa fa-cog" /> n Forks
@@ -241,7 +241,7 @@
                       <i class="fa fa-heart" />
                       {{likedEvents.length}} Likes
                     </span>
-                  </div>-->
+                  </div>
                   <div class="col-md-12">
                     <hr />
                     <h5 class="mt-2">
@@ -667,7 +667,8 @@ export default {
       currentPage: [],
       currentLikePage: [],
       pageLength: 4,
-      likePageLength: 4
+      likePageLength: 4,
+      followers: []
     }
   },
   components: {
@@ -699,6 +700,7 @@ export default {
     $('body').tooltip({ selector: '[data-toggle=tooltip]' })
 
     this.$bind('user', db.collection('users').doc(firebase.auth().currentUser.uid))
+    this.$bind('followers', db.collection('users').where('user.following', 'array-contains', firebase.auth().currentUser.uid))
     this.$bind('events', db.collection('events')
       .where('event.UserUID', '==', firebase.auth().currentUser.uid)
       .orderBy('event.date.year')
@@ -716,6 +718,9 @@ export default {
   computed: {
     likedEventsLength () {
       return this.likedEvents.length
+    },
+    followerCount () {
+      return this.followers.length;
     }
   },
   methods: {
