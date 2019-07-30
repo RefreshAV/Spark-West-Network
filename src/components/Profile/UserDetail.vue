@@ -16,20 +16,22 @@
             <div class="card-body">
               <div class="tab-content py-4">
                 <div class="tab-pane active" id="profile">
-                  <button
-                    class="btn btn-primary float-right"
-                    @click="unfollowUser"
-                    v-if="isFollowed"
-                  >
-                    <span>
-                      <i class="fa fa-user-minus" /> Unfollow
-                    </span>
-                  </button>
-                  <button class="btn btn-primary float-right" @click="followUser" v-else>
-                    <span>
-                      <i class="fa fa-user-plus" /> Follow
-                    </span>
-                  </button>
+                  <div v-if="isLoggedIn">
+                    <button
+                      class="btn btn-primary float-right"
+                      @click="unfollowUser"
+                      v-if="isFollowed"
+                    >
+                      <span>
+                        <i class="fa fa-user-minus" /> Unfollow
+                      </span>
+                    </button>
+                    <button class="btn btn-primary float-right" @click="followUser" v-else>
+                      <span>
+                        <i class="fa fa-user-plus" /> Follow
+                      </span>
+                    </button>
+                  </div>
                   <h2 class="mb-3">{{ user.user.name }}</h2>
                   <hr />
                   <div class="row">
@@ -50,7 +52,7 @@
                       <a href="#" class="badge badge-dark badge-pill mr-1">more examples</a>
                       <hr />
                       <span class="badge badge-primary mr-1">
-                        <i class="fa fa-user" /> n Followers
+                        <i class="fa fa-user" /> {{ followerCount }} Follower<span v-if="followerCount.length > 1 || !followerCount">s</span>
                       </span>
                       <span class="badge badge-success mr-1">
                         <i class="fa fa-cog" /> n Forks
@@ -84,7 +86,7 @@
                         </router-link>
 
                         <li
-                          v-if="events.length == 0"
+                          v-if="events.length === 0"
                           id="placeholder"
                           class="list-group-item border-0 shadow text-white d-flex justify-content-center align-items-center"
                         >
@@ -170,7 +172,9 @@ export default {
       likedEvents: [],
       page: 1,
       pages: [],
-      currentPage: []
+      currentPage: [],
+      followers: [],
+      isLoggedIn: false
     }
   },
   metaInfo: {
@@ -190,7 +194,8 @@ export default {
     }
   },
   mounted () {
-    this.$bind('user', db.collection('users').doc(this.$route.params.id))
+    this.$bind('user', db.collection('users').doc(this.$route.params.id)),
+    this.$bind('followers', db.collection('users').where('user.following', 'array-contains', this.$route.params.id)),
     this.$bind(
       'currentUser',
       db.collection('users').doc(firebase.auth().currentUser.uid)
@@ -211,6 +216,16 @@ export default {
         .where('likedBy', 'array-contains', this.$route.params.id)
     )
   },
+  created () {
+    var vm = this
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        vm.isLoggedIn = true
+      } else {
+        vm.isLoggedIn = false
+      }
+    })
+  },
   computed: {
     isFollowed () {
       if (
@@ -221,6 +236,9 @@ export default {
       } else {
         return false
       }
+    },
+    followerCount () {
+      return this.followers.length;
     }
   },
   watch: {
