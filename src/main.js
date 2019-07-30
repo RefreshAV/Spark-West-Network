@@ -7,6 +7,7 @@ import { auth } from 'firebase/app'
 import VueScrollTo from 'vue-scrollto'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { firestorePlugin } from 'vuefire'
 
 Vue.use(VueScrollTo)
 Vue.use(VueDisqus)

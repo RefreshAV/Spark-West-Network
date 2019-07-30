@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
     "animate.css": "^3.7.2",
@@ -35,7 +36,8 @@
     "vue-router": "^3.0.7",
     "vue-scrollto": "^2.15.0",
     "vue-tweet-embed": "^2.3.0",
-    "vue2-google-maps": "^0.10.7"
+    "vue2-google-maps": "^0.10.7",
+    "vuefire": "^2.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.2",

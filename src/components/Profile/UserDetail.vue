@@ -5,7 +5,7 @@
       <div class="row my-2 mt-5">
         <div class="col-lg-4 order-lg-1 text-center">
           <img
-            :src="img"
+            :src="user.user.photo"
             class="mx-auto img-fluid img-circle d-block mb-3 shadow"
             id="preview"
             alt="avatar"
@@ -16,29 +16,29 @@
             <div class="card-body">
               <div class="tab-content py-4">
                 <div class="tab-pane active" id="profile">
-                  <h2 class="mb-3">{{ name }}</h2>
+                  <h2 class="mb-3">{{ user.user.name }}</h2>
                   <hr />
                   <div class="row">
                     <div class="col-md-6">
                       <strong>About</strong>
-                      <p>{{ about }}</p>
+                      <p>{{ user.user.about }}</p>
                       <strong>More info</strong>
                       <p>
                         Website:
-                        <a target="_blank" :href="website">{{ website }}</a>
+                        <a target="_blank" :href="user.user.website">{{ user.user.website }}</a>
                       </p>
                     </div>
                     <div class="col-md-6">
                       <h6>Recent badges</h6>
-                      <a href="#" class="badge badge-dark badge-pill">example1</a>
-                      <a href="#" class="badge badge-dark badge-pill">coffee</a>
-                      <a href="#" class="badge badge-dark badge-pill">examples</a>
-                      <a href="#" class="badge badge-dark badge-pill">more examples</a>
+                      <a href="#" class="badge badge-dark badge-pill mr-1">example1</a>
+                      <a href="#" class="badge badge-dark badge-pill mr-1">coffee</a>
+                      <a href="#" class="badge badge-dark badge-pill mr-1">examples</a>
+                      <a href="#" class="badge badge-dark badge-pill mr-1">more examples</a>
                       <hr />
-                      <span class="badge badge-primary">
+                      <span class="badge badge-primary mr-1">
                         <i class="fa fa-user" /> n Followers
                       </span>
-                      <span class="badge badge-success">
+                      <span class="badge badge-success mr-1">
                         <i class="fa fa-cog" /> n Forks
                       </span>
                       <span class="badge badge-danger">
@@ -53,7 +53,7 @@
                           <i class="fa fa-calendar" />
                           {{ events.length }}
                         </span>
-                        {{ name }}'s Events:
+                        {{ user.user.name }}'s Events:
                       </h5>
 
                       <ul class="list-group border-0 mb-3">
@@ -70,21 +70,11 @@
                         </router-link>
 
                         <li
-                          v-if="events.length == 0 && !loading"
+                          v-if="events.length == 0"
                           id="placeholder"
                           class="list-group-item border-0 shadow text-white d-flex justify-content-center align-items-center"
                         >
                           <h3>Nothing Here!</h3>
-                        </li>
-
-                        <li
-                          v-if="loading"
-                          id="loader"
-                          class="list-group-item d-flex justify-content-center align-items-center"
-                        >
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only">Loading...</span>
-                          </div>
                         </li>
                       </ul>
                     </div>
@@ -110,7 +100,6 @@
                       </div>
                     </div>
                   </div>
-                  <!--/row-->
                 </div>
                 <div class="tab-pane" id="messages">
                   <div class="alert alert-info alert-dismissable">
@@ -142,12 +131,12 @@
                   </table>
                 </div>
               </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -157,19 +146,14 @@ import 'firebase/firestore'
 export default {
   data () {
     return {
-      name: null,
-      email: null,
-      img: null,
-      about: null,
-      website: null,
-      UserUID: null,
+      user: {
+        user: {}
+      },
       events: [],
       likedEvents: [],
       page: 1,
       pages: [],
-      currentPage: [],
-      pageLength: 4,
-      loading: true
+      currentPage: []
     }
   },
   metaInfo: {
@@ -185,101 +169,24 @@ export default {
   },
   metaInfo () {
     return {
-      title: this.name
+      title: this.user.user.name
     }
   },
-  beforeRouteEnter (to, from, next) {
-    // var UserUID;
-
-    db.collection('users')
-      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          next(vm => {
-            vm.name = doc.data().user.name
-            vm.email = doc.data().user.email
-            vm.img = doc.data().user.photo
-            vm.about = doc.data().user.about
-            vm.website = doc.data().user.website
-            // UserUID = doc.data().user.UserUID;
-            // if (UserUID == firebase.auth().currentUser.uid) {
-            //   next("/Profile");
-            // }
-          })
-        })
-      })
-  },
   mounted () {
-    // get user info
-    db.collection('users')
-      .where(
-        firebase.firestore.FieldPath.documentId(),
-        '==',
-        this.$route.params.id
-      )
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          this.name = doc.data().user.name
-          this.email = doc.data().user.email
-          this.img = doc.data().user.photo
-          this.about = doc.data().user.about
-          this.website = doc.data().user.website
-          this.UserUID = doc.data().user.UserUID
-        })
-      })
+    this.$bind('user', db.collection('users').doc(this.$route.params.id))
+    this.$bind('events', db.collection('events')
+      .where('event.UserUID', '==', this.$route.params.id)
+      .orderBy('event.date.year')
+      .orderBy('event.date.month')
+      .orderBy('event.date.day')
+    )
+    this.$bind('likedEvents', db.collection('events').where('likedBy', 'array-contains', this.$route.params.id))
   },
   watch: {
     page: 'updateCurrent',
-    UserUID: 'getEvents',
     events: 'createPages'
   },
   methods: {
-    getEvents () {
-      // get users events
-      this.loading = true
-      db.collection('events')
-        .where('event.UserUID', '==', this.UserUID)
-        .orderBy('event.date.year')
-        .orderBy('event.date.month')
-        .orderBy('event.date.day')
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            const data = {
-              id: doc.id,
-              title: doc.data().event.title,
-              date: doc.data().event.date,
-              time: doc.data().event.time,
-              email: doc.data().event.email,
-              desc: doc.data().event.description,
-              imageKey: doc.data().event.imageKey
-            }
-            this.events.push(data)
-          })
-        })
-        .then((this.loading = false))
-
-      // get liked events
-      db.collection('events')
-        .where('likedBy', 'array-contains', this.UserUID)
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            const data = {
-              id: doc.id,
-              title: doc.data().event.title,
-              date: doc.data().event.date,
-              time: doc.data().event.time,
-              email: doc.data().event.email,
-              desc: doc.data().event.description,
-              imageKey: doc.data().event.imageKey
-            }
-            this.likedEvents.push(data)
-          })
-        })
-    },
     nextPage () {
       if (this.page < this.pages.length) {
         this.page++

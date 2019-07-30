@@ -165,7 +165,7 @@ export default {
         .then((this.upload = true))
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-          db.collection('users').add({
+          db.collection('users').doc(firebase.auth().currentUser.uid).set({
             user: {
               UserUID: firebase.auth().currentUser.uid,
               about: '',

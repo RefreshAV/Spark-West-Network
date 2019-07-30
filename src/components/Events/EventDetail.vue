@@ -115,11 +115,11 @@
 </template>
 
 <script>
-import db from "../../Firebase/firebaseInit";
-import firebase from "firebase";
-import "firebase/firestore";
-import Comments from "./EventComments.vue";
-import "datejs";
+import db from '../../Firebase/firebaseInit'
+import firebase from 'firebase'
+import 'firebase/firestore'
+import Comments from './EventComments.vue'
+import 'datejs'
 
 export default {
   name: "EventDetail",
@@ -353,26 +353,24 @@ export default {
         }
       }
     },
-    shareTwitter() {
+    shareTwitter () {
       window.open(`http://twitter.com/share?text=${this.title} – by ${this.author.name}&url=${window.location.href}&hashtags=#sparkwestnetwork
 `);
     },
-    shareFacebook() {
-      window.open(
-        `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`
-      );
+    shareFacebook () {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`)
     }
   },
   computed: {
-    dateString() {
+    dateString () {
       // Format date so it can be parsed
-      let { year, month, day } = this.date;
-      const uglyDate = `${month}/${day}/${year}`;
+      let { year, month, day } = this.date
+      const uglyDate = `${month}/${day}/${year}`
 
       // Parse the date and format it
       const prettyDate = Date.parse(uglyDate).toString("MMMM dS, yyyy");
 
-      return prettyDate;
+      return prettyDate
     }
   },
   components: {
