@@ -10,8 +10,9 @@
       <!-- details -->
       <div class="row">
         <div class="col-md col-sm-12 mb-3">
-          <div class="card border-0 shadow">
+          <div class="card shadow">
             <div class="card-body">
+              <!-- Title -->
               <div class="form-group">
                 <label for="title">Title</label>
                 <input
@@ -22,9 +23,10 @@
                   autocomplete="off"
                   v-model="event.title"
                   required
-                >
+                />
               </div>
 
+              <!-- Date -->
               <div class="form-group">
                 <label for="eventDate">Event Date</label>
                 <input
@@ -33,14 +35,12 @@
                   class="form-control"
                   v-model="event.date"
                   required
-                >
+                />
               </div>
 
+              <!-- Time -->
               <div class="form-group">
-                <label for="eventTimeStart">
-                  Event Time
-                  <small class="badge badge-pill badge-warning">24 hour</small>
-                </label>
+                <label for="eventTimeStart">Event Time</label>
                 <div class="row">
                   <div class="col-md-6">
                     <input
@@ -50,7 +50,7 @@
                       autocomplete="off"
                       v-model="start"
                       required
-                    >
+                    />
                   </div>
                   <div class="col-md-6">
                     <input
@@ -60,17 +60,41 @@
                       autocomplete="off"
                       v-model="end"
                       required
-                    >
+                    />
                   </div>
                 </div>
               </div>
 
+              <!-- Location -->
               <div class="form-group">
                 <label for="email">Event Location</label>
-
-                <GmapAutocomplete class="form-control" @place_changed="setLocation"/>
+                <input
+                  type="text"
+                  placeholder="Event Location"
+                  id="location"
+                  class="form-control"
+                  autocomplete="off"
+                  v-model="locationSearch"
+                  required
+                />
+                <div class="resultsWrapper">
+                  <ul class="list-group results">
+                    <li
+                      v-for="(location,index) in locationResults"
+                      :key="location.key"
+                      :class="{'list-group-item':true, 'p-2':true, 'list-group-item-action':true, 'top':(index == 0), 'bottom':(index == locationResults.length - 1 || index == 2)}"
+                      v-show="index < 3"
+                      @click="setLocation(location)"
+                    >
+                      <i class="fas fa-map-marker-alt text-muted"></i>
+                      {{ location.title }}
+                      <small>{{ formatedVicinity(location.vicinity) }}</small>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
+              <!-- Email -->
               <div class="form-group">
                 <label for="email">Email</label>
                 <input
@@ -81,13 +105,13 @@
                   autocomplete="off"
                   v-model="event.email"
                   required
-                >
+                />
               </div>
 
               <!-- Description (IP) -->
               <div class="form-group">
-                <label class="font-weight-bold" for="message">Description:</label>
-                <br>
+                <label for="message">Description:</label>
+                <br />
                 <textarea
                   id="message"
                   placeholder="A description of your event..."
@@ -108,8 +132,8 @@
         <!-- Image upload -->
         <div class="col-md col-sm-12 w-100">
           <div class="row mb-2" v-if="image">
-            <div class="col">
-              <img class="shadow img-fluid" :src="preImg" alt>
+            <div class="col d-flex justify-content-center">
+              <img class="shadow img-fluid" :src="preImg" alt />
             </div>
           </div>
           <div class="row mb-2" v-if="!image">
@@ -126,7 +150,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <div class="dUp file btn btn-primary">
+              <div id="browse" class="dUp file btn btn-block btn-primary">
                 Browse Images
                 <input
                   type="file"
@@ -135,51 +159,71 @@
                   accept="image/x-png, image/gif, image/jpeg"
                   @change="loadFile"
                   required
-                >
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <hr />
+      <div class="row">
+        <div class="col-auto">
+          <router-link to="/events/list" class="btn btn-danger btn-lg">Cancel</router-link>
+        </div>
+        <div class="col-auto">
+          <input type="submit" class="btn btn-primary btn-lg" />
+        </div>
+      </div>
     </form>
 
-    <div class="row">
-      <div class="col-md-6"></div>
-      <div class="col-md-6">
-        <!-- IMAGE UPLOAD -->
-      </div>
-    </div>
+    <hr />
 
-    <hr>
-    <div class="row">
-      <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-        <router-link to="/events/list" class="btn btn-danger">Cancel</router-link>
-        <button type="button" class="btn btn-info" @click="saveExit">Save & Exit</button>
-        <input type="submit" class="btn btn-primary">
-      </div>
-    </div>
-
-    <hr>
-
-    <!-- Modal -->
+    <!-- Modals -->
     <div
       class="modal fade"
-      id="warning"
+      id="sizeWarning"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title" id="exampleModalLabel">Warning</h2>
+            <h1 class="modal-title" id="exampleModalLabel">Warning:</h1>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <h5 class="text-muted">Event size exceeds limit :(</h5>
+          <div class="modal-body text-center text-danger">
+            <h3>Event size exceeds limit (¬_¬)</h3>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="locationWarning"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title" id="exampleModalLabel">Warning:</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center text-danger">
+            <h3>Invalid event location ¯\(o_o)/¯</h3>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -191,199 +235,226 @@
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase'
-import 'firebase/firestore'
-import pushid from 'pushid'
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase";
+import "firebase/firestore";
+import pushid from "pushid";
+import $ from "jquery";
+
 export default {
-  data () {
+  data() {
     return {
       event: {
-        title: '',
-        date: '',
-        time: '',
-        email: '',
-        description: '',
-        imageKey: '',
+        title: "",
+        date: "",
+        time: "",
+        email: "",
+        description: "",
+        imageKey: "",
         UserUID: firebase.auth().currentUser.uid,
-        locationName: '',
-        locationPos: {
-          lat: 0,
-          lng: 0
+        locationName: "",
+        location: {
+          lat: null,
+          lng: null
         }
       },
       isSubmitted: false,
       characters: 500,
-      preImg: 'http://via.placeholder.com/1920x1080',
-      image: '',
+      preImg: "http://via.placeholder.com/1920x1080",
+      image: "",
       uploaded: false,
       start: null,
       end: null,
-      location: null
-    }
+      locationSearch: "",
+      searchLocation: {
+        lat: 0,
+        lng: 0
+      },
+      locationResults: [],
+      clearSearch: 0
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'New Event',
+    title: "New Event",
     meta: [
       {
-        vmid: 'description',
-        name: 'description',
-        content: 'Create a new event on Spark West Network'
+        vmid: "description",
+        name: "description",
+        content: "Create a new event on Spark West Network"
       }
     ]
   },
-  mounted () {},
+  mounted() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        this.searchLocation.lat = pos.coords.latitude;
+        this.searchLocation.lng = pos.coords.longitude;
+      });
+    }
+  },
   computed: {
-    message () {
-      return this.event.description
+    message() {
+      return this.event.description;
     }
   },
   watch: {
-    message () {
-      var char = this.event.description.length
-      var maxChar = 500
-      this.characters = maxChar - char
+    message() {
+      var char = this.event.description.length;
+      var maxChar = 500;
+      this.characters = maxChar - char;
     },
-    end: 'time'
+    end: "time",
+    locationSearch: "autoSuggest",
+    locationResults: e => {
+      if (e.length > 0) {
+        document.getElementById("location").classList.add("searchResults");
+      } else {
+        document.getElementById("location").classList.remove("searchResults");
+      }
+    }
   },
   methods: {
-    submit () {
-      if (this.location) {
-        this.event.locationPos.lat = this.location.geometry.location.lat()
-        this.event.locationPos.lng = this.location.geometry.location.lng()
-        this.event.locationName = this.location.formatted_address
+    autoSuggest() {
+      if (this.locationSearch) {
+        if (this.clearSearch > 0) {
+          this.clearSearch -= 1;
+        } else {
+          const code = process.env.VUE_APP_HERE_CODE;
+          const id = process.env.VUE_APP_HERE_ID;
+          const place = this.locationSearch.trim().replace(/\s/g, "+");
+
+          const Http = new XMLHttpRequest();
+
+          const request =
+            "https://places.cit.api.here.com/places/v1/discover/search?app_id=" +
+            id +
+            "&app_code=" +
+            code +
+            "&at=" +
+            this.searchLocation.lat +
+            "," +
+            this.searchLocation.lng +
+            "&q=" +
+            place;
+
+          Http.open("GET", request);
+          Http.send();
+
+          Http.onreadystatechange = e => {
+            if (Http.response) {
+              let response = JSON.parse(Http.response);
+              this.locationResults = response.results.items;
+            } else {
+              this.locationResults = [];
+            }
+          };
+
+          this.event.locationName = "";
+          (this.event.location.lat = null), (this.event.location.lng = null);
+        }
+      } else {
+        document.getElementById("location").classList.remove("searchResults");
+        this.locationResults = [];
       }
-      var desc = this.event.description
-      var imgSize = this.image.size
+    },
+    formatedVicinity: function(vicinity) {
+      let res = vicinity.replace("<br/>", " ");
+      return res;
+    },
+    setLocation(loc) {
+      this.event.location.lat = loc.position[0];
+      this.event.location.lng = loc.position[1];
+      this.locationSearch = loc.title;
+      this.event.locationName = loc.title;
+      this.clearSearch = 1;
+      this.locationResults = [];
+      document.getElementById("location").classList.remove("searchResults");
+    },
+    submit() {
+      var desc = this.event.description;
+      var imgSize = this.image.size;
 
       if (desc > 500 || imgSize == 1000000) {
-        $('#warning').modal('toggle')
+        $("#sizeWarning").modal("toggle");
       } else {
-        var key = pushid()
-        this.isSubmitted = true
-        this.event.imageKey = key
-        var ref = firebase.storage().ref('events/' + this.event.imageKey)
-        var file = this.image
-        var upload = ref.put(file)
+        if (
+          !this.event.locationName ||
+          !this.event.location.lat ||
+          !this.event.location.lng
+        ) {
+          $("#locationWarning").modal("toggle");
+        } else {
+          var key = pushid();
+          this.isSubmitted = true;
+          this.event.imageKey = key;
+          var ref = firebase.storage().ref("events/" + this.event.imageKey);
+          var file = this.image;
+          var upload = ref.put(file);
 
-        upload.on(
-          'state_changed',
-          function progress (snapshot) {
-            var percentage =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          },
-          function error (err) {},
-          function complete () {}
-        )
-        var d = new Date()
-        var year = d.getUTCFullYear()
-        var month = d.getUTCMonth()
-        var day = d.getUTCDate()
-        var date = year + '-' + month + '-' + day
-        db.collection('events')
-          .add({
-            event: {
-              title: this.event.title,
-              date: {
-                year: this.event.date.substring(0, 4),
-                month: this.event.date.substring(5, 7),
-                day: this.event.date.substring(8)
-              },
-              time: this.event.time,
-              email: this.event.email,
-              description: this.event.description,
-              isSubmitted: this.isSubmitted,
-              SubmitDate: date,
-              imageKey: this.event.imageKey,
-              UserUID: this.event.UserUID,
-              locationName: this.event.locationName,
-              location: {
-                lat: this.event.locationPos.lat,
-                lng: this.event.locationPos.lng
+          upload.on(
+            "state_changed",
+            function progress(snapshot) {
+              var percentage =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            },
+            function error(err) {},
+            function complete() {}
+          );
+          var d = new Date();
+          var year = d.getUTCFullYear();
+          var month = d.getUTCMonth();
+          var day = d.getUTCDate();
+          var date = year + "-" + month + "-" + day;
+          db.collection("events")
+            .add({
+              event: {
+                title: this.event.title,
+                date: {
+                  year: this.event.date.substring(0, 4),
+                  month: this.event.date.substring(5, 7),
+                  day: this.event.date.substring(8)
+                },
+                time: this.event.time,
+                email: this.event.email,
+                description: this.event.description,
+                isSubmitted: this.isSubmitted,
+                SubmitDate: date,
+                imageKey: this.event.imageKey,
+                UserUID: this.event.UserUID,
+                locationName: this.event.locationName,
+                location: {
+                  lat: this.event.location.lat,
+                  lng: this.event.location.lng
+                },
+                likes: 1,
+                likedBy: [firebase.auth().currentUser.uid]
               }
-            }
-          })
-          .then(this.$router.push('/events/list'))
+            })
+            .then(this.$router.push("/events/list"));
+        }
       }
     },
-    saveExit () {
-      var desc = this.characters.length
-      var imgSize = this.image.size
-      if (desc > 500 || imgSize == 1000000) {
-        alert('Event size exceeds limit!')
-      } else {
-        var key = pushid()
-        this.isSubmitted = false
-        this.event.imageKey = key
-        var ref = firebase.storage().ref('events/' + this.event.imageKey)
-        var file = this.image
-        var upload = ref.put(file)
-
-        upload.on(
-          'state_changed',
-          function progress (snapshot) {
-            var percentage =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          },
-          function error (err) {},
-          function complete () {}
-        )
-        var d = new Date()
-        var year = d.getUTCFullYear()
-        var month = d.getUTCMonth()
-        var day = d.getUTCDate()
-        var date = year + '-' + month + '-' + day
-        db.collection('events')
-          .add({
-            event: {
-              title: this.event.title,
-              date: {
-                year: this.event.date.substring(0, 4),
-                month: this.event.date.substring(5, 7),
-                day: this.event.date.substring(8)
-              },
-              time: this.event.time,
-              email: this.event.email,
-              description: this.event.description,
-              isSubmitted: this.isSubmitted,
-              SubmitDate: date,
-              imageKey: this.event.imageKey,
-              UserUID: this.event.UserUID,
-              locationName: this.event.locationName,
-              location: {
-                lat: this.event.locationPos.lat,
-                lng: this.event.locationPos.lng
-              },
-              likes: 0,
-              likedBy: []
-            }
-          })
-          .then(this.$router.push('/events/list'))
-      }
+    loadFile: function() {
+      var input = document.querySelector(".bUp");
+      var imgURL = window.URL.createObjectURL(input.files[0]);
+      this.preImg = imgURL;
+      this.image = input.files[0];
     },
-    loadFile: function () {
-      var input = document.querySelector('.bUp')
-      var imgURL = window.URL.createObjectURL(input.files[0])
-      this.preImg = imgURL
-      this.image = input.files[0]
-    },
-    time () {
-      var start = this.start
-      var end = this.end
-      this.event.time = start + '-' + end
-    },
-    setLocation (location) {
-      this.location = location
+    time() {
+      var start = this.start;
+      var end = this.end;
+      this.event.time = start + "-" + end;
     }
   }
-}
+};
 </script>
 
 <style scoped>
 textarea {
   resize: none;
 }
+
 #placeholder {
   height: 300px;
   border-radius: 12px;
@@ -423,11 +494,23 @@ textarea {
   font-size: 15px;
 }
 
+.btn-lg {
+  border-radius: 12px;
+}
+
+#browse {
+  border-radius: 40px;
+}
+
 #preview {
   border-radius: 5px;
   margin-bottom: 10px;
   height: auto;
   width: 100%;
+  border-radius: 12px;
+}
+
+.img-fluid {
   border-radius: 12px;
 }
 
@@ -438,9 +521,24 @@ textarea {
 input[type="text"],
 input[type="email"],
 input[type="date"],
-input[type="time"],
-#location {
+input[type="time"] {
   border-radius: 38px;
+}
+
+.searchResults {
+  border-radius: 12px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-bottom: none;
+}
+
+.results .top {
+  border-radius: 0;
+}
+
+.results .bottom {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 textarea {
