@@ -29,30 +29,25 @@
                         {{ likes }}
                       </span>
                     </button>
-                    <button
-                      id="like"
-                      class="btn badge badge-pill border-0 text-info ml-3"
-                    >
+                    <button id="like" class="btn badge badge-pill border-0 text-info ml-3">
                       <span>
                         <i class="fab fa-twitter" @click="shareTwitter" />
                       </span>
                     </button>
-                    <button
-                      id="like"
-                      class="btn badge badge-pill border-0 text-primary ml-2"
-                    >
-                    <span>
-                      <i class="fab fa-facebook" @click="shareFacebook"/>
-                    </span>
-                   </button>
+                    <button id="like" class="btn badge badge-pill border-0 text-primary ml-2">
+                      <span>
+                        <i class="fab fa-facebook" @click="shareFacebook" />
+                      </span>
+                    </button>
                   </div>
                 </div>
-                <hr>
+                <hr />
                 <h5>Description:</h5>
                 <p>{{ desc }}</p>
+                <br>
                 <p class="lead">
-                  <br />
-                    <a :href="'https://maps.google.com/?q=' + locationName">Get directions</a>
+                  {{ locationName }}:
+                  <a :href="'https://maps.google.com/?q=' + locationName" target="_blank">Get directions</a>
                 </p>
                 <span class="badge badge-primary">
                   <i class="fa fa-user" />
@@ -63,7 +58,7 @@
           </div>
         </div>
       </div>
-      <br/>
+      <br />
       <div class="row">
         <div class="col">
             <router-link
@@ -88,8 +83,9 @@
                   </div>
                 </div>
               </div>
-            </router-link>
-          </div>
+            </div>
+          </router-link>
+        </div>
       </div>
 
       <hr />
@@ -120,19 +116,19 @@ import Comments from './EventComments.vue'
 import 'datejs'
 
 export default {
-  name: 'EventDetail',
-  data () {
+  name: "EventDetail",
+  data() {
     return {
       id: null,
-      title: 'Event',
+      title: "Event",
       date: null,
       time: null,
       email: null,
       desc: null,
       image:
-        'https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif',
+        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif",
       imageKey: null,
-      submitDate: 'not found',
+      submitDate: "not found",
       UserUID: null,
       location: null,
       locationName: null,
@@ -154,46 +150,46 @@ export default {
       isAdmin: false,
       isLoggedIn: false,
       event: true
-    }
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'Event',
+    title: "Event",
     meta: [
       {
-        vmid: 'description',
-        name: 'description',
-        content: 'An event on Spark West Network'
+        vmid: "description",
+        name: "description",
+        content: "An event on Spark West Network"
       }
     ]
   },
-  metaInfo () {
+  metaInfo() {
     return {
       title: this.title
-    }
+    };
   },
-  mounted () {
-    var that = this
+  mounted() {
+    var that = this;
 
     if (
       firebase.auth().currentUser &&
-      firebase.auth().currentUser.uid == 'KwDaa9UdSAe8Jnn8biRTr0rcRlk2'
+      firebase.auth().currentUser.uid == "KwDaa9UdSAe8Jnn8biRTr0rcRlk2"
     ) {
-      this.isAdmin = true
+      this.isAdmin = true;
     } else {
-      this.isAdmin = false
+      this.isAdmin = false;
     }
 
     if (firebase.auth().currentUser) {
-      this.isLoggedIn = true
+      this.isLoggedIn = true;
     } else {
-      this.isLoggedIn = false
+      this.isLoggedIn = false;
     }
 
-    db.collection('events')
+    db.collection("events")
       .where(
         firebase.firestore.FieldPath.documentId(),
-        '==',
+        "==",
         this.$route.params.id
       )
       .get()
@@ -201,157 +197,159 @@ export default {
         if (!querySnapshot.empty) {
           querySnapshot.forEach(doc => {
             (this.id = doc.id),
-            (this.title = doc.data().event.title),
-            (this.date = doc.data().event.date),
-            (this.time = doc.data().event.time),
-            (this.email = doc.data().event.email),
-            (this.desc = doc.data().event.description),
-            (this.imageKey = doc.data().event.imageKey),
-            (this.submitDate = doc.data().event.SubmitDate),
-            (this.UserUID = doc.data().event.UserUID),
-            (this.likes = doc.data().likes),
-            (this.likedBy = doc.data().likedBy),
-            (this.location = doc.data().event.location),
-            (this.locationName = doc.data().event.locationName)
-            this.event = true
-          })
+              (this.title = doc.data().event.title),
+              (this.date = doc.data().event.date),
+              (this.time = doc.data().event.time),
+              (this.email = doc.data().event.email),
+              (this.desc = doc.data().event.description),
+              (this.imageKey = doc.data().event.imageKey),
+              (this.submitDate = doc.data().event.SubmitDate),
+              (this.UserUID = doc.data().event.UserUID),
+              (this.likes = doc.data().likes),
+              (this.likedBy = doc.data().likedBy),
+              (this.location = doc.data().event.location),
+              (this.locationName = doc.data().event.locationName);
+            this.event = true;
+          });
         } else {
-          this.event = false
+          this.event = false;
         }
       })
-      .then(function () {
-        var button = document.getElementById('like')
-        if (
-          firebase.auth().currentUser &&
-          that.likedBy.includes(firebase.auth().currentUser.uid)
-        ) {
-          that.liked = true
-          button.classList.add('liked', 'animated', 'heartBeat')
-        } else {
-          that.liked = false
-          button.classList.add('notLiked')
+      .then(function() {
+        var button = document.getElementById("like");
+        if (that.likedBy) {
+          if (
+            firebase.auth().currentUser &&
+            that.likedBy.includes(firebase.auth().currentUser.uid)
+          ) {
+            that.liked = true;
+            button.classList.add("liked", "animated", "heartBeat");
+          } else {
+            that.liked = false;
+            button.classList.add("notLiked");
+          }
         }
-      })
+      });
   },
   watch: {
-    title: 'fetchImage',
-    UserUID: 'getAuthor',
-    liked: function () {
-      var button = document.getElementById('like')
+    title: "fetchImage",
+    UserUID: "getAuthor",
+    liked: function() {
+      var button = document.getElementById("like");
 
       if (this.liked) {
-        button.classList.remove('notLiked')
-        button.classList.add('liked', 'animated', 'heartBeat')
+        button.classList.remove("notLiked");
+        button.classList.add("liked", "animated", "heartBeat");
       } else {
-        button.classList.remove('liked', 'animated', 'heartBeat')
-        button.classList.add('notLiked')
+        button.classList.remove("liked", "animated", "heartBeat");
+        button.classList.add("notLiked");
       }
     }
   },
   methods: {
-    fetchImage () {
-      var ref = firebase.storage().ref('events/' + this.imageKey)
-      var that = this
+    fetchImage() {
+      var ref = firebase.storage().ref("events/" + this.imageKey);
+      var that = this;
 
-      ref.getDownloadURL().then(function (url) {
-        that.image = url
-      })
+      ref.getDownloadURL().then(function(url) {
+        that.image = url;
+      });
     },
-    getAuthor () {
-      db.collection('users')
-        .where('user.UserUID', '==', this.UserUID)
+    getAuthor() {
+      db.collection("users")
+        .where("user.UserUID", "==", this.UserUID)
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            this.author.id = doc.id
-            this.author.uid = doc.data().user.UserUID
-            this.author.name = doc.data().user.name
-            this.author.img = doc.data().user.photo
-            this.author.email = doc.data().user.email
-          })
+            this.author.id = doc.id;
+            this.author.uid = doc.data().user.UserUID;
+            this.author.name = doc.data().user.name;
+            this.author.img = doc.data().user.photo;
+            this.author.email = doc.data().user.email;
+          });
 
           if (
             firebase.auth().currentUser &&
             firebase.auth().currentUser.uid == this.author.uid
           ) {
-            this.isAuthor = true
+            this.isAuthor = true;
           } else {
-            this.isAuthor = false
+            this.isAuthor = false;
           }
         })
         .then(() => {
-          db.collection('events')
-            .where('event.UserUID', '==', this.author.uid)
+          db.collection("events")
+            .where("event.UserUID", "==", this.author.uid)
             .get()
             .then(querySnapshot => {
-              this.author.events = querySnapshot.size
-            })
-        })
+              this.author.events = querySnapshot.size;
+            });
+        });
     },
-    deleteEvent () {
-      if (confirm('Are you sure?')) {
-        var ref = firebase.storage().ref('events/' + this.imageKey)
-        ref.delete()
+    deleteEvent() {
+      if (confirm("Are you sure?")) {
+        var ref = firebase.storage().ref("events/" + this.imageKey);
+        ref.delete();
 
-        db.collection('events')
+        db.collection("events")
           .where(
             firebase.firestore.FieldPath.documentId(),
-            '==',
+            "==",
             this.$route.params.id
           )
           .get()
           .then(querySnapshot => {
             querySnapshot.forEach(doc => {
-              doc.ref.delete()
-              this.$router.push('/events/list')
-            })
-          })
+              doc.ref.delete();
+              this.$router.push("/events/list");
+            });
+          });
       }
       // Add join Event logic here
     },
-    likeEvent () {
+    likeEvent() {
       if (firebase.auth().currentUser) {
         if (this.likedBy == null) {
-          this.likedBy = []
+          this.likedBy = [];
         }
         if (this.likes == null) {
-          this.likes = 0
+          this.likes = 0;
         }
 
         if (this.liked) {
           // remove like
-          this.liked = false
-          this.likes--
+          this.liked = false;
+          this.likes--;
 
           var remove = this.likedBy.filter(
             uid => uid !== firebase.auth().currentUser.uid
-          )
-          this.likedBy = remove
+          );
+          this.likedBy = remove;
 
-          db.collection('events')
+          db.collection("events")
             .doc(this.id)
             .update({
               likes: this.likes,
               likedBy: this.likedBy
-            })
+            });
         } else {
           // add like
-          this.liked = true
-          this.likes++
-          this.likedBy.push(firebase.auth().currentUser.uid)
+          this.liked = true;
+          this.likes++;
+          this.likedBy.push(firebase.auth().currentUser.uid);
 
-          db.collection('events')
+          db.collection("events")
             .doc(this.id)
             .update({
               likes: this.likes,
               likedBy: this.likedBy
-            })
+            });
         }
       }
     },
     shareTwitter () {
       window.open(`http://twitter.com/share?text=${this.title} – by ${this.author.name}&url=${window.location.href}&hashtags=#sparkwestnetwork
-`)
+`);
     },
     shareFacebook () {
       window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`)
@@ -364,15 +362,15 @@ export default {
       const uglyDate = `${month}/${day}/${year}`
 
       // Parse the date and format it
-      const prettyDate = Date.parse(uglyDate).toString('MMMM dS, yyyy')
+      const prettyDate = Date.parse(uglyDate).toString("MMMM dS, yyyy");
 
       return prettyDate
     }
   },
   components: {
-    'app-comments': Comments
+    "app-comments": Comments
   }
-}
+};
 </script>
 
 <style scoped>

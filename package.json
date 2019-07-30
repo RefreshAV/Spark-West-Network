@@ -29,6 +29,7 @@
     "vue-carousel": "^0.18.0",
     "vue-cropperjs": "^4.0.0",
     "vue-disqus": "^3.0.5",
+    "vue-froala-wysiwyg": "^3.0.3",
     "vue-instagram": "^2.0.1",
     "vue-mapbox": "^0.4.1",
     "vue-meta": "^1.6.0",

@@ -22,13 +22,13 @@
                 autocomplete="off"
                 v-model="title"
                 required
-              >
+              />
             </div>
 
             <!-- Date -->
             <div class="form-group">
               <label class="font-weight-bold" for="eventDate">Event Date:</label>
-              <input id="eventDate" type="date" class="form-control" v-model="date" required>
+              <input id="eventDate" type="date" class="form-control" v-model="date" required />
             </div>
 
             <!-- Time -->
@@ -43,7 +43,7 @@
                     autocomplete="off"
                     v-model="start"
                     required
-                  >
+                  />
                 </div>
                 <div class="col">
                   <input
@@ -53,20 +53,38 @@
                     autocomplete="off"
                     v-model="end"
                     required
-                  >
+                  />
                 </div>
               </div>
             </div>
 
-            <!-- Location (IP) -->
+            <!-- Location -->
             <div class="form-group">
-              <label class="font-weight-bold" for="email">Event Location:</label>
-              <GmapAutocomplete
+              <label for="email">Event Location</label>
+              <input
+                type="text"
+                placeholder="Event Location"
                 id="location"
                 class="form-control"
-                @place_changed="setLocation"
-                v-model="locationName"
+                autocomplete="off"
+                v-model="locationSearch"
+                required
               />
+              <div class="resultsWrapper">
+                <ul class="list-group results">
+                  <li
+                    v-for="(location,index) in locationResults"
+                    :key="location.key"
+                    :class="{'list-group-item':true, 'p-2':true, 'list-group-item-action':true, 'top':(index == 0), 'bottom':(index == locationResults.length - 1 || index == 2)}"
+                    v-show="index < 3"
+                    @click="setLocation(location)"
+                  >
+                    <i class="fas fa-map-marker-alt text-muted"></i>
+                    {{ location.title }}
+                    <small>{{ formatedVicinity(location.vicinity) }}</small>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <!-- Contact (IP) -->
@@ -79,13 +97,13 @@
                 autocomplete="off"
                 v-model="email"
                 required
-              >
+              />
             </div>
 
             <!-- Description (IP) -->
             <div class="form-group">
               <label class="font-weight-bold" for="message">Description:</label>
-              <br>
+              <br />
               <textarea
                 id="message"
                 rows="5"
@@ -127,7 +145,7 @@
               height="300"
               width="100%"
               alt
-            >
+            />
           </div>
         </div>
         <div class="row">
@@ -140,14 +158,14 @@
                 class="bUp"
                 accept="image/x-png, image/gif, image/jpeg"
                 @change="loadFile"
-              >
+              />
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <hr>
+    <hr />
 
     <div class="row">
       <div class="col">
@@ -163,16 +181,71 @@
       </div>
     </div>
 
-    <hr>
+    <hr />
+
+    <!-- Modals -->
+    <div
+      class="modal fade"
+      id="sizeWarning"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title" id="exampleModalLabel">Warning:</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center text-danger">
+            <h3>Event size exceeds limit (¬_¬)</h3>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="locationWarning"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title" id="exampleModalLabel">Warning:</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center text-danger">
+            <h3>Invalid event location ¯\(o_o)/¯</h3>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase'
-import 'firebase/firestore'
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase";
+import "firebase/firestore";
+import $ from "jquery";
+
 export default {
-  data () {
+  data() {
     return {
       id: null,
       title: null,
@@ -188,178 +261,267 @@ export default {
       end: null,
       UID: null,
       submitDate: null,
-      locationName: '',
-      locationPos: {
+      locationName: "",
+      location: {
         lat: 0,
         lng: 0
       },
-      location: null
-    }
+      locationSearch: "",
+      searchLocation: {
+        lat: 0,
+        lng: 0
+      },
+      locationResults: [],
+      clearSearch: 0
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'Edit Event',
+    title: "Edit Event",
     meta: [
       {
-        vmid: 'description',
-        name: 'description',
-        content: 'Edit the details of an event'
+        vmid: "description",
+        name: "description",
+        content: "Edit the details of an event"
       }
     ]
   },
-  metaInfo () {
+  metaInfo() {
     if (this.title) {
       return {
         title: this.title
-      }
+      };
     } else {
       return {
-        title: 'Edit Event'
-      }
+        title: "Edit Event"
+      };
     }
   },
-  beforeRouteEnter (to, from, next) {
-    db.collection('events')
-      .where(firebase.firestore.FieldPath.documentId(), '==', to.params.id)
+  beforeRouteEnter(to, from, next) {
+    db.collection("events")
+      .where(firebase.firestore.FieldPath.documentId(), "==", to.params.id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            vm.id = doc.id
-            vm.title = doc.data().event.title
-            vm.date = doc.data().event.date
-            vm.time = doc.data().event.time
-            vm.email = doc.data().event.email
-            vm.description = doc.data().event.description
-            vm.locationName = doc.data().event.locationName
-            vm.imageKey = doc.data().event.imageKey
-            vm.submitDate = doc.data().event.SubmitDate
-            vm.UID = doc.data().event.UserUID
-          })
-        })
-      })
+            vm.id = doc.id;
+            vm.title = doc.data().event.title;
+            vm.date = doc.data().event.date;
+            vm.time = doc.data().event.time;
+            vm.email = doc.data().event.email;
+            vm.description = doc.data().event.description;
+            (vm.locationName = doc.data().event.locationName),
+              (vm.locationName = doc.data().event.locationName),
+              (vm.imageKey = doc.data().event.imageKey);
+            vm.submitDate = doc.data().event.SubmitDate;
+            vm.UID = doc.data().event.UserUID;
+          });
+        });
+      });
   },
-  mounted () {
-    db.collection('events')
+  mounted() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        this.searchLocation.lat = pos.coords.latitude;
+        this.searchLocation.lng = pos.coords.longitude;
+      });
+    }
+
+    this.clearSearch = 1;
+
+    db.collection("events")
       .where(
         firebase.firestore.FieldPath.documentId(),
-        '==',
+        "==",
         this.$route.params.id
       )
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          let date = doc.data().event.date
-          this.id = doc.id
-          this.title = doc.data().event.title
-          this.date = date.year + '-' + date.month + '-' + date.day
-          this.time = doc.data().event.time
-          this.email = doc.data().event.email
-          this.desc = doc.data().event.description
-          this.locationName = doc.data().event.locationName
-          this.imageKey = doc.data().event.imageKey
-          this.submitDate = doc.data().event.SubmitDate
-          this.UID = doc.data().event.UserUID
-        })
-      })
+          let date = doc.data().event.date;
+          this.id = doc.id;
+          this.title = doc.data().event.title;
+          this.date = date.year + "-" + date.month + "-" + date.day;
+          this.time = doc.data().event.time;
+          this.email = doc.data().event.email;
+          this.desc = doc.data().event.description;
+          this.locationName = doc.data().event.locationName;
+          this.locationSearch = doc.data().event.locationName;
+          this.location.lat = doc.data().location.lat;
+          this.location.lng = doc.data().location.lng;
+          this.imageKey = doc.data().event.imageKey;
+          this.submitDate = doc.data().event.SubmitDate;
+          this.UID = doc.data().event.UserUID;
+        });
+      });
   },
   watch: {
-    id: 'fetchImage',
-    description: 'getChars'
+    id: "fetchImage",
+    description: "getChars",
+    locationSearch: "autoSuggest",
+    locationResults: e => {
+      if (e.length > 0) {
+        document.getElementById("location").classList.add("searchResults");
+      } else {
+        document.getElementById("location").classList.remove("searchResults");
+      }
+    }
   },
   methods: {
-    getChars () {
-      this.characters = this.description.length
-    },
-    fetchImage () {
-      var ref = firebase.storage().ref('events/' + this.imageKey)
-      var that = this
+    autoSuggest() {
+      if (this.locationSearch) {
+        if (this.clearSearch > 0) {
+          this.clearSearch -= 1;
+        } else {
+          const code = process.env.VUE_APP_HERE_CODE;
+          const id = process.env.VUE_APP_HERE_ID;
+          const place = this.locationSearch.trim().replace(/\s/g, "+");
 
-      ref.getDownloadURL().then(function (url, a) {
-        that.preImg = url
-      })
+          const Http = new XMLHttpRequest();
 
-      var time = this.time
-      this.end = time.substring(6)
-      this.start = time.substring(0, 5)
-    },
-    saveExit () {
-      if (this.location) {
-        this.locationPos.lat = this.location.geometry.location.lat()
-        this.locationPos.lng = this.location.geometry.location.lng()
-        this.locationName = this.location.formatted_address
+          const request =
+            "https://places.cit.api.here.com/places/v1/discover/search?app_id=" +
+            id +
+            "&app_code=" +
+            code +
+            "&at=" +
+            this.searchLocation.lat +
+            "," +
+            this.searchLocation.lng +
+            "&q=" +
+            place;
+
+          Http.open("GET", request);
+          Http.send();
+
+          Http.onreadystatechange = e => {
+            if (Http.response) {
+              let response = JSON.parse(Http.response);
+              this.locationResults = response.results.items;
+            } else {
+              this.locationResults = [];
+            }
+          };
+
+          this.locationName = "";
+          (this.location.lat = null), (this.location.lng = null);
+        }
+      } else {
+        document.getElementById("location").classList.remove("searchResults");
+        this.locationResults = [];
       }
-      var start = this.start
-      var end = this.end
+    },
+    formatedVicinity: function(vicinity) {
+      let res = vicinity.replace("<br/>", " ");
+      return res;
+    },
+    setLocation(loc) {
+      this.location.lat = loc.position[0];
+      this.location.lng = loc.position[1];
+      this.locationSearch = loc.title;
+      this.locationName = loc.title;
+      this.clearSearch = 1;
+      this.locationResults = [];
+      document.getElementById("location").classList.remove("searchResults");
+    },
+    getChars() {
+      this.characters = this.description.length;
+    },
+    fetchImage() {
+      var ref = firebase.storage().ref("events/" + this.imageKey);
+      var that = this;
 
-      this.time = start + '-' + end
+      ref.getDownloadURL().then(function(url, a) {
+        that.preImg = url;
+      });
 
-      var ref = firebase.storage().ref('events/' + this.imageKey)
-      var file = this.image
-      var that = this
+      var time = this.time;
+      this.end = time.substring(6);
+      this.start = time.substring(0, 5);
+    },
+    saveExit() {
+      var desc = this.description;
 
-      if (file != null) {
-        console.log('Updating file')
-        var upload = ref.put(file)
+      if (desc > 500) {
+        $("#sizeWarning").modal("toggle");
+      } else {
+        if (
+          !this.locationName ||
+          !this.location.lat ||
+          !this.location.lng
+        ) {
+          $("#locationWarning").modal("toggle");
+        } else {
+          var start = this.start;
+          var end = this.end;
 
-        upload.on(
-          'state_changed',
-          function progress (snapshot) {
-            var percentage =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          },
-          function error (err) {},
-          function complete () {}
-        )
-      }
+          this.time = start + "-" + end;
 
-      db.collection('events')
-        .where(
-          firebase.firestore.FieldPath.documentId(),
-          '==',
-          this.$route.params.id
-        )
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            doc.ref.update({
-              event: {
-                title: this.title,
-                date: {
-                  year: this.date.substring(0, 4),
-                  month: this.date.substring(5, 7),
-                  day: this.date.substring(8)
-                },
-                time: this.time,
-                email: this.email,
-                description: this.description,
-                imageKey: this.imageKey,
-                SubmitDate: this.submitDate,
-                UserUID: this.UID,
-                locationName: this.locationName,
-                location: {
-                  lat: this.locationPos.lat,
-                  lng: this.locationPos.lng
-                }
-              }
+          var ref = firebase.storage().ref("events/" + this.imageKey);
+          var file = this.image;
+          var that = this;
+
+          if (file != null) {
+            console.log("Updating file");
+            var upload = ref.put(file);
+
+            upload.on(
+              "state_changed",
+              function progress(snapshot) {
+                var percentage =
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              },
+              function error(err) {},
+              function complete() {}
+            );
+          }
+
+          db.collection("events")
+            .where(
+              firebase.firestore.FieldPath.documentId(),
+              "==",
+              this.$route.params.id
+            )
+            .get()
+            .then(querySnapshot => {
+              querySnapshot.forEach(doc => {
+                doc.ref.update({
+                  event: {
+                    title: this.title,
+                    date: {
+                      year: this.date.substring(0, 4),
+                      month: this.date.substring(5, 7),
+                      day: this.date.substring(8)
+                    },
+                    time: this.time,
+                    email: this.email,
+                    description: this.description,
+                    imageKey: this.imageKey,
+                    SubmitDate: this.submitDate,
+                    UserUID: this.UID,
+                    locationName: this.locationName,
+                    location: {
+                      lat: this.location.lat,
+                      lng: this.location.lng
+                    }
+                  }
+                });
+              });
             })
-          })
-        })
-        .then(that.$router.push('/events/event/' + that.id))
+            .then(that.$router.push("/events/event/" + that.id));
+        }
+      }
     },
-    loadFile: function () {
-      var input = document.querySelector('.bUp')
+    loadFile: function() {
+      var input = document.querySelector(".bUp");
 
-      var imgURL = window.URL.createObjectURL(input.files[0])
+      var imgURL = window.URL.createObjectURL(input.files[0]);
 
-      this.preImg = imgURL
-      this.image = input.files[0]
-    },
-    setLocation (location) {
-      this.location = location
+      this.preImg = imgURL;
+      this.image = input.files[0];
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -401,9 +563,24 @@ export default {
 input[type="text"],
 input[type="email"],
 input[type="date"],
-input[type="time"],
-#location {
+input[type="time"] {
   border-radius: 38px;
+}
+
+.searchResults {
+  border-radius: 12px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-bottom: none;
+}
+
+.results .top {
+  border-radius: 0;
+}
+
+.results .bottom {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 textarea {
