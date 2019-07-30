@@ -6,6 +6,7 @@ import Home from './components/Main/Home.vue'
 import Events from './components/Events/Events.vue'
 import EventDetail from './components/Events/EventDetail.vue'
 import EventList from './components/Events/EventList'
+import EventCalendar from './components/Events/EventCalendar'
 import EditEvent from './components/Events/EditEvent'
 import NewEvent from './components/Events/NewEvent'
 import Contact from './components/Contact/Contact.vue'
@@ -65,6 +66,14 @@ const routes = [
     path: '/events/list',
     name: 'events-list',
     component: EventList,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/events/calendar',
+    name: 'events-calendar',
+    component: EventCalendar,
     meta: {
       requiresAuth: false
     }
