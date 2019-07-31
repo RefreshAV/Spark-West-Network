@@ -175,7 +175,8 @@ export default {
                 'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/users%2F' +
                 firebase.auth().currentUser.uid +
                 '?alt=media&token',
-              website: ''
+              website: '',
+              isAdmin: false
             }
           })
 

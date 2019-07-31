@@ -1,0 +1,29 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	match /users/{userId} {
+    	allow read: if true;
+      allow create: if request.auth.uid != null;
+      allow write, update, delete: if isOwner(userId) && request.resource.data.user.isAdmin != true || isAdmin();
+    }
+
+  	match /events/{eventId} {
+      allow read: if true
+      allow create: if request.auth.uid != null;
+      allow write, update, delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.user.UserUID == request.resource.data.event.UserUID || isAdmin();
+  	}
+  	
+    // TODO: Setup organization perms
+    match /organizations/{organizationId} {
+    	allow read: if true
+      allow create, write, update, delete: if request.auth.uid != null;
+    }
+    
+		function isOwner(userId) {
+    	return request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+    	return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.user.isAdmin == true;
+    }
+  }
+}
