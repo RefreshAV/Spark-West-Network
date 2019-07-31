@@ -11,22 +11,25 @@ const db = admin.firestore();
 exports.sendEventNotification = functions.firestore
     .document('events/{eventId}')
     .onCreate((snap, _context) => {
-        const { UserUID, title, description } = snap.data().event;
+        const { UserUID } = snap.data().event;
 
-        // Find all users which are following the event creator
-        db.collection('users').where('user.following', 'array-contains', UserUID)
-            .get()
-            .then((querySnapshot) => {
-                // For every follower, send them an email notification
-                querySnapshot.forEach((doc) => {
-                    console.log(`Sending an email to ${doc.data().user.UserID}`);
-                    const msg = {
-                        to: doc.data().user.email,
-                        from: 'noreply@sparkwest.network',
-                        subject: `${UserUID} just posted a new event!`,
-                        text: ``,
-                      };
-                      sgMail.send(msg);
-                });
-            }).catch(err => console.error(err));
+        // Get event creator
+        db.collection('users').doc(UserUID).get((eventAuthorDoc) => {
+            // Find all users which are following the event creator
+            db.collection('users').where('user.following', 'array-contains', UserUID)
+                .get()
+                .then((querySnapshot) => {
+                    // For every follower, send them an email notification
+                    querySnapshot.forEach((followerDoc) => {
+                        const msg = {
+                            to: followerDoc.data().user.email,
+                            from: 'noreply@sparkwest.network',
+                            subject: `${eventAuthorDoc.data().user.name} just posted a new event!`,
+                            text: ``,
+                        };
+
+                        sgMail.send(msg);
+                    });
+                }).catch(err => console.error(err));
+        });
     });
