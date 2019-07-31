@@ -3,7 +3,7 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if true;
       allow create: if request.auth.uid != null;
-      allow write, update, delete: if isOwner(userId) && request.resource.data.user.isAdmin != true || isAdmin();
+      allow write, update: if isOwner(userId) && request.resource.data.user.isAdmin != true || isAdmin();
     }
 
     match /events/{eventId} {
