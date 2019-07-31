@@ -17,7 +17,7 @@ import SignUpSuccess from './components/Auth/SignUpSuccess.vue'
 import LogOut from './components/Auth/LogOut.vue'
 import Profile from './components/Profile/Profile.vue'
 import OrganizationsList from './components/Profile/OrganizationsList'
-import NewOrganizationProfile from './components/Profile/NewOrganizationProfile.vue'
+import NewOrganization from './components/Profile/NewOrganization.vue'
 import OrganizationDetail from './components/Profile/OrganizationDetail.vue'
 import OrganizationUsers from './components/Profile/OrganizationUsers.vue'
 import UserList from './components/Profile/UserList.vue'
@@ -184,8 +184,8 @@ const routes = [
   },
   {
     path: '/Organization/New',
-    name: 'newOrganizationProfile',
-    component: NewOrganizationProfile,
+    name: 'newOrganization',
+    component: NewOrganization,
     beforeEnter: (to, from, next) => {
       var user = auth().currentUser
       if (user) {

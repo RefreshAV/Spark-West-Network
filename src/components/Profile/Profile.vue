@@ -1012,9 +1012,4 @@ li h3 {
   border-bottom-left-radius: 40px !important;
   padding-left: 16px !important;
 }
-
-input[type="url"] {
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
-}
 </style>
