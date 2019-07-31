@@ -80,8 +80,8 @@
                           :to="{name: 'event-detail', params: {id: event.id}}"
                         >
                           <div>
-                            <h5>{{ event.title }}</h5>
-                            <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
+                            <h5>{{ event.event.title }}</h5>
+                            <p>{{ event.event.date.year }}-{{ event.event.date.month }}-{{ event.event.date.day }}</p>
                           </div>
                         </router-link>
 
@@ -174,7 +174,8 @@ export default {
       pages: [],
       currentPage: [],
       followers: [],
-      isLoggedIn: false
+      isLoggedIn: false,
+      pageLength: 4
     }
   },
   metaInfo: {
