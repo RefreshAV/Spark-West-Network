@@ -9,7 +9,7 @@
     <form @submit.prevent="submit">
       <!-- details -->
       <div class="row">
-        <div class="col-md col-sm-12 mb-3">
+        <div class="col-md-7 col-12 mb-3">
           <div class="card shadow">
             <div class="card-body">
               <!-- Title -->
@@ -108,29 +108,17 @@
                 />
               </div>
 
-              <!-- Description (IP) -->
               <div class="form-group">
                 <label for="message">Description:</label>
                 <br />
-                <textarea
-                  id="message"
-                  placeholder="A description of your event..."
-                  rows="5"
-                  class="form-control"
-                  maxlength="500"
-                  v-model="event.description"
-                />
-                <i class="counter">
-                  Characters:
-                  <span class="cNum">{{ characters }}</span>
-                </i>
+                <froala :tag="'textarea'" :config="config" v-model="event.description"></froala>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Image upload -->
-        <div class="col-md col-sm-12 w-100">
+        <div class="col-md col-12 w-100">
           <div class="row mb-2" v-if="image">
             <div class="col d-flex justify-content-center">
               <img class="shadow img-fluid" :src="preImg" alt />
@@ -238,12 +226,14 @@
 import db from "../../Firebase/firebaseInit";
 import firebase from "firebase";
 import "firebase/firestore";
+import toolbarConfig from "../../toolbarConfig"
 import pushid from "pushid";
 import $ from "jquery";
 
 export default {
   data() {
     return {
+      config: toolbarConfig,
       event: {
         title: "",
         date: "",
@@ -375,64 +365,60 @@ export default {
       var desc = this.event.description;
       var imgSize = this.image.size;
 
-      if (desc > 500 || imgSize == 1000000) {
-        $("#sizeWarning").modal("toggle");
+      if (
+        !this.event.locationName ||
+        !this.event.location.lat ||
+        !this.event.location.lng
+      ) {
+        $("#locationWarning").modal("toggle");
       } else {
-        if (
-          !this.event.locationName ||
-          !this.event.location.lat ||
-          !this.event.location.lng
-        ) {
-          $("#locationWarning").modal("toggle");
-        } else {
-          var key = pushid();
-          this.isSubmitted = true;
-          this.event.imageKey = key;
-          var ref = firebase.storage().ref("events/" + this.event.imageKey);
-          var file = this.image;
-          var upload = ref.put(file);
+        var key = pushid();
+        this.isSubmitted = true;
+        this.event.imageKey = key;
+        var ref = firebase.storage().ref("events/" + this.event.imageKey);
+        var file = this.image;
+        var upload = ref.put(file);
 
-          upload.on(
-            "state_changed",
-            function progress(snapshot) {
-              var percentage =
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            },
-            function error(err) {},
-            function complete() {}
-          );
-          var d = new Date();
-          var year = d.getUTCFullYear();
-          var month = d.getUTCMonth();
-          var day = d.getUTCDate();
-          var date = year + "-" + month + "-" + day;
-          db.collection("events")
-            .add({
-              event: {
-                title: this.event.title,
-                date: {
-                  year: this.event.date.substring(0, 4),
-                  month: this.event.date.substring(5, 7),
-                  day: this.event.date.substring(8)
-                },
-                time: this.event.time,
-                email: this.event.email,
-                description: this.event.description,
-                isSubmitted: this.isSubmitted,
-                SubmitDate: date,
-                imageKey: this.event.imageKey,
-                UserUID: this.event.UserUID,
-                locationName: this.event.locationName,
-                location: {
-                  lat: this.event.location.lat,
-                  lng: this.event.location.lng
-                },
-                likes: 1,
-                likedBy: [firebase.auth().currentUser.uid]
-              }
-            })
-            .then(this.$router.push("/events/list"));
-        }
+        upload.on(
+          "state_changed",
+          function progress(snapshot) {
+            var percentage =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          },
+          function error(err) {},
+          function complete() {}
+        );
+        var d = new Date();
+        var year = d.getUTCFullYear();
+        var month = d.getUTCMonth();
+        var day = d.getUTCDate();
+        var date = year + "-" + month + "-" + day;
+        db.collection("events")
+          .add({
+            event: {
+              title: this.event.title,
+              date: {
+                year: this.event.date.substring(0, 4),
+                month: this.event.date.substring(5, 7),
+                day: this.event.date.substring(8)
+              },
+              time: this.event.time,
+              email: this.event.email,
+              description: this.event.description,
+              isSubmitted: this.isSubmitted,
+              SubmitDate: date,
+              imageKey: this.event.imageKey,
+              UserUID: this.event.UserUID,
+              locationName: this.event.locationName,
+              location: {
+                lat: this.event.location.lat,
+                lng: this.event.location.lng
+              },
+              likes: 1,
+              likedBy: [firebase.auth().currentUser.uid]
+            }
+          })
+          .then(this.$router.push("/events/list"));
       }
     },
     loadFile: function() {

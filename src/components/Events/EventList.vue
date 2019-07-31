@@ -1,68 +1,76 @@
 <template>
   <div class="container">
-    <hr>
+    <hr />
     <div class="row justify-content-md-center">
       <div class="col col-md-auto">
-        <button
-          v-if="display"
-          class="btn btn-primary"
-          @click="lastWeek()"><i class="fa fa-angle-double-left fa-2x"/></button>
+        <button v-if="display" class="btn btn-primary" @click="lastWeek()">
+          <i class="fa fa-angle-double-left fa-2x" />
+        </button>
       </div>
       <div class="col-md-auto">
         <h1>{{ month }}</h1>
       </div>
       <div class="col col-md-auto">
-        <button
-          class="btn btn-primary"
-          @click="nextWeek()"><i class="fa fa-angle-double-right fa-2x"/></button>
+        <button class="btn btn-primary" @click="nextWeek()">
+          <i class="fa fa-angle-double-right fa-2x" />
+        </button>
       </div>
     </div>
     <div class="row justify-content-md-center">
       <div class="col col-md-auto">
-        <h3><span v-if="weekStart < 10">0</span>{{ weekStart }} - <span v-if="weekEnd < 10">0</span>{{ weekEnd }}</h3>
+        <h3>
+          <span v-if="weekStart < 10">0</span>
+          {{ weekStart }} -
+          <span v-if="weekEnd < 10">0</span>
+          {{ weekEnd }}
+        </h3>
       </div>
     </div>
     <div class="row justify-content-md-center">
       <small class="badge badge-danger badge-pill">Not Implemented</small>
     </div>
-    <hr>
+    <hr />
 
-    <ul
-      class="list-group"
-      v-if="display">
-      <div
-        class="d-flex justify-content-center"
-        v-if="events.length == 0">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif"
-          class="loading"
-          style="width:50px; height: 50px;">
+    <div class="row">
+      <div class="col p-0">
+        <ul class="list-group" v-if="display">
+          <div class="d-flex justify-content-center" v-if="events.length == 0">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif"
+              class="loading"
+              style="width:50px; height: 50px;"
+            />
+          </div>
+          <router-link
+            v-for="(event) in events"
+            :key="event.id"
+            class="list-group-item card text-white bg-dark mb-3"
+            :to="{name: 'event-detail', params: {id: event.id}}"
+          >
+            <h1 class="card-header">{{ event.date.day }}</h1>
+            <div class="card-body">
+              <h5 class="card-title">{{ event.title }}</h5>
+              <p class="card-text">{{ event.desc }}</p>
+            </div>
+          </router-link>
+        </ul>
       </div>
-      <router-link
-        v-for="(event) in events"
-        :key="event.id"
-        class="list-group-item card text-white bg-dark mb-3"
-        :to="{name: 'event-detail', params: {id: event.id}}">
-        <h1 class="card-header">{{ event.date.day }}</h1>
-        <div class="card-body">
-          <h5 class="card-title">{{ event.title }}</h5>
-          <p class="card-text">{{ event.desc }}</p>
-        </div>
-      </router-link>
-    </ul>
+    </div>
 
-    <router-link
-      to="/events/NewEvent"
-      class="bg-primary text-white circular mb-3 d-flex justify-content-center align-items-center">
-      <i class="fa fa-plus"/>
-    </router-link>
+    <div class="row">
+      <div class="col p-0">
+        <router-link to="/events/NewEvent" class="btn btn-primary circular my-3">
+          <i class="fa fa-plus" />
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
+import db from "../../Firebase/firebaseInit";
 export default {
-  data () {
+  data() {
     return {
       events: [],
       images: [],
@@ -72,60 +80,64 @@ export default {
       weekStart: null,
       weekEnd: null,
       display: true
-    }
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'Event List',
+    title: "Event List",
     meta: [
-      { vmid: 'description', name: 'description', content: 'A list of the current and approching events on Spark West Network' }
+      {
+        vmid: "description",
+        name: "description",
+        content:
+          "A list of the current and approching events on Spark West Network"
+      }
     ]
   },
   // generates array of event data objects from firebase when the component is created
-  created () {
+  created() {
     // get date
     var months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ]
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
 
-    var d = new Date()
-    var year = d.getFullYear()
-    var month = d.getMonth()
-    var daysInMonth = new Date(year, month + 1, 0).getDate()
-    var week = d.getDate() - d.getDay()
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    var week = d.getDate() - d.getDay();
 
-    this.month = months[d.getMonth()]
-    this.monthNum = month
-    this.weekStart = week
-    this.year = year
+    this.month = months[d.getMonth()];
+    this.monthNum = month;
+    this.weekStart = week;
+    this.year = year;
     if (week + 6 > daysInMonth) {
-      this.weekEnd = week + 6 - daysInMonth
+      this.weekEnd = week + 6 - daysInMonth;
     } else {
-      this.weekEnd = week + 6
+      this.weekEnd = week + 6;
     }
 
     if (this.monthNum > 9) {
-      month = this.monthNum
+      month = this.monthNum;
     } else {
-      month = '0' + (this.monthNum + 1)
+      month = "0" + (this.monthNum + 1);
     }
 
-    db
-      .collection('events')
-      .orderBy('event.date.year')
-      .orderBy('event.date.month')
-      .orderBy('event.date.day')
+    db.collection("events")
+      .orderBy("event.date.year")
+      .orderBy("event.date.month")
+      .orderBy("event.date.day")
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -137,77 +149,77 @@ export default {
             email: doc.data().event.email,
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          }
-          this.events.push(data)
-        })
-      })
+          };
+          this.events.push(data);
+        });
+      });
   },
   watch: {
-    events: 'fetchImages'
+    events: "fetchImages"
   },
   methods: {
-    fetchImages () {
-      var images = []
+    fetchImages() {
+      var images = [];
 
       for (var i = 0; i < this.events.length; i++) {
         var url =
-          'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
+          "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
           this.events[i].imageKey +
-          '?alt=media&token'
-        images.push(url)
+          "?alt=media&token";
+        images.push(url);
       }
-      this.images = images
+      this.images = images;
     },
-    nextWeek () {
-      var year = this.year
-      var month = this.monthNum
-      var daysInMonth = new Date(year, month + 1, 0).getDate()
+    nextWeek() {
+      var year = this.year;
+      var month = this.monthNum;
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
 
       var months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ]
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
 
       if (this.weekStart + 7 > daysInMonth) {
         if (month + 1 > 11) {
           // Next Year
-          year++
-          month = 0
-          this.weekStart = 1
-          this.weekEnd = 7
+          year++;
+          month = 0;
+          this.weekStart = 1;
+          this.weekEnd = 7;
         } else {
           // Next Month
-          month++
-          this.weekStart = 1
-          this.weekEnd = 7
+          month++;
+          this.weekStart = 1;
+          this.weekEnd = 7;
         }
       } else {
         // Next Week
         if (this.weekEnd + 7 > daysInMonth) {
-          this.weekStart += 7
-          this.weekEnd += 7 - daysInMonth
+          this.weekStart += 7;
+          this.weekEnd += 7 - daysInMonth;
         } else {
-          this.weekStart += 7
-          this.weekEnd += 7
+          this.weekStart += 7;
+          this.weekEnd += 7;
         }
       }
 
-      this.year = year
-      this.monthNum = month
-      this.month = months[month]
+      this.year = year;
+      this.monthNum = month;
+      this.month = months[month];
     },
-    lastWeek () {
-      console.log('Not Implemented')
+    lastWeek() {
+      console.log("Not Implemented");
       // var year = this.year;
       // var month = this.monthNum;
       // var daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -244,15 +256,26 @@ export default {
       // }
     }
   }
-}
+};
 </script>
 
 <style scope>
-
 .circular {
   width: 70px;
   height: 70px;
-  border-radius: 35px;
-  text-decoration-line: none;
+  border-radius: 100% !important;
+  padding: 0;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.card {
+  border-radius: 12px !important;
+}
+
+ul .list-group-item {
+  text-decoration: none !important;
 }
 </style>

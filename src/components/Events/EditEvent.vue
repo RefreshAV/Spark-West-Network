@@ -8,7 +8,7 @@
 
     <div class="row">
       <!-- Info -->
-      <div class="col-md col-sm-12 mb-3">
+      <div class="col-md-7 col-12 mb-3">
         <div class="card border-0 shadow">
           <div class="card-body">
             <!-- Title -->
@@ -104,24 +104,14 @@
             <div class="form-group">
               <label class="font-weight-bold" for="message">Description:</label>
               <br />
-              <textarea
-                id="message"
-                rows="5"
-                class="form-control mb-2"
-                maxlength="500"
-                v-model="description"
-              />
-              <i class="counter">
-                Characters:
-                <span class="cNum">{{ characters }}</span>
-              </i>
+              <froala :tag="'textarea'" :config="config" v-model="editDesc"></froala>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Images -->
-      <div class="col-md col-sm-12 w-100">
+      <div class="col-12 col-md w-100">
         <div class="row mb-2">
           <div class="col">
             <div
@@ -242,17 +232,20 @@
 import db from "../../Firebase/firebaseInit";
 import firebase from "firebase";
 import "firebase/firestore";
+import toolbarConfig from "../../toolbarConfig"
 import $ from "jquery";
 
 export default {
   data() {
     return {
+      config: toolbarConfig,
       id: null,
       title: null,
       date: null,
       time: null,
       email: null,
       description: null,
+      editDesc: "",
       image: null,
       preImg: null,
       imageKey: null,
@@ -344,7 +337,7 @@ export default {
           this.date = date.year + "-" + date.month + "-" + date.day;
           this.time = doc.data().event.time;
           this.email = doc.data().event.email;
-          this.desc = doc.data().event.description;
+          this.description = doc.data().event.description;
           this.locationName = doc.data().event.locationName;
           this.locationSearch = doc.data().event.locationName;
           this.location.lat = doc.data().location.lat;
@@ -426,6 +419,7 @@ export default {
     },
     getChars() {
       this.characters = this.description.length;
+      this.editDesc = this.description;
     },
     fetchImage() {
       var ref = firebase.storage().ref("events/" + this.imageKey);
@@ -440,76 +434,66 @@ export default {
       this.start = time.substring(0, 5);
     },
     saveExit() {
-      var desc = this.description;
-
-      if (desc > 500) {
-        $("#sizeWarning").modal("toggle");
+      if (!this.locationName || !this.location.lat || !this.location.lng) {
+        $("#locationWarning").modal("toggle");
       } else {
-        if (
-          !this.locationName ||
-          !this.location.lat ||
-          !this.location.lng
-        ) {
-          $("#locationWarning").modal("toggle");
-        } else {
-          var start = this.start;
-          var end = this.end;
+        var start = this.start;
+        var end = this.end;
 
-          this.time = start + "-" + end;
+        this.time = start + "-" + end;
 
-          var ref = firebase.storage().ref("events/" + this.imageKey);
-          var file = this.image;
-          var that = this;
+        var ref = firebase.storage().ref("events/" + this.imageKey);
+        var file = this.image;
+        var that = this;
 
-          if (file != null) {
-            console.log("Updating file");
-            var upload = ref.put(file);
+        if (file != null) {
+          console.log("Updating file");
+          var upload = ref.put(file);
 
-            upload.on(
-              "state_changed",
-              function progress(snapshot) {
-                var percentage =
-                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              },
-              function error(err) {},
-              function complete() {}
-            );
-          }
-
-          db.collection("events")
-            .where(
-              firebase.firestore.FieldPath.documentId(),
-              "==",
-              this.$route.params.id
-            )
-            .get()
-            .then(querySnapshot => {
-              querySnapshot.forEach(doc => {
-                doc.ref.update({
-                  event: {
-                    title: this.title,
-                    date: {
-                      year: this.date.substring(0, 4),
-                      month: this.date.substring(5, 7),
-                      day: this.date.substring(8)
-                    },
-                    time: this.time,
-                    email: this.email,
-                    description: this.description,
-                    imageKey: this.imageKey,
-                    SubmitDate: this.submitDate,
-                    UserUID: this.UID,
-                    locationName: this.locationName,
-                    location: {
-                      lat: this.location.lat,
-                      lng: this.location.lng
-                    }
-                  }
-                });
-              });
-            })
-            .then(that.$router.push("/events/event/" + that.id));
+          upload.on(
+            "state_changed",
+            function progress(snapshot) {
+              var percentage =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            },
+            function error(err) {},
+            function complete() {}
+          );
         }
+
+        db.collection("events")
+          .where(
+            firebase.firestore.FieldPath.documentId(),
+            "==",
+            this.$route.params.id
+          )
+          .get()
+          .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+              doc.ref.update({
+                event: {
+                  title: this.title,
+                  date: {
+                    year: this.date.substring(0, 4),
+                    month: this.date.substring(5, 7),
+                    day: this.date.substring(8)
+                  },
+                  time: this.time,
+                  email: this.email,
+                  description: this.editDesc,
+                  imageKey: this.imageKey,
+                  SubmitDate: this.submitDate,
+                  UserUID: this.UID,
+                  locationName: this.locationName,
+                  location: {
+                    lat: this.location.lat,
+                    lng: this.location.lng
+                  }
+                }
+              });
+            });
+          })
+          .then(that.$router.push("/events/event/" + that.id));
       }
     },
     loadFile: function() {
