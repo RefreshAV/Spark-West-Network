@@ -1,0 +1,91 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "events",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "event.data.year",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "event.date.day",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "events",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "event.date.month",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "event.date.day",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "events",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "event.date.year",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "event.date.month",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "event.date.day",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "events",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "event.UserUID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "event.date.year",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "event.date.month",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "event.date.day",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "user.UserUID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "event.date.month",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "event.date.day",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
