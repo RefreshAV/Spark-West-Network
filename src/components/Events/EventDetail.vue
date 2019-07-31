@@ -68,35 +68,28 @@
       <br />
       <div class="row">
         <div class="col">
-          <router-link
-            v-if="author.id"
-            :to="{name: 'userDetail', params: {id: author.id}}"
-            class="media p-2 btn btn-light mb-3 shadow-sm border"
-          >
-            <img
-              id="author"
-              class="align-self-center mr-3"
-              :src="author.img"
-              alt="Generic placeholder image"
-            />
-            <div class="media-body">
-              <h5 class="mb-0">{{ author.name }}</h5>
-              <div class="row">
-                <div class="col">
-                  <span class="badge badge-primary">
-                    <i class="fa fa-user" /> n Followers
-                  </span>
+            <router-link
+              v-if="author.id"
+              :to="{name: 'userDetail', params: {id: author.id}}"
+              class="media p-2 btn btn-light mb-3 shadow-sm border"
+            >
+              <img
+                id="author"
+                class="align-self-center mr-3"
+                :src="author.img"
+                alt="Generic placeholder image"
+              />
+              <div class="media-body">
+                <h5 class="mb-0">{{ author.name }}</h5>
+                <div class="row">
+                  <div class="col">
+                    <span class="badge badge-pill badge-info">
+                      <i class="fa fa-calendar" />
+                      {{ author.events }}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col">
-                  <span class="badge badge-pill badge-info">
-                    <i class="fa fa-calendar" />
-                    {{ author.events }}
-                  </span>
-                </div>
-              </div>
-            </div>
           </router-link>
         </div>
       </div>

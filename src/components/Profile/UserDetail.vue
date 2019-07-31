@@ -16,6 +16,22 @@
             <div class="card-body">
               <div class="tab-content py-4">
                 <div class="tab-pane active" id="profile">
+                  <div v-if="isLoggedIn">
+                    <button
+                      class="btn btn-primary float-right"
+                      @click="unfollowUser"
+                      v-if="isFollowed"
+                    >
+                      <span>
+                        <i class="fa fa-user-minus" /> Unfollow
+                      </span>
+                    </button>
+                    <button class="btn btn-primary float-right" @click="followUser" v-else>
+                      <span>
+                        <i class="fa fa-user-plus" /> Follow
+                      </span>
+                    </button>
+                  </div>
                   <h2 class="mb-3">{{ user.user.name }}</h2>
                   <hr />
                   <div class="row">
@@ -36,7 +52,7 @@
                       <a href="#" class="badge badge-dark badge-pill mr-1">more examples</a>
                       <hr />
                       <span class="badge badge-primary mr-1">
-                        <i class="fa fa-user" /> n Followers
+                        <i class="fa fa-user" /> {{ followerCount }} Follower<span v-if="followerCount.length > 1 || !followerCount">s</span>
                       </span>
                       <span class="badge badge-success mr-1">
                         <i class="fa fa-cog" /> n Forks
@@ -70,7 +86,7 @@
                         </router-link>
 
                         <li
-                          v-if="events.length == 0"
+                          v-if="events.length === 0"
                           id="placeholder"
                           class="list-group-item border-0 shadow text-white d-flex justify-content-center align-items-center"
                         >
@@ -131,17 +147,17 @@
                   </table>
                 </div>
               </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
 import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase'
+import firebase, { firestore } from 'firebase'
 import 'firebase/firestore'
 export default {
   data () {
@@ -149,11 +165,16 @@ export default {
       user: {
         user: {}
       },
+      currentUser: {
+        user: {}
+      },
       events: [],
       likedEvents: [],
       page: 1,
       pages: [],
-      currentPage: []
+      currentPage: [],
+      followers: [],
+      isLoggedIn: false
     }
   },
   metaInfo: {
@@ -173,20 +194,100 @@ export default {
     }
   },
   mounted () {
-    this.$bind('user', db.collection('users').doc(this.$route.params.id))
-    this.$bind('events', db.collection('events')
-      .where('event.UserUID', '==', this.$route.params.id)
-      .orderBy('event.date.year')
-      .orderBy('event.date.month')
-      .orderBy('event.date.day')
+    this.$bind('user', db.collection('users').doc(this.$route.params.id)),
+    this.$bind('followers', db.collection('users').where('user.following', 'array-contains', this.$route.params.id)),
+    this.$bind(
+      'currentUser',
+      db.collection('users').doc(firebase.auth().currentUser.uid)
     )
-    this.$bind('likedEvents', db.collection('events').where('likedBy', 'array-contains', this.$route.params.id))
+    this.$bind(
+      'events',
+      db
+        .collection('events')
+        .where('event.UserUID', '==', this.$route.params.id)
+        .orderBy('event.date.year')
+        .orderBy('event.date.month')
+        .orderBy('event.date.day')
+    )
+    this.$bind(
+      'likedEvents',
+      db
+        .collection('events')
+        .where('likedBy', 'array-contains', this.$route.params.id)
+    )
+  },
+  created () {
+    var vm = this
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        vm.isLoggedIn = true
+      } else {
+        vm.isLoggedIn = false
+      }
+    })
+  },
+  computed: {
+    isFollowed () {
+      if (
+        this.currentUser.user.following &&
+        this.currentUser.user.following.includes(this.$route.params.id)
+      ) {
+        return true
+      } else {
+        return false
+      }
+    },
+    followerCount () {
+      return this.followers.length;
+    }
   },
   watch: {
     page: 'updateCurrent',
     events: 'createPages'
   },
   methods: {
+    followUser () {
+      const userRef = db.collection('users').doc(firebase.auth().currentUser.uid)
+
+      db.runTransaction(transaction => {
+        return transaction.get(userRef).then(doc => {
+          if (!doc.data().user.following) {
+            transaction.set(userRef, {
+              user: {
+                ...doc.data().user,
+                following: [this.$route.params.id]
+              }
+            })
+          } else {
+            const following = doc.data().user.following
+            following.push(this.$route.params.id)
+            transaction.update(userRef, {
+              user: {
+                ...doc.data().user,
+                following
+              }
+            })
+          }
+        })
+      })
+    },
+    unfollowUser () {
+      const userRef = db.collection('users').doc(firebase.auth().currentUser.uid)
+
+      db.runTransaction(transaction => {
+        return transaction.get(userRef).then(doc => {
+            let following = doc.data().user.following
+            following = following.filter(i => i !== this.$route.params.id) // Remove user from array
+
+            transaction.update(userRef, {
+              user: {
+                ...doc.data().user,
+                following
+              }
+            })
+          })
+        })
+    },
     nextPage () {
       if (this.page < this.pages.length) {
         this.page++
