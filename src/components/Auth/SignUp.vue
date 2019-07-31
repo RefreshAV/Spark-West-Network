@@ -177,6 +177,7 @@ export default {
                 '?alt=media&token',
               website: '',
               following: []
+              isAdmin: false
             }
           })
 
