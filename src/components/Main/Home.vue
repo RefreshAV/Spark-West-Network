@@ -40,7 +40,7 @@
               <div class="card-body" style="text-overflow: ellipsis;">
                 <h3 class="text-info">{{ event.date }}:</h3>
                 <h1>{{ event.title }}</h1>
-                <p>{{ event.desc }}</p>
+                <froalaView v-model="event.desc"></froalaView>
               </div>
             </router-link>
           </div>
