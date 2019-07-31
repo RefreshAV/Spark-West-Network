@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <div class="row mt-5 mb-3 d-flex justify-content-center">
+      <div v-if="num.month != currentMonth || num.year != currentYear" class="col p-0" style="max-width:40px;"></div>
       <div class="col-auto">
+        <div class="row">
+          <div class="col text-center">{{ num.year }}</div>
+        </div>
         <div class="row">
           <div class="col">
             <button class="btn btn-primary" @click="prevMonth">
@@ -17,6 +21,11 @@
             </button>
           </div>
         </div>
+      </div>
+      <div v-if="num.month != currentMonth || num.year != currentYear" class="col-auto p-0 d-flex align-items-center">
+        <button @click="home()" id="home" class="btn btn-warning">
+          <i class="fas fa-calendar-alt"></i>
+        </button>
       </div>
     </div>
     <div class="row">
@@ -67,7 +76,12 @@
             <div v-for="dayEvent in day.events" :key="dayEvent.id" class="row w-100 m-0">
               <div class="col p-0">
                 <span
-                  class="badge badge-primary badge-pill text-truncate w-100"
+                  v-if="!checkArchive(dayEvent.date.day,dayEvent.date.month,dayEvent.date.year)"
+                  class="badge badge-warning badge-pill text-truncate w-100"
+                >{{ dayEvent.title }}</span>
+                <span
+                  v-else
+                  :class="{ 'badge':true, 'badge-primary':(checkArchive(dayEvent.date.day,dayEvent.date.month,dayEvent.date.year) == 2), 'badge-info':(checkArchive(dayEvent.date.day,dayEvent.date.month,dayEvent.date.year) == 1), 'badge-pill':true, 'text-truncate':true, 'w-100':true }"
                 >{{ dayEvent.title }}</span>
               </div>
             </div>
@@ -126,7 +140,11 @@
                       </div>
                       <div class="col-auto d-flex align-items-center">
                         <h4 class="m-0">
-                          <span class="badge badge-pill badge-secondary">{{ event.time }}</span>
+                          <span
+                            v-if="!checkArchive(event.date.day,event.date.month,event.date.year)"
+                            class="badge badge-pill badge-warning"
+                          >Archived</span>
+                          <span v-else class="badge badge-pill badge-secondary">{{ event.time }}</span>
                         </h4>
                       </div>
                     </div>
@@ -157,6 +175,7 @@
 <script>
 import db from "../../Firebase/firebaseInit";
 import $ from "jquery";
+import { parse } from "path";
 
 export default {
   data() {
@@ -165,6 +184,9 @@ export default {
       images: [],
       month: [],
       monthName: null,
+      currentDay: null,
+      currentMonth: null,
+      currentYear: null,
       num: {
         month: null,
         year: null
@@ -192,6 +214,9 @@ export default {
     let month;
     this.num.month = d.getMonth();
     this.num.year = d.getFullYear();
+    this.currentDay = d.getDate();
+    this.currentMonth = d.getMonth();
+    this.currentYear = d.getFullYear();
   },
   computed: {
     combined() {
@@ -220,14 +245,15 @@ export default {
     getMonth(year, month) {
       // get date
       let searchMonth;
-      if (month < 10) {
-        searchMonth = "0" + month;
+      if (month + 1 < 10) {
+        searchMonth = "0" + (month + 1);
       } else {
-        searchMonth = month.toString();
+        searchMonth = (month + 1).toString();
       }
 
       this.events = [];
       db.collection("events")
+        .where("event.date.year", "==", year.toString())
         .where("event.date.month", "==", searchMonth)
         .orderBy("event.date.day")
         .get()
@@ -402,7 +428,7 @@ export default {
     },
     nextMonth() {
       var date;
-      if (this.num.month + 1 > 12) {
+      if (this.num.month + 1 >= 12) {
         date = {
           year: this.num.year + 1,
           month: 0
@@ -420,7 +446,7 @@ export default {
       if (this.num.month - 1 < 0) {
         date = {
           year: this.num.year - 1,
-          month: 12
+          month: 11
         };
       } else {
         date = {
@@ -441,11 +467,37 @@ export default {
       this.dayNum = num;
       this.dayEvents = events;
     },
+    checkArchive(d, m, y) {
+      let day = parseInt(d);
+      let month = parseInt(m);
+      let year = parseInt(y);
+      if (month == this.currentMonth + 1 && year == this.currentYear) {
+        if (day == this.currentDay) {
+          return 2;
+        } else {
+          return 1;
+        }
+      } else {
+        if (year < this.currentYear) {
+          return 0;
+        } else {
+          if (month < this.currentMonth + 1) {
+            return 0;
+          } else {
+            return 1;
+          }
+        }
+      }
+    },
     goTo(id) {
       $("#dayDetails").modal("toggle");
       $("#dayDetails").on("hidden.bs.modal", () => {
         this.$router.push("event/" + id);
       });
+    },
+    home() {
+      this.num.year = this.currentYear
+      this.num.month = this.currentMonth
     }
   }
 };
@@ -461,6 +513,16 @@ export default {
   justify-content: center;
   align-items: center;
   text-decoration: none;
+}
+
+#home {
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+}
+
+#home-wrapper {
+  margin-top: -80px;
 }
 
 .day {

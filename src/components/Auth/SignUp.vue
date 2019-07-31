@@ -176,6 +176,7 @@ export default {
                 firebase.auth().currentUser.uid +
                 '?alt=media&token',
               website: '',
+              following: [],
               isAdmin: false
             }
           })

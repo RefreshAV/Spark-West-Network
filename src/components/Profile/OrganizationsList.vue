@@ -50,9 +50,6 @@
               <div class="media-body">
                 <h5 class="mb-0">{{ organization.name }}</h5>
                 <p class="mb-0 text-muted">{{ organization.email }}</p>
-                <span class="badge badge-primary">
-                  <i class="fa fa-user"/> n Followers
-                </span>
               </div>
             </div>
             <div
