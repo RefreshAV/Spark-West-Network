@@ -8,11 +8,9 @@ service cloud.firestore {
 
   	match /events/{eventId} {
       allow read: if true
-      allow create: if request.auth.uid != null;
-      allow write, update, delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.user.UserUID == request.resource.data.event.UserUID || isAdmin();
+      allow create, write, update, delete: if request.auth.uid != null;
   	}
   	
-    // TODO: Setup organization perms
     match /organizations/{organizationId} {
     	allow read: if true
       allow create, write, update, delete: if request.auth.uid != null;
