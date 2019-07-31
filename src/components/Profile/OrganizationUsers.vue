@@ -27,15 +27,15 @@
         <div class="row">
           <img
             class="align-self-center shadow-sm"
-            :src="user.img"
+            :src="user.user.photo"
             alt="Generic placeholder image"
-            @click="loadProfile(user.uid, user.id)"
+            @click="loadProfile(user.id)"
           >
           <div class="col">
             <div class="media-body">
-              <div @click="loadProfile(user.uid, user.id)">
-                <h5 class="mb-0">{{ user.name }}</h5>
-                <h5 class="mb-0 text-muted font-weight-light">{{ user.email }}</h5>
+              <div @click="loadProfile(user.id)">
+                <h5 class="mb-0">{{ user.user.name }}</h5>
+                <h5 class="mb-0 text-muted font-weight-light">{{ user.user.email }}</h5>
               </div>
               <button class="btn btn-danger btn-sm mt-1" @click="removeUser(user.id)">
                 <span>
@@ -79,7 +79,7 @@ export default {
     this.$bind('organization', db.collection('organizations').doc(this.$route.params.id))
   },
   methods: {
-    loadProfile (uid, id) {
+    loadProfile (id) {
       this.$router.push({ name: 'userDetail', params: { id: id } })
     },
     addUser () {
@@ -89,16 +89,9 @@ export default {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            const data = {
-              id: doc.id,
-              name: doc.data().user.name,
-              img: doc.data().user.photo,
-              email: doc.data().user.email
-            }
-
             // Add user to users array
             let users = this.organization.organization.users;
-            users.push(data);
+            users.push(doc.ref);
 
             // Update organization with new user
             db.collection('organizations')
