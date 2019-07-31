@@ -507,6 +507,10 @@
                 <p class="font-weight-bold">Download your data</p>
                 <p><!-- random stuff about why downloading your data is good --></p>
                 <button class="btn btn-success mt-2" @click="downloadData">Download data</button>
+                <hr>
+                <p class="font-weight-bold">Delete your account</p>
+                <p><!-- random stuff about why downloading your data is good --></p>
+                <button class="btn btn-danger mt-2" @click="deleteUser">Delete account</button>
               </div>
               <div class="tab-pane fade" id="messagesTab">
                 <h1>Messages</h1>
@@ -582,7 +586,7 @@
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Profile Picture Modal -->
     <div
       class="modal fade"
       id="modal"
@@ -645,6 +649,8 @@
         </div>
       </div>
     </div>
+
+
   </div>
 </template>
 
@@ -840,6 +846,12 @@ export default {
         .then((content) => {
           saveAs(content, 'swn-data.zip');
         });
+    },
+    deleteUser () {
+      // Deleting the user will also call a Firebase function which removes the user's document and image
+      firebase.auth().currentUser.delete()
+
+      this.$router.push('/')
     }
   }
 }
