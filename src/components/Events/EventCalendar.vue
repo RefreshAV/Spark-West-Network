@@ -49,27 +49,115 @@
         <span class="d-none d-md-inline">Saturday</span>
       </div>
     </div>
-    <div class="row text-light" v-for="week in month" :key="week.key">
+    <div class="row" v-for="week in month" :key="week.key">
       <div class="col day" v-for="day in week.days" :key="day.key">
-        <div
-          :class="{'card':true, 'h-100':true, 'bg-dark':(day.currentMonth), 'bg-secondary':(!day.currentMonth)}"
+        <a
+          href="#"
+          data-toggle="modal"
+          data-target="#dayDetails"
+          @click="displayDay(calendarNum(day.num), day.events)"
+          class="card h-100 bg-dark text-light day-action"
+          v-if="day.currentMonth"
         >
-          <div class="card-body">{{ calendarNum(day.num) }}</div>
+          <div class="card-body">
+            <div class="row w-100 m-0">
+              <div class="col p-0">{{ calendarNum(day.num) }}</div>
+            </div>
+            <hr class="mt-1 mb-2" />
+            <div v-for="dayEvent in day.events" :key="dayEvent.id" class="row w-100 m-0">
+              <div class="col p-0">
+                <span
+                  class="badge badge-primary badge-pill text-truncate w-100"
+                >{{ dayEvent.title }}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <div class="card h-100 bg-secondary text-light" v-if="!day.currentMonth">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">{{ calendarNum(day.num) }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col p-0">
+        <router-link to="/events/NewEvent" class="btn btn-primary circular my-3">
+          <i class="fa fa-plus" />
+        </router-link>
+      </div>
+    </div>
 
-    <router-link
-      to="/events/NewEvent"
-      class="bg-primary text-white circular mb-3 d-flex justify-content-center align-items-center"
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="dayDetails"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
     >
-      <i class="fa fa-plus" />
-    </router-link>
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">{{ monthName }} {{ dayNum }}</h2>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <i class="fa fa-times"></i>
+              </span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Events -->
+            <div
+              v-for="(event, index) in dayEvents"
+              :key="event.id"
+              :class="{ 'row':true, 'mb-2':(index < dayEvents.length - 1) }"
+            >
+              <div class="col">
+                <a href="#" @click="goTo(event.id)" class="card bg-dark text-light event">
+                  <div class="card-header">
+                    <div class="row">
+                      <div class="col d-flex align-items-center">
+                        <h4 class="m-0">{{ event.title }}</h4>
+                      </div>
+                      <div class="col-auto d-flex align-items-center">
+                        <h4 class="m-0">
+                          <span class="badge badge-pill badge-secondary">{{ event.time }}</span>
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">{{ event.desc }}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary d-none d-md-inline"
+              data-dismiss="modal"
+            >Close</button>
+            <button
+              type="button"
+              class="btn btn-secondary rounded-pill btn-block d-inline d-md-none"
+              data-dismiss="modal"
+            >Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import db from "../../Firebase/firebaseInit";
+import $ from "jquery";
+
 export default {
   data() {
     return {
@@ -80,7 +168,9 @@ export default {
       num: {
         month: null,
         year: null
-      }
+      },
+      dayNum: null,
+      dayEvents: []
     };
   },
   metaInfo: {
@@ -98,28 +188,10 @@ export default {
   // generates array of event data objects from firebase when the component is created
   created() {
     let d = new Date();
+
+    let month;
     this.num.month = d.getMonth();
     this.num.year = d.getFullYear();
-
-    db.collection("events")
-      .orderBy("event.date.year")
-      .orderBy("event.date.month")
-      .orderBy("event.date.day")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          const data = {
-            id: doc.id,
-            title: doc.data().event.title,
-            date: doc.data().event.date,
-            time: doc.data().event.time,
-            email: doc.data().event.email,
-            desc: doc.data().event.description,
-            imageKey: doc.data().event.imageKey
-          };
-          this.events.push(data);
-        });
-      });
   },
   computed: {
     combined() {
@@ -147,130 +219,186 @@ export default {
     },
     getMonth(year, month) {
       // get date
-      var monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-      ];
-
-      var allDays = [];
-
-      let daysInPrevious
-      if(month - 1 < 0) {
-        daysInPrevious = new Date(year - 1, 12, 0).getDate()
+      let searchMonth;
+      if (month < 10) {
+        searchMonth = "0" + month;
       } else {
-        daysInPrevious = new Date(year, month, 0).getDate()
+        searchMonth = month.toString();
       }
 
-      var d = new Date(year, month + 1, 0);
-      const daysInCurrent = d.getDate();
-      var startDay = d.getDay();
-
-      var firstOfMonth = new Date(year, month - 1, 1);
-      var day = firstOfMonth.getDay() || 6;
-      day = day === 1 ? 0 : day;
-      if (day) {
-        day--;
-      }
-      var diff = 7 - day;
-      var lastOfMonth = new Date(year, month, 0);
-      var lastDate = lastOfMonth.getDate();
-      if (lastOfMonth.getDay() === 1) {
-        diff--;
-      }
-      var result = Math.ceil((lastDate - diff) / 7);
-      var weeksInMonth = result + 1;
-      // console.log("===============================");
-      // console.log("days in month: " + daysInCurrent);
-      // console.log("weeks in month: " + weeksInMonth);
-      // console.log("First day of month: " + startDay);
-
-      let count = 1;
-      for (var i = 1; i < weeksInMonth + 1; i++) {
-        let week = { key: i + "w", days: [] };
-        let emptyWeek = false;
-        let lmCount = 0;
-        let lm = false
-        for (var k = 1; k < 8; k++) {
-          if (i == 1) {
-            // First week logic
-            if (startDay == 0) {
-              // Month starts on 0
-              if (i * k != 7) {
-                week.days.push({
-                  key: i * k + "d",
-                  num: "lastMonth",
-                  currentMonth: false
-                });
-                lm = true
-                lmCount++
-              } else {
-                week.days.push({
-                  key: i * k + "d",
-                  num: count,
-                  currentMonth: true
-                });
-                count++;
-              }
-            } else {
-              if (i * k < startDay - 1) {
-                week.days.push({
-                  key: i * k + "d",
-                  num: "lastMonth",
-                  currentMonth: false
-                });
-                lm = true
-                lmCount++
-              } else {
-                week.days.push({
-                  key: i * k + "d",
-                  num: count,
-                  currentMonth: true
-                });
-                count++;
-              }
+      this.events = [];
+      db.collection("events")
+        .where("event.date.month", "==", searchMonth)
+        .orderBy("event.date.day")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            let end = "";
+            if (doc.data().event.description.length > 100) {
+              end = " . . .";
             }
-          } else if (count > daysInCurrent) {
-            week.days.push({
-              key: i * k + "d",
-              num: count - daysInCurrent,
-              currentMonth: false
-            });
+            const data = {
+              id: doc.id,
+              title: doc.data().event.title,
+              date: doc.data().event.date,
+              time: doc.data().event.time,
+              email: doc.data().event.email,
+              desc: doc.data().event.description.substring(0, 100) + end,
+              imageKey: doc.data().event.imageKey
+            };
+            this.events.push(data);
+          });
+        })
+        .then(() => {
+          var monthNames = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+          ];
 
-            count++;
-            if (k == 1) {
-              emptyWeek = true;
-            }
+          var allDays = [];
+
+          let daysInPrevious;
+          if (month - 1 < 0) {
+            daysInPrevious = new Date(year - 1, 12, 0).getDate();
           } else {
-            week.days.push({
-              key: i * k + "d",
-              num: count,
-              currentMonth: true
-            });
-            count++;
+            daysInPrevious = new Date(year, month, 0).getDate();
           }
-        }
-        if(lm) {
-          for(let j = 0; j < lmCount; j++) {
-            week.days[j].num = daysInPrevious - (lmCount - j) + 1
-          }
-        }
-        if (!emptyWeek) {
-          allDays.push(week);
-        }
-      }
 
-      this.month = allDays;
-      this.monthName = monthNames[month];
+          var d = new Date(year, month + 1, 0);
+          const daysInCurrent = d.getDate();
+          var startDay = d.getDay();
+
+          var firstOfMonth = new Date(year, month - 1, 1);
+          var day = firstOfMonth.getDay() || 6;
+          day = day === 1 ? 0 : day;
+          if (day) {
+            day--;
+          }
+          var diff = 7 - day;
+          var lastOfMonth = new Date(year, month, 0);
+          var lastDate = lastOfMonth.getDate();
+          if (lastOfMonth.getDay() === 1) {
+            diff--;
+          }
+          var result = Math.ceil((lastDate - diff) / 7);
+          var weeksInMonth = result + 1;
+          // console.log("===============================");
+          // console.log("days in month: " + daysInCurrent);
+          // console.log("weeks in month: " + weeksInMonth);
+          // console.log("First day of month: " + startDay);
+
+          let count = 1;
+          for (var i = 1; i < weeksInMonth + 1; i++) {
+            let week = { key: i + "w", days: [] };
+            let emptyWeek = false;
+            let lmCount = 0;
+            let lm = false;
+            for (var k = 1; k < 8; k++) {
+              if (i == 1) {
+                // First week logic
+                if (startDay == 0) {
+                  // Month starts on 0
+                  if (i * k != 7) {
+                    week.days.push({
+                      key: i * k + "d",
+                      num: "lastMonth",
+                      currentMonth: false
+                    });
+                    lm = true;
+                    lmCount++;
+                  } else {
+                    let events = this.events.filter(ev => {
+                      if (count < 10) {
+                        return ev.date.day === this.calendarNum(count);
+                      } else {
+                        return ev.date.day === count.toString();
+                      }
+                    });
+                    week.days.push({
+                      key: i * k + "d",
+                      num: count,
+                      currentMonth: true,
+                      events: events
+                    });
+                    count++;
+                  }
+                } else {
+                  if (i * k < startDay - 1) {
+                    week.days.push({
+                      key: i * k + "d",
+                      num: "lastMonth",
+                      currentMonth: false
+                    });
+                    lm = true;
+                    lmCount++;
+                  } else {
+                    let events = this.events.filter(ev => {
+                      if (count < 10) {
+                        return ev.date.day === this.calendarNum(count);
+                      } else {
+                        return ev.date.day === count.toString();
+                      }
+                    });
+                    week.days.push({
+                      key: i * k + "d",
+                      num: count,
+                      currentMonth: true,
+                      events: events
+                    });
+                    count++;
+                  }
+                }
+              } else if (count > daysInCurrent) {
+                week.days.push({
+                  key: i * k + "d",
+                  num: count - daysInCurrent,
+                  currentMonth: false
+                });
+
+                count++;
+                if (k == 1) {
+                  emptyWeek = true;
+                }
+              } else {
+                let events = this.events.filter(ev => {
+                  if (count < 10) {
+                    return ev.date.day === this.calendarNum(count);
+                  } else {
+                    return ev.date.day === count.toString();
+                  }
+                });
+                week.days.push({
+                  key: i * k + "d",
+                  num: count,
+                  currentMonth: true,
+                  events: events
+                });
+                count++;
+              }
+            }
+            if (lm) {
+              for (let j = 0; j < lmCount; j++) {
+                week.days[j].num = daysInPrevious - (lmCount - j) + 1;
+              }
+            }
+            if (!emptyWeek) {
+              allDays.push(week);
+            }
+          }
+
+          this.month = allDays;
+          this.monthName = monthNames[month];
+        });
     },
     nextMonth() {
       var date;
@@ -308,6 +436,16 @@ export default {
       } else {
         return num;
       }
+    },
+    displayDay(num, events) {
+      this.dayNum = num;
+      this.dayEvents = events;
+    },
+    goTo(id) {
+      $("#dayDetails").modal("toggle");
+      $("#dayDetails").on("hidden.bs.modal", () => {
+        this.$router.push("event/" + id);
+      });
     }
   }
 };
@@ -317,15 +455,43 @@ export default {
 .circular {
   width: 70px;
   height: 70px;
-  border-radius: 35px;
-  text-decoration-line: none;
+  border-radius: 100% !important;
+  padding: 0;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
 }
 
 .day {
   height: 180px;
   min-width: 0;
-  overflow: hidden;
   padding: 6px !important;
+  transition: 0.5s;
+}
+
+.day .card-body {
+  padding: 10px;
+}
+
+.day .day-action {
+  transition: 0.5s;
+}
+
+.day .day-action:hover {
+  transform: translateY(-5px);
+}
+
+.day-action {
+  text-decoration: none !important;
+}
+
+.modal-content {
+  border-radius: 12px !important;
+}
+
+.event {
+  text-decoration: none !important;
 }
 
 @media only screen and (max-width: 800px) {
@@ -333,6 +499,11 @@ export default {
     padding: 1px !important;
     font-size: 0.8em;
     font-weight: bold;
+    height: 120px;
+  }
+
+  .day .card-body {
+    padding: 5px;
   }
 }
 </style>
