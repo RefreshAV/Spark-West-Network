@@ -495,12 +495,18 @@
                     <label for="description">About Yourself</label>
                     <textarea class="form-control" id="description" rows="3" v-model="user.user.about" />
                   </div>
+
                   <div class="form-group row">
                     <div class="col-lg-9">
                       <input type="submit" class="btn btn-success" value="Save Changes" />
                     </div>
                   </div>
                 </form>
+
+                <hr>
+                <p class="font-weight-bold">Download your data</p>
+                <p><!-- random stuff about why downloading your data is good --></p>
+                <button class="btn btn-success mt-2" @click="downloadData">Download data</button>
               </div>
               <div class="tab-pane fade" id="messagesTab">
                 <h1>Messages</h1>
@@ -648,6 +654,8 @@ import firebase from 'firebase/app'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 import $ from 'jquery'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 
 export default {
   data () {
@@ -820,6 +828,15 @@ export default {
 
       this.currentPage = []
       this.currentPage = this.pages[this.page - 1]
+    },
+    downloadData () {
+      var zip = new JSZip();
+      zip.file('user.json', JSON.stringify(this.user, null, 2));
+      zip.file('events.json', JSON.stringify(this.events, null, 2));
+      zip.generateAsync({ type: 'blob' })
+        .then((content) => {
+          saveAs(content, 'swn-data.zip');
+        });
     }
   }
 }
