@@ -756,13 +756,11 @@ export default {
     },
     writeUserData () {
       db.collection('users')
-        .where('user.UserUID', '==', firebase.auth().currentUser.uid)
+        .doc(firebase.auth().currentUser.uid)
         .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            doc.ref.update({
-              user: this.user.user
-            })
+        .then(doc => {
+          doc.ref.update({
+            user: this.user.user
           })
         })
     },

@@ -381,15 +381,13 @@ export default {
   },
   mounted () {
     db.collection('users')
-      .where('user.UserUID', '==', firebase.auth().currentUser.uid)
+      .doc(firebase.auth().currentUser.uid)
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
+      .then(doc => {
           this.user.name = doc.data().user.name
           this.user.img = doc.data().user.photo
           this.user.email = doc.data().user.email
-          this.user.id = doc.data().user.UserUID
-        })
+          this.user.id = firebase.auth().currentUser.uid
       })
   },
   methods: {
