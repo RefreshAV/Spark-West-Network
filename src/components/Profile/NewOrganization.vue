@@ -13,7 +13,7 @@
             <div class="col-auto text-center">
               <h4>Logo</h4>
               <img
-                :src="preImg"
+                :src="logoPreImg"
                 class="img-fluid rounded d-block mb-2 shadow-sm"
                 id="preview"
                 alt="profile Picture"
@@ -28,7 +28,7 @@
                   id="imgUp"
                   class="bUp"
                   accept="image/x-png, image/gif, image/jpeg"
-                  @change="loadFile"
+                  @change="logoUpload"
                   required
                 >
               </div>
@@ -106,10 +106,9 @@
                 </div>
               </div>
 
-              <!-- Organization Users -->
               <div class="row">
                 <div class="form-group col">
-                  <label>Location</label>
+                  <label>Address</label>
                   <input
                     type="address"
                     class="form-control mb-2"
@@ -142,32 +141,16 @@ export default {
       bannerImg: '',
       bannerPreImg: 'https://picsum.photos/930/300/?random',
       bannerKey: null,
-      image: '',
-      preImg: 'https://picsum.photos/150/150/?random',
-      imageKey: null,
+      logoImg: '',
+      logoPreImg: 'https://picsum.photos/150/150/?random',
+      logoKey: null,
       name: '',
       website: '',
       description: '',
       email: '',
       phone: null,
-      other: '',
       location: null,
-      locationPos: {
-        lat: 0,
-        lng: 0
-      },
-      locationName: '',
-      users: [],
-      user: {
-        id: null,
-        img: 'https://picsum.photos/200/200/?random',
-        name: 'Current User',
-        email: '',
-        role: 'Admin'
-      },
-      searchTerm: '',
-      profiles: [],
-      searching: false
+      members: []
     }
   },
   metaInfo: {
@@ -182,71 +165,31 @@ export default {
     ]
   },
   mounted () {
-    db.collection('users')
-      .doc(firebase.auth().currentUser.uid)
-      .get()
-      .then(doc => {
-          this.user.name = doc.data().user.name
-          this.user.img = doc.data().user.photo
-          this.user.email = doc.data().user.email
-          this.user.id = firebase.auth().currentUser.uid
-      })
+    // db.collection('users')
+    //   .doc(firebase.auth().currentUser.uid)
+    //   .get()
+    //   .then(doc => {
+    //       this.user.name = doc.data().user.name
+    //       this.user.img = doc.data().user.photo
+    //       this.user.email = doc.data().user.email
+    //       this.user.id = firebase.auth().currentUser.uid
+    //   })
   },
   methods: {
     submit () {
-      // location things
-      if (this.location) {
-        this.locationPos.lat = this.location.geometry.location.lat()
-        this.locationPos.lng = this.location.geometry.location.lng()
-        this.locationName = this.location.formatted_address
-      } else {
-        console.error('Location error for: ' + this.location)
-      }
+      this.logoKey = pushid()
+      this.bannerKey = pushid()
 
-      // image uploads
-      var key1 = pushid()
-      var key2 = pushid()
+      var logoRef = firebase.storage().ref('organizations/logo/' + this.logoKey)
+      logoRef.put(this.logoImg)
 
-      this.imageKey = key1
-      this.bannerKey = key2
+      var bannerRef = firebase.storage().ref('organizations/banner/' + this.bannerKey)
+      bannerRef.put(this.bannerImg)
 
-      var ref1 = firebase.storage().ref('organizations/logo/' + this.imageKey)
-      var file1 = this.image
-      var upload1 = ref1.put(file1)
-
-      var ref2 = firebase.storage().ref('organizations/banner/' + this.bannerKey)
-      var file2 = this.bannerImg
-      var upload2 = ref2.put(file2)
-
-      upload1.on(
-        'state_changed',
-        function progress (snapshot) {
-          var percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        },
-        function error (err) {},
-        function complete () {}
-      )
-
-      upload2.on(
-        'state_changed',
-        function progress (snapshot) {
-          var percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        },
-        function error (err) {},
-        function complete () {}
-      )
-
-      // information upload
-      this.users.push(
-        {
-          id: this.user.id,
-          img: this.user.img,
-          name: this.user.name,
-          role: 'Admin'
-        }
-      )
+      this.members.push({
+        userRef: db.collection('users').doc(firebase.auth().currentUser.uid),
+        role: 'Admin'
+      })
 
       db.collection('organizations').add({
         organization: {
@@ -256,26 +199,19 @@ export default {
           contact: {
             email: this.email,
             phone: this.phone,
-            other: this.other
           },
-          locationName: this.locationName,
-          location: {
-            lat: this.locationPos.lat,
-            lng: this.locationPos.lng
-          },
-          imagekey: this.imageKey,
+          location: this.location,
+          logoKey: this.logoKey,
           bannerKey: this.bannerKey,
-          users: this.users
+          members: this.members
         }
-      }).catch(function () {
-        this.users.pop()
-      }).then(this.$router.push('/Users/organizations'))
+      }).then(this.$router.push('/Organizations'))
     },
-    loadFile: function () {
+    logoUpload () {
       var input = document.querySelector('.bUp')
       var imgURL = window.URL.createObjectURL(input.files[0])
-      this.preImg = imgURL
-      this.image = input.files[0]
+      this.logoPreImg = imgURL
+      this.logoImg = input.files[0]
     },
     bannerUpload () {
       var input = document.querySelector('.bUp2')
@@ -283,55 +219,6 @@ export default {
       this.bannerImg = input.files[0]
       this.bannerPreImg = imgURL
     },
-    search () {
-      const that = this
-      this.searching = false
-      this.profiles = []
-      var search = this.searchTerm
-      db.collection('users')
-        .where('user.email', '==', search.trim())
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            const data = {
-              id: doc.id,
-              name: doc.data().user.name,
-              img: doc.data().user.photo
-            }
-            this.profiles.push(data)
-          })
-        })
-        .then(function () {
-          that.searching = true
-        })
-    },
-    addUser (id, name, img) {
-      var found = this.users.find(function (value) {
-        return (value.name = name)
-      })
-
-      if (!found && name != this.user.email) {
-        var user = {
-          id,
-          name,
-          img,
-          role: 'User'
-        }
-        this.users.push(user)
-      }
-    },
-    removeUser (id, name, img) {
-      var filtered = this.users.filter(function (value, index, arr) {
-        return value.name != name
-      })
-      this.users = filtered
-    },
-    createOrganization () {
-      db.collection('organizations')
-    },
-    setLocation (location) {
-      this.location = location
-    }
   }
 }
 </script>
