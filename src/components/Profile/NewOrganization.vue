@@ -64,7 +64,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col">
                   <label>Website</label>
                   <input
                     type="url"
@@ -72,20 +72,24 @@
                     placeholder="http://example.com"
                     v-model="website"
                   >
-                </div>
-              </div>
-              <div class="row">
-                <div class="form-group col">
                   <label>Description</label>
                   <textarea
                     id="desc"
                     rows="5"
-                    class="form-control"
+                    class="form-control mb-2"
                     placeholder="A description of your organization"
                     v-model="description"
                     required
                   />
+                  <label>Address</label>
+                  <input
+                    type="address"
+                    class="form-control"
+                    placeholder=""
+                    v-model="location"
+                  >
                 </div>
+                
                 <div class="col">
                   <div class="form-group">
                     <label>Contact Info</label>
@@ -98,15 +102,41 @@
                     >
                     <input
                       type="tel"
-                      class="form-control mb-2"
+                      class="form-control mb-4"
                       placeholder="Phone number"
                       v-model="phone"
+                    >
+
+                    <label>Social Media</label>
+                    <input
+                      type="url"
+                      class="form-control mb-2"
+                      placeholder="Facebook"
+                      v-model="facebook"
+                    >
+                    <input
+                      type="url"
+                      class="form-control mb-2"
+                      placeholder="Instagram"
+                      v-model="instagram"
+                    >
+                    <input
+                      type="url"
+                      class="form-control mb-2"
+                      placeholder="Twitter"
+                      v-model="twitter"
+                    >
+                    <input
+                      type="url"
+                      class="form-control mb-2"
+                      placeholder="LinkedIn"
+                      v-model="linkedin"
                     >
                   </div>
                 </div>
               </div>
 
-              <div class="row">
+              <!-- <div class="row">
                 <div class="form-group col">
                   <label>Address</label>
                   <input
@@ -116,7 +146,7 @@
                     v-model="location"
                   >
                 </div>
-              </div>
+              </div> -->
               <div class="float-right">
                 <button type="submit" class="btn btn-primary">Create</button>
               </div>
@@ -148,6 +178,10 @@ export default {
       website: '',
       description: '',
       email: '',
+      facebook: '',
+      instagram: '',
+      twitter: '',
+      linkedin: '',
       phone: null,
       location: null,
       members: []
@@ -199,6 +233,10 @@ export default {
           contact: {
             email: this.email,
             phone: this.phone,
+            facebook: this.facebook,
+            instagram: this.instagram,
+            twitter: this.twitter,
+            linkedin: this.linkedin,
           },
           location: this.location,
           logoKey: this.logoKey,

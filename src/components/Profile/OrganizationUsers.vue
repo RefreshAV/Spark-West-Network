@@ -11,7 +11,7 @@
           v-model="email"
         >
         <div class="input-group-btn">
-          <button class="btn btn-lg btn-primary" @click.prevent="addUser">
+          <button class="btn btn-lg btn-primary" @click.prevent="addMember">
             <i class="fa fa-user-plus"/>
           </button>
         </div>
@@ -20,24 +20,24 @@
 
     <div class="list-group list-group-flush mb-3">
       <div
-        v-for="user in organization.organization.users"
-        :key="user.id"
+        v-for="member in organization.organization.members"
+        :key="member.id"
         class="list-group-item list-group-item-action media"
       >
-        <div class="row">
+        <div class="row" v-if="member.userRef.user">
           <img
             class="align-self-center shadow-sm"
-            :src="user.user.photo"
+            :src="member.userRef.user.photo"
             alt="Generic placeholder image"
-            @click="loadProfile(user.id)"
+            @click="loadProfile(member.userRef.id)"
           >
           <div class="col">
             <div class="media-body">
-              <div @click="loadProfile(user.id)">
-                <h5 class="mb-0">{{ user.user.name }}</h5>
-                <h5 class="mb-0 text-muted font-weight-light">{{ user.user.email }}</h5>
+              <div @click="loadProfile(member.userRef.id)">
+                <h5 class="mb-0">{{ member.userRef.user.name }}</h5>
+                <h5 class="mb-0 text-muted font-weight-light">{{ member.userRef.user.email }}</h5>
               </div>
-              <button class="btn btn-danger btn-sm mt-1" @click="removeUser(user.id)">
+              <button class="btn btn-danger btn-sm mt-1" @click="removeMember(member.userRef.id)">
                 <span>
                   <i class="fa fa-user-minus" />
                 </span>
@@ -60,8 +60,10 @@ export default {
     return {
       email: '',
       organization: {
-        organization: {},
-      }
+        organization: {
+          members: []
+        },
+      },
     }
   },
   metaInfo: {
@@ -77,44 +79,50 @@ export default {
   },
   mounted () {
     this.$bind('organization', db.collection('organizations').doc(this.$route.params.id))
+    this.currentUserId = firebase.auth().currentUser.uid;
   },
   methods: {
     loadProfile (id) {
       this.$router.push({ name: 'userDetail', params: { id: id } })
     },
-    addUser () {
+    addMember () {
       // Find user by email
       db.collection('users')
         .where('user.email', '==', this.email)
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            // Add user to users array
-            let users = this.organization.organization.users;
-            users.push(doc.ref);
+            let members = this.organization.organization.members.map((member) => ({
+              userRef: db.collection('users').doc(member.userRef.id),
+              role: member.role
+            }))
 
-            // Update organization with new user
+            members.push({
+              userRef: doc.ref,
+              role: 'Admin'
+            });
+
             db.collection('organizations')
               .doc(this.$route.params.id)
               .update({
                 organization: {
                   ...this.organization.organization,
-                  users,
+                  members,
                 }
-              })
+              }).then(location.reload()) // Vuefire has trouble understanding references when data changes so we reload everything
           })
         })
     },
-    removeUser (id) {
-      let users = this.organization.organization.users;
-      users = users.filter(user => user.id !== id);
+    removeMember (id) {
+      let members = this.organization.organization.members;
+      members = members.filter(member => member.userRef.id !== id);
 
       db.collection('organizations')
         .doc(this.$route.params.id)
         .update({
           organization: {
             ...this.organization.organization,
-            users,
+            members,
           }
         })
     }
