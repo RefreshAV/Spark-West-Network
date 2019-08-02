@@ -1,28 +1,32 @@
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{userId} {
-      allow read: if true;
-      allow create: if request.auth.uid != null;
-      allow write, update: if isOwner(userId) && request.resource.data.user.isAdmin != true || isAdmin();
+      allow read, create: if request.auth.uid != null;
+      allow write, update: if isOwner(userId) && request.resource.data.user.isAdmin != true || isSiteAdmin();
     }
 
     match /events/{eventId} {
       allow read: if true
       allow create: if request.auth.uid != null;
-      allow write, update, delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.user.UserUID == request.resource.data.event.UserUID || isAdmin();
+      allow write, update, delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.user.UserUID == request.resource.data.event.UserUID || isSiteAdmin();
     }
     
-    // TODO: Setup organization perms
     match /organizations/{organizationId} {
-      allow read: if true
-      allow create, write, update, delete: if request.auth.uid != null;
+      allow read, create: if request.auth.uid != null;
+      allow write, update: if isOrgAdmin();
+      allow write, update, delete: if isSiteAdmin()
     }
     
     function isOwner(userId) {
       return request.auth.uid == userId;
     }
     
-    function isAdmin() {
+    function isOrgAdmin() {
+      // Check if `role` is `Admin`
+      return resource.data.members.admins.hasAny(request.auth.uid) == true;
+    }
+
+    function isSiteAdmin() {
       return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.user.isAdmin == true;
     }
   }
