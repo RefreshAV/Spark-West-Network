@@ -157,7 +157,7 @@
       <hr />
       <div class="row">
         <div class="col-auto">
-          <router-link to="/events/list" class="btn btn-danger btn-lg">Cancel</router-link>
+          <router-link to="/events/all" class="btn btn-danger btn-lg">Cancel</router-link>
         </div>
         <div class="col-auto">
           <input type="submit" class="btn btn-primary btn-lg" />
@@ -418,7 +418,7 @@ export default {
               likedBy: [firebase.auth().currentUser.uid]
             }
           })
-          .then(this.$router.push("/events/list"));
+          .then(this.$router.push("/events/all"));
       }
     },
     loadFile: function() {

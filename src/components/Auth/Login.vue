@@ -79,7 +79,7 @@
               <div class="row d-flex justify-content-center">
                 <p>
                   Don't have an account?
-                  <router-link to="/SignUp">Sign Up!</router-link>
+                  <router-link to="/signup">Sign Up!</router-link>
                 </p>
               </div>
             </div>

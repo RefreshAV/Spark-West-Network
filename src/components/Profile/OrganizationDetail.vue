@@ -146,8 +146,8 @@
 
         <div class="row">
           <div class="col-md mt-3">
-            <router-link :to="'/Organizations/organization/' + id + '/users/'" class="card btn p-0">
-              <img src="https://picsum.photos/1900/1080/?random" class="card-img" alt="gallery">
+            <router-link :to="'/organizations/' + organization.id + '/users/'" class="card btn p-0">
+              <img src="https://picsum.photos/1900/1080/?random" class="card-img" alt="gallery" />
               <div class="card-img-overlay d-flex justify-content-center align-items-center">
                 <h1 class="overllay-text">Gallery</h1>
               </div>
@@ -191,7 +191,7 @@
               </div>
               <router-link
                 class="card-footer btn btn-primary bg-primary text-white"
-                :to="'/Organizations/organization/' + id + '/users/'"
+                :to="'/organizations/' + organization.id + '/users/'"
               >See all members</router-link>
             </div>
           </div>

@@ -493,7 +493,7 @@ export default {
               });
             });
           })
-          .then(that.$router.push("/events/event/" + that.id));
+          .then(that.$router.push("/events/" + that.id));
       }
     },
     loadFile: function() {

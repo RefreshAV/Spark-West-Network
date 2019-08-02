@@ -59,7 +59,7 @@
 
     <div class="row">
       <div class="col p-0">
-        <router-link to="/events/NewEvent" class="btn btn-primary circular my-3">
+        <router-link to="/events/new" class="btn btn-primary circular my-3">
           <i class="fa fa-plus" />
         </router-link>
       </div>

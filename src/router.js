@@ -45,7 +45,7 @@ const routes = [
     component: About
   },
   {
-    path: '/FAQ',
+    path: '/faq',
     name: 'faq',
     component: FAQ
   },
@@ -55,28 +55,19 @@ const routes = [
     component: Events
   },
   {
-    path: '/events/event/:id',
+    path: '/events/:id',
     name: 'event-detail',
     component: EventDetail,
-    meta: {
-      requiresAuth: false
-    }
   },
   {
-    path: '/events/list',
+    path: '/events/all',
     name: 'events-list',
     component: EventList,
-    meta: {
-      requiresAuth: false
-    }
   },
   {
     path: '/events/calendar',
     name: 'events-calendar',
     component: EventCalendar,
-    meta: {
-      requiresAuth: false
-    }
   },
   {
     path: '/contact',
@@ -85,7 +76,7 @@ const routes = [
 
   },
   {
-    path: '/events/NewEvent',
+    path: '/events/new',
     name: 'events-new-event',
     component: NewEvent,
     meta: {
@@ -93,7 +84,7 @@ const routes = [
     }
   },
   {
-    path: '/events/EventMap',
+    path: '/events/map',
     name: 'event-map',
     component: EventMap,
     meta: {
@@ -101,7 +92,7 @@ const routes = [
     }
   },
   {
-    path: '/events/EditEvent/:id',
+    path: '/events/edit/:id',
     name: 'EditEvent',
     component: EditEvent,
     meta: {
@@ -109,33 +100,22 @@ const routes = [
     }
   },
   {
-    path: '/events/EventGallery',
+    path: '/events/gallery',
     name: 'EventGallery',
     component: EventGallery,
-    meta: {
-      requiresAuth: false
-    }
   },
   {
-    path: '/Login',
+    path: '/login',
     name: 'login',
     component: Login
   },
   {
-    path: '/SignUp',
+    path: '/signup',
     name: 'signup',
     component: SignUp
   },
   {
-    path: '/SignUpSuccess',
-    name: 'sign-up-success',
-    component: SignUpSuccess,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/LogOut',
+    path: '/logout',
     name: 'log-out',
     component: LogOut,
     meta: {
@@ -143,7 +123,7 @@ const routes = [
     }
   },
   {
-    path: '/Profile',
+    path: '/profile',
     name: 'profile',
     component: Profile,
     meta: {
@@ -151,7 +131,7 @@ const routes = [
     }
   },
   {
-    path: '/Users/',
+    path: '/users',
     name: 'userList',
     component: UserList,
     meta: {
@@ -159,7 +139,7 @@ const routes = [
     }
   },
   {
-    path: '/Users/user/:id',
+    path: '/users/:id',
     name: 'userDetail',
     component: UserDetail,
     meta: {
@@ -167,7 +147,7 @@ const routes = [
     }
   },
   {
-    path: '/Organizations',
+    path: '/organizations',
     name: 'organizationList',
     component: OrganizationsList,
     meta: {
@@ -175,7 +155,7 @@ const routes = [
     }
   },
   {
-    path: '/Organizations/organization/:id',
+    path: '/organizations/:id',
     name: 'organizationProfileDetail',
     component: OrganizationDetail,
     meta: {
@@ -183,7 +163,8 @@ const routes = [
     }
   },
   {
-    path: '/Organization/New',
+
+    path: '/organizations/new',
     name: 'newOrganizationProfile',
     component: NewOrganizationProfile,
     beforeEnter: (to, from, next) => {
@@ -199,7 +180,7 @@ const routes = [
     }
   },
   {
-    path: '/Organizations/organization/:id/users/',
+    path: '/organizations/:id/users',
     name: 'organizationUsers',
     component: OrganizationUsers
   }

@@ -18,7 +18,7 @@
           <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
             <div class="col-auto">
               <router-link
-                to="/events/EventGallery"
+                to="/events/gallery"
                 class="btn btn-success my-5"
               >Check Out The Gallery</router-link>
             </div>
@@ -51,7 +51,7 @@
           <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
             <div class="col-auto">
               <router-link
-                to="/events/EventGallery"
+                to="/events/gallery"
                 class="btn btn-success my-5"
               >Check Out The Gallery</router-link>
             </div>
@@ -76,7 +76,7 @@
             <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
               <div class="col-auto">
                 <router-link
-                  to="/events/EventGallery"
+                  to="/events/gallery"
                   class="btn btn-success my-5"
                 >Check Out The Gallery</router-link>
               </div>
@@ -109,7 +109,7 @@
             <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
               <div class="col-auto">
                 <router-link
-                  to="/events/EventGallery"
+                  to="/events/gallery"
                   class="btn btn-success my-5"
                 >Check Out The Gallery</router-link>
               </div>
