@@ -1,9 +1,9 @@
 <template>
   <!-- Navigation -->
-  <nav id="navbar" class="navbar navbar-dark mt-0">
+  <nav id="navbar" class="navbar navbar-dark mt-0 p-0">
     <div class="container">
       <router-link to="/" id="brand" active-class="navbar-brand">
-        <img src="../assets/SWN.png" height="70" alt="logo">
+        <img src="../assets/SWN.png" height="70" alt="logo" />
         <!-- <span id="badge" class="badge badge-secondary">beta</span> -->
       </router-link>
       <button
@@ -17,8 +17,10 @@
       >
         <i class="fas fa-bars fa-lg"></i>
       </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto text-dark">
+    </div>
+    <div class="collapse w-100 navbar-collapse bg-dark" id="navbarResponsive">
+      <div class="container">
+        <ul class="navbar-nav ml-auto text-dark m-3">
           <!--Do this in for loop-->
           <router-link
             class="nav-links"
@@ -85,7 +87,7 @@
           <router-link to="/" tag="li" active-class="nav-item" v-if="isLoggedIn">
             <button
               @click="logOut"
-              class="btn btn-block btn-light my-2 my-sm-0"
+              class="btn btn-block btn-secondary font-weight-bold rounded-pill text-dark my-2 my-sm-0"
               type="submit"
             >Log Out</button>
           </router-link>
@@ -96,48 +98,48 @@
 </template>
 
 <script>
-import { auth } from 'firebase/app'
-import $ from 'jquery'
+import { auth } from "firebase/app";
+import $ from "jquery";
 
 export default {
-  data () {
+  data() {
     return {
       isLoggedIn: false
-    }
+    };
   },
   watch: {
-    $route (to, from) {
-      $('#navbarResponsive').collapse('hide')
+    $route(to, from) {
+      $("#navbarResponsive").collapse("hide");
     }
   },
-  created () {
-    var vm = this
-    auth().onAuthStateChanged(function (user) {
+  created() {
+    var vm = this;
+    auth().onAuthStateChanged(function(user) {
       if (user) {
-        vm.isLoggedIn = true
+        vm.isLoggedIn = true;
       } else {
-        vm.isLoggedIn = false
+        vm.isLoggedIn = false;
       }
-    })
+    });
   },
   methods: {
-    logOut () {
+    logOut() {
       auth()
         .signOut()
         .then(
-          function () {},
-          function (error) {
-            console.error('Sign Out Error', error)
+          function() {},
+          function(error) {
+            console.error("Sign Out Error", error);
           }
-        )
+        );
     },
 
-    closeNav () {
-      $('#navbarResponsive').collapse('hide')
-      this.$router.push('/')
+    closeNav() {
+      $("#navbarResponsive").collapse("hide");
+      this.$router.push("/");
     }
   }
-}
+};
 </script>
 
 <style scoped>
