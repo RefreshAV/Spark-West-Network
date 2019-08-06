@@ -12,8 +12,8 @@
         <!-- <span class="badge badge-danger badge-pill">WIP</span> -->
       </button>
       <div class="dropdown-menu">
-        <router-link class="dropdown-item" to="/Users">Users</router-link>
-        <router-link class="dropdown-item" to="/Organizations">Organizations</router-link>
+        <router-link class="dropdown-item" to="/users">Users</router-link>
+        <router-link class="dropdown-item" to="/organizations">Organizations</router-link>
       </div>
     </div>
 

@@ -96,7 +96,7 @@
 
       <hr />
       <div class="btn-group">
-        <router-link class="btn btn-secondary" to="/events/list">Back</router-link>
+        <router-link class="btn btn-secondary" to="/events/all">Back</router-link>
         <router-link
           :to="{name: 'EditEvent', params: {id: id}}"
           class="btn btn-primary"
@@ -307,7 +307,7 @@ export default {
           .then(querySnapshot => {
             querySnapshot.forEach(doc => {
               doc.ref.delete();
-              this.$router.push("/events/list");
+              this.$router.push("/events/all");
             });
           });
       }

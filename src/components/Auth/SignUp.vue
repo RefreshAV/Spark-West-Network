@@ -108,7 +108,7 @@
                       </button>
                     </div>
                     <div class="col-m3">
-                      <p>Or if you already have an account <router-link to="/Login">Login!</router-link></p>
+                      <p>Or if you already have an account <router-link to="/login">Login!</router-link></p>
                     </div>
                   </div>
                 </form>

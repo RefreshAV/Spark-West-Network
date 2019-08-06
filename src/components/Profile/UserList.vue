@@ -9,8 +9,8 @@
         aria-expanded="false"
       >Users</button>
       <div class="dropdown-menu">
-        <router-link class="dropdown-item" to="/Users">Users</router-link>
-        <router-link class="dropdown-item" to="/Organizations">Organizations</router-link>
+        <router-link class="dropdown-item" to="/users">Users</router-link>
+        <router-link class="dropdown-item" to="/organizations">Organizations</router-link>
       </div>
     </div>
 
@@ -182,7 +182,7 @@ export default {
   // },
   methods: {
     loadProfile (uid, id) {
-      this.$router.push('Users/user/' + id)
+      this.$router.push('users/' + id)
     },
     countEvents (profile) {
       console.log('loaded')

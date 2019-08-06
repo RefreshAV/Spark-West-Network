@@ -59,7 +59,7 @@
       <!-- Horizontal Buttons -->
       <div class="row d-none d-md-block animated fadeIn">
         <div class="btn-group mb-3 col" style="width:100%;">
-          <router-link to="/events/NewEvent" tag="button" class="btn btn-primary btn-left">
+          <router-link to="/events/new" tag="button" class="btn btn-primary btn-left">
             <div class="row d-flex justify-content-center">
               <i class="fas fa-plus-circle fa-2x"></i>
             </div>
@@ -71,7 +71,7 @@
             </div>
             <div class="row d-flex justify-content-center">View All Events</div>
           </router-link>
-          <router-link to="/events/EventMap" tag="button" class="btn btn-danger btn-right">
+          <router-link to="/events/map" tag="button" class="btn btn-danger btn-right">
             <div class="row d-flex justify-content-center">
               <i class="fas fa-map-marker-alt fa-2x"></i>
             </div>
@@ -82,19 +82,19 @@
 
       <!-- Vertical Button -->
       <div class="btn-group-vertical mb-3 d-md-none" style="width:100%;">
-        <router-link to="/events/NewEvent" tag="button" class="btn btn-primary btn-top">
+        <router-link to="/events/new" tag="button" class="btn btn-primary btn-top">
           <div class="row d-flex justify-content-center">
             <i class="fas fa-plus-circle fa-2x"></i>
           </div>
           <div class="row d-flex justify-content-center">Create an Event</div>
         </router-link>
-        <router-link to="/events/list" tag="button" class="btn btn-info">
+        <router-link to="/events/all" tag="button" class="btn btn-info">
           <div class="row d-flex justify-content-center">
             <i class="fas fa-eye fa-2x"></i>
           </div>
           <div class="row d-flex justify-content-center">View All Events</div>
         </router-link>
-        <router-link to="/events/EventMap" tag="button" class="btn btn-danger btn-bottom">
+        <router-link to="/events/map" tag="button" class="btn btn-danger btn-bottom">
           <div class="row d-flex justify-content-center">
             <i class="fas fa-map-marker-alt fa-2x"></i>
           </div>

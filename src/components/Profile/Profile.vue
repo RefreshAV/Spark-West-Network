@@ -77,7 +77,7 @@
                           <router-link
                             id="organBtn"
                             class="btn btn-success btn-sm"
-                            to="/Organization/New"
+                            to="/organizations/new"
                             data-toggle="tooltip"
                             data-placement="top"
                             title="Add existing organization"
@@ -103,7 +103,7 @@
                       <router-link
                         id="organBtn"
                         class="btn btn-success btn-sm"
-                        to="/Organization/New"
+                        to="/organizations/new"
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Add existing organization"
@@ -296,7 +296,7 @@
                   </div>
 
                   <router-link
-                    to="/events/NewEvent"
+                    to="/events/new"
                     class="bg-primary text-white circular mx-3 mb-3 d-flex justify-content-center align-items-center"
                   >
                     <i class="fa fa-plus" />
