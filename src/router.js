@@ -55,12 +55,12 @@ const routes = [
     component: Events
   },
   {
-    path: '/events/:id',
+    path: '/events/event/:id',
     name: 'event-detail',
     component: EventDetail,
   },
   {
-    path: '/events/all',
+    path: '/events/list',
     name: 'events-list',
     component: EventList,
   },
@@ -77,7 +77,7 @@ const routes = [
   },
   {
     path: '/events/new',
-    name: 'events-new-event',
+    name: 'new-event',
     component: NewEvent,
     meta: {
       requiresAuth: true

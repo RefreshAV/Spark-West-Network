@@ -88,7 +88,7 @@
           </div>
           <div class="row d-flex justify-content-center">Create an Event</div>
         </router-link>
-        <router-link to="/events/all" tag="button" class="btn btn-info">
+        <router-link to="/events/list" tag="button" class="btn btn-info">
           <div class="row d-flex justify-content-center">
             <i class="fas fa-eye fa-2x"></i>
           </div>
