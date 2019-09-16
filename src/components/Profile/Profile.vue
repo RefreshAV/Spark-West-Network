@@ -60,14 +60,14 @@
                   </div>
                   <div class="col mr-3">
                     <!-- Organization large -->
-                    <div class="row d-none d-lg-flex justify-content-end align-items-center">
-                      <div class="col-auto">
+                    <div class="row justify-content-end align-items-center">
+                      <div class="col-auto d-none d-lg-flex">
                         <p class="text-muted">Organization:</p>
                       </div>
                       <div class="col-auto pl-0">
                         <div class="btn-group">
                           <button
-                            class="btn btn-info btn-sm"
+                            class="btn btn-info btn-sm btn-left"
                             data-toggle="tooltip"
                             data-placement="top"
                             title="Create new organization"
@@ -76,7 +76,7 @@
                           </button>
                           <router-link
                             id="organBtn"
-                            class="btn btn-success btn-sm"
+                            class="btn btn-success btn-sm btn-right"
                             to="/organizations/new"
                             data-toggle="tooltip"
                             data-placement="top"
@@ -88,30 +88,6 @@
                           </router-link>
                         </div>
                       </div>
-                    </div>
-
-                    <!-- Organization small -->
-                    <div class="btn-group float-right d-lg-none">
-                      <button
-                        class="btn btn-info btn-sm"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Create new organization"
-                      >
-                        <i class="fa fa-building" />
-                      </button>
-                      <router-link
-                        id="organBtn"
-                        class="btn btn-success btn-sm"
-                        to="/organizations/new"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Add existing organization"
-                      >
-                        <span id="organBtnCont">
-                          <i class="fa fa-plus" />
-                        </span>
-                      </router-link>
                     </div>
                   </div>
                 </div>
@@ -232,7 +208,9 @@
                     <a href="#" class="badge badge-dark badge-pill">more examples</a>
                     <hr />
                     <span class="badge badge-primary mx-1">
-                      <i class="fa fa-user" /> {{ followerCount }} Follower<span v-if="followerCount.length > 1 || !followerCount.length">s</span>
+                      <i class="fa fa-user" />
+                      {{ followerCount }} Follower
+                      <span v-if="followerCount.length > 1 || !followerCount.length">s</span>
                     </span>
                     <span class="badge badge-success mx-1">
                       <i class="fa fa-cog" /> n Forks
@@ -276,7 +254,7 @@
 
                   <div class="col-md-12 d-flex justify-content-end" v-if="events.length > 0">
                     <div class="btn-group">
-                      <button class="btn btn-outline-primary" @click="lastPage">
+                      <button class="btn btn-outline-primary btn-left" @click="lastPage">
                         <i class="fa fa-angle-double-left" />
                       </button>
                       <input
@@ -289,7 +267,7 @@
                         :max="pages.length"
                         readonly
                       />
-                      <button class="btn btn-outline-primary" @click="nextPage">
+                      <button class="btn btn-outline-primary btn-right" @click="nextPage">
                         <i class="fa fa-angle-double-right" />
                       </button>
                     </div>
@@ -342,7 +320,7 @@
                 <div class="row">
                   <div class="col d-flex justify-content-end">
                     <div class="btn-group">
-                      <button class="btn btn-outline-primary" @click="lastPageL">
+                      <button class="btn btn-outline-primary btn-left" @click="lastPageL">
                         <i class="fa fa-angle-double-left" />
                       </button>
                       <input
@@ -355,7 +333,7 @@
                         :max="likePages.length"
                         readonly
                       />
-                      <button class="btn btn-outline-primary" @click="nextPageL">
+                      <button class="btn btn-outline-primary btn-right" @click="nextPageL">
                         <i class="fa fa-angle-double-right" />
                       </button>
                     </div>
@@ -493,7 +471,12 @@
 
                   <div class="form-group">
                     <label for="description">About Yourself</label>
-                    <textarea class="form-control" id="description" rows="3" v-model="user.user.about" />
+                    <textarea
+                      class="form-control"
+                      id="description"
+                      rows="3"
+                      v-model="user.user.about"
+                    />
                   </div>
 
                   <div class="form-group row">
@@ -503,39 +486,22 @@
                   </div>
                 </form>
 
-                <hr>
+                <hr />
                 <p class="font-weight-bold">Download your data</p>
-                <p><!-- random stuff about why downloading your data is good --></p>
-                <button class="btn btn-success mt-2" @click="downloadData">Download data</button>
-                <hr>
+                <p>
+                  <!-- random stuff about why downloading your data is good -->
+                </p>
+                <button class="btn btn-primary mt-2" @click="downloadData">Download <i class="fas fa-download"></i></button>
+                <hr />
                 <p class="font-weight-bold">Delete your account</p>
-                <p><!-- random stuff about why downloading your data is good --></p>
+                <p>
+                  <!-- random stuff about why downloading your data is good -->
+                </p>
                 <button class="btn btn-danger mt-2" @click="deleteUser">Delete account</button>
               </div>
               <div class="tab-pane fade" id="messagesTab">
                 <h1>Messages</h1>
                 <!-- TODO -->
-                <!-- <ul class="list-group">
-                  <router-link
-                    class="list-group-item card text-white bg-dark mb-1"
-                    v-for="event in currentPage"
-                    :key="event.id"
-                    :to="{name: 'event-detail', params: {id: event.id}}"
-                  >
-                    <div>
-                      <h5>{{ event.title }}</h5>
-                      <p>{{ event.date.year }}-{{ event.date.month }}-{{ event.date.day }}</p>
-                    </div>
-                  </router-link>
-
-                  <li
-                    v-if="events.length == 0"
-                    class="list-group-item border-0 text-white d-flex justify-content-center align-items-center mb-2 placeholder"
-                  >
-                    <h3>Nothing Here!</h3>
-                  </li>
-                </ul>
-                <button class="btn btn-dark">Send a message</button>-->
                 <div
                   class="alert alert-primary animated fadeIn"
                   role="alert"
@@ -610,14 +576,7 @@
                   alt="avatar"
                 >-->
 
-                <VueCropper
-                  id="newImage"
-                  class="mb-2"
-                  ref="cropper"
-                  :src="newImage"
-                  alt="Source Image"
-                  :cropmove="cropImage"
-                ></VueCropper>
+                <vue-cropper ref="cropper" :src="newImage" alt="Source Image" :cropmove="cropImage"></vue-cropper>
               </div>
             </div>
             <div class="row">
@@ -642,29 +601,31 @@
                 <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">Cancel</button>
               </div>
               <div class="col">
-                <button type="button" class="btn btn-block btn-success" data-dismiss="modal">Save changes</button>
+                <button
+                  type="button"
+                  class="btn btn-block btn-success"
+                  data-dismiss="modal"
+                >Save changes</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase/app'
-import VueCropper from 'vue-cropperjs'
-import 'cropperjs/dist/cropper.css'
-import $ from 'jquery'
-import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase/app";
+import VueCropper from "vue-cropperjs";
+import "cropperjs/dist/cropper.css";
+import $ from "jquery";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 export default {
-  data () {
+  data() {
     return {
       user: {
         user: {}
@@ -683,181 +644,214 @@ export default {
       pageLength: 4,
       likePageLength: 4,
       followers: []
-    }
+    };
   },
   components: {
     VueCropper
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'Profile',
+    title: "Profile",
     meta: [
       {
-        vmid: 'description',
-        name: 'description',
-        content: 'Your personal account on Spark West Network'
+        vmid: "description",
+        name: "description",
+        content: "Your personal account on Spark West Network"
       }
     ]
   },
-  metaInfo () {
+  metaInfo() {
     if (this.user.user.name) {
       return {
         title: this.user.user.name
-      }
+      };
     } else {
       return {
-        title: 'Profile'
-      }
+        title: "Profile"
+      };
     }
   },
-  mounted () {
-    $('body').tooltip({ selector: '[data-toggle=tooltip]' })
+  mounted() {
+    $("body").tooltip({ selector: "[data-toggle=tooltip]" });
 
-    this.$bind('user', db.collection('users').doc(firebase.auth().currentUser.uid))
-    this.$bind('followers', db.collection('users').where('user.following', 'array-contains', firebase.auth().currentUser.uid))
-    this.$bind('events', db.collection('events')
-      .where('event.UserUID', '==', firebase.auth().currentUser.uid)
-      .orderBy('event.date.year')
-      .orderBy('event.date.month')
-      .orderBy('event.date.day')
-    )
-    this.$bind('likedEvents', db.collection('events').where('likedBy', 'array-contains', firebase.auth().currentUser.uid))
+    this.$bind(
+      "user",
+      db.collection("users").doc(firebase.auth().currentUser.uid)
+    );
+    this.$bind(
+      "followers",
+      db
+        .collection("users")
+        .where(
+          "user.following",
+          "array-contains",
+          firebase.auth().currentUser.uid
+        )
+    );
+    this.$bind(
+      "events",
+      db
+        .collection("events")
+        .where("event.UserUID", "==", firebase.auth().currentUser.uid)
+        .orderBy("event.date.year")
+        .orderBy("event.date.month")
+        .orderBy("event.date.day")
+    );
+    this.$bind(
+      "likedEvents",
+      db
+        .collection("events")
+        .where("likedBy", "array-contains", firebase.auth().currentUser.uid)
+    );
   },
   watch: {
-    page: 'updateCurrent',
-    likePage: 'updateCurrentLiked',
-    events: 'createPages',
-    likedEvents: 'createLikePages'
+    page: "updateCurrent",
+    likePage: "updateCurrentLiked",
+    events: "createPages",
+    likedEvents: "createLikePages"
   },
   computed: {
-    likedEventsLength () {
-      return this.likedEvents.length
+    likedEventsLength() {
+      return this.likedEvents.length;
     },
-    followerCount () {
+    followerCount() {
       return this.followers.length;
     }
   },
   methods: {
-    changeTab: function (oldTab, newTab) {
-      $("[data-target='" + newTab + "']").tab('show')
+    changeTab: function(oldTab, newTab) {
+      $("[data-target='" + newTab + "']").tab("show");
     },
-    loadFile: function () {
-      var input = document.querySelector('.bUp')
+    loadFile: function() {
+      var input = document.querySelector(".bUp");
 
-      var imgURL = window.URL.createObjectURL(input.files[0])
-      this.user.user.photo = imgURL
-      this.newImage = imgURL
-      this.image = input.files[0]
+      var imgURL = window.URL.createObjectURL(input.files[0]);
+      this.user.user.photo = imgURL;
+      this.newImage = imgURL;
+      this.image = input.files[0];
 
       var ref = firebase
         .storage()
-        .ref('users/' + firebase.auth().currentUser.uid)
-      var file = this.image
+        .ref("users/" + firebase.auth().currentUser.uid);
+      var file = this.image;
 
-      var upload = ref.put(file)
+      var upload = ref.put(file);
       upload.on(
-        'state_changed',
-        function progress (snapshot) {
+        "state_changed",
+        function progress(snapshot) {
           var percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
-        function error (err) {},
-        function complete () {}
-      )
+        function error(err) {},
+        function complete() {}
+      );
     },
-    writeUserData () {
-      db.collection('users')
+    writeUserData() {
+      db.collection("users")
         .doc(firebase.auth().currentUser.uid)
         .get()
         .then(doc => {
           doc.ref.update({
             user: this.user.user
-          })
-        })
+          });
+        });
     },
-    updateCurrentLiked () {
-      this.currentLikePage = []
-      this.currentLikePage = this.likePages[this.likePage - 1]
+    updateCurrentLiked() {
+      this.currentLikePage = [];
+      this.currentLikePage = this.likePages[this.likePage - 1];
     },
-    nextPage () {
+    nextPage() {
       if (this.page < this.pages.length) {
-        this.page++
+        this.page++;
       }
     },
-    lastPage () {
+    lastPage() {
       if (this.page > 1) {
-        this.page--
+        this.page--;
       }
     },
-    nextPageL () {
+    nextPageL() {
       if (this.likePage < this.likePages.length) {
-        this.likePage++
+        this.likePage++;
       }
     },
-    lastPageL () {
+    lastPageL() {
       if (this.likePage > 1) {
-        this.likePage--
+        this.likePage--;
       }
     },
-    createPages () {
-      var length = Math.ceil(this.events.length / this.pageLength)
+    createPages() {
+      var length = Math.ceil(this.events.length / this.pageLength);
       for (var i = 0; i < length; i++) {
         if (this.events.slice(i * 4) < 4) {
-          this.pages.push(this.events.slice(i * this.pageLength))
+          this.pages.push(this.events.slice(i * this.pageLength));
         } else {
           this.pages.push(
             this.events.slice(
               i * this.pageLength,
               i * this.pageLength + this.pageLength
             )
-          )
+          );
         }
       }
-      this.currentPage = this.pages[0]
+      this.currentPage = this.pages[0];
     },
-    createLikePages () {
-      var length = Math.ceil(this.likedEvents.length / this.pageLength)
+    createLikePages() {
+      var length = Math.ceil(this.likedEvents.length / this.pageLength);
 
       for (var l = 0; l < length; l++) {
         if (this.likedEvents.slice(l * 4) < 4) {
-          this.likePages.push(this.likedEvents.slice(l * this.pageLength))
+          this.likePages.push(this.likedEvents.slice(l * this.pageLength));
         } else {
           this.likePages.push(
             this.likedEvents.slice(
               l * this.pageLength,
               l * this.pageLength + this.pageLength
             )
-          )
+          );
         }
       }
-      this.currentLikePage = this.likePages[0]
+      this.currentLikePage = this.likePages[0];
     },
-    updateCurrent () {
-      document.getElementById('page').readOnly = true
+    updateCurrent() {
+      document.getElementById("page").readOnly = true;
 
-      this.currentPage = []
-      this.currentPage = this.pages[this.page - 1]
+      this.currentPage = [];
+      this.currentPage = this.pages[this.page - 1];
     },
-    downloadData () {
+    downloadData() {
       var zip = new JSZip();
-      zip.file('user.json', JSON.stringify(this.user, null, 2));
-      zip.file('events.json', JSON.stringify(this.events, null, 2));
-      zip.generateAsync({ type: 'blob' })
-        .then((content) => {
-          saveAs(content, 'swn-data.zip');
-        });
+      zip.file("user.json", JSON.stringify(this.user, null, 2));
+      zip.file("events.json", JSON.stringify(this.events, null, 2));
+      zip.generateAsync({ type: "blob" }).then(content => {
+        saveAs(content, "swn-data.zip");
+      });
     },
-    deleteUser () {
+    deleteUser() {
       // Deleting the user will also call a Firebase function which removes the user's document and image
-      firebase.auth().currentUser.delete()
+      firebase.auth().currentUser.delete();
 
-      this.$router.push('/')
+      this.$router.push("/");
     }
   }
-}
+};
 </script>
 
 <style>
+.btn-left {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-top-left-radius: 40px !important;
+  border-bottom-left-radius: 40px !important;
+}
+
+.btn-right {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: 40px !important;
+  border-bottom-right-radius: 40px !important;
+}
+
 .dUp {
   position: relative;
   overflow: hidden;

@@ -1,7 +1,7 @@
 <template>
   <!-- Navigation -->
   <nav id="navbar" class="navbar navbar-dark mt-0 p-0">
-    <div class="container">
+    <div class="container" id="top">
       <router-link to="/" id="brand" active-class="navbar-brand">
         <img src="../assets/SWN.png" height="70" alt="logo" />
         <!-- <span id="badge" class="badge badge-secondary">beta</span> -->
@@ -19,8 +19,8 @@
       </button>
     </div>
     <div class="collapse w-100 navbar-collapse bg-dark" id="navbarResponsive">
-      <div class="container">
-        <ul class="navbar-nav ml-auto text-dark m-3">
+      <div class="container w-100">
+        <ul class="navbar-nav ml-auto text-dark m-3 w-100">
           <!--Do this in for loop-->
           <router-link
             class="nav-links"
@@ -82,12 +82,15 @@
             <a class="nav-link">Profile</a>
           </router-link>
           <router-link :to="{name: 'login'}" tag="li" active-class="nav-item" v-if="!isLoggedIn">
-            <button class="btn btn-outline-light btn-block my-2 my-sm-0" type="submit">Login</button>
+            <button
+              class="btn btn-outline-light btn-block mt-2 font-weight-bold rounded-pill mt-sm-0 mb-0"
+              type="submit"
+            >Login</button>
           </router-link>
           <router-link to="/" tag="li" active-class="nav-item" v-if="isLoggedIn">
             <button
               @click="logOut"
-              class="btn btn-block btn-secondary font-weight-bold rounded-pill text-dark my-2 my-sm-0"
+              class="btn btn-block btn-secondary font-weight-bold rounded-pill text-dark mt-2 mt-sm-0 mb-0"
               type="submit"
             >Log Out</button>
           </router-link>
@@ -149,6 +152,7 @@ body {
 
 .navbar {
   background: #fe3d61;
+  overflow: visible;
 }
 
 .btn-light i {
@@ -160,26 +164,19 @@ body {
   font-weight: bold;
 }
 
-.carousel-item {
-  height: 65vh;
-  min-height: 300px;
-  background: no-repeat center center scroll;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+#navbarResponsive,
+#navbar {
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
 }
-
-.portfolio-item {
-  margin-bottom: 30px;
-}
-
-/* img {
-  margin-top: -15px;
-  margin-left: -15px;
-} */
 
 #brand {
   cursor: pointer;
+}
+
+#top {
+  background: #fe3d61;
+  border-radius: 0 !important;
+  z-index: 1000;
 }
 </style>

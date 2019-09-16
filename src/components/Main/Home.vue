@@ -624,16 +624,6 @@ export default {
   text-decoration: none !important;
 }
 
-.btn-danger {
-  background: #fe3d61;
-  border-color: #fe3d61;
-}
-
-.btn-danger:hover {
-  background: #e23655;
-  border-color: #e23655;
-}
-
 .badge-danger {
   background: #fe3d61;
 }

@@ -65,7 +65,7 @@
             </div>
             <div class="row d-flex justify-content-center">Create an Event</div>
           </router-link>
-          <router-link to="/events/calendar" tag="button" class="btn btn-info">
+          <router-link to="/events/calendar" tag="button" class="btn btn-info btn-middle">
             <div class="row d-flex justify-content-center">
               <i class="fas fa-eye fa-2x"></i>
             </div>
@@ -88,7 +88,7 @@
           </div>
           <div class="row d-flex justify-content-center">Create an Event</div>
         </router-link>
-        <router-link to="/events/list" tag="button" class="btn btn-info">
+        <router-link to="/events/list" tag="button" class="btn btn-info btn-middle">
           <div class="row d-flex justify-content-center">
             <i class="fas fa-eye fa-2x"></i>
           </div>
@@ -211,23 +211,31 @@ export default {
 }
 
 .btn-left {
-  border-top-left-radius: 80px;
-  border-bottom-left-radius: 80px;
+  border-radius: 0 !important;
+  border-top-left-radius: 80px !important;
+  border-bottom-left-radius: 80px !important;
 }
 
 .btn-right {
-  border-top-right-radius: 80px;
-  border-bottom-right-radius: 80px;
+  border-radius: 0 !important;
+  border-top-right-radius: 80px !important;
+  border-bottom-right-radius: 80px !important;
 }
 
 .btn-top {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-radius: 0 !important;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
 }
 
 .btn-bottom {
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+  border-radius: 0 !important;
+  border-bottom-left-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+}
+
+.btn-middle {
+  border-radius: 0 !important;
 }
 
 .card {

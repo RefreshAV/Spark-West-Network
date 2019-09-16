@@ -41,7 +41,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 #app {
   min-height: 100%;
   position: relative;
@@ -56,5 +56,15 @@ export default {
   bottom: 0;
   width: 100%;
   height: 220px;
+}
+
+.btn-danger {
+  background: #fe3d61 !important;
+  border-color: #fe3d61 !important;
+}
+
+.btn-danger:hover {
+  background: #e23655 !important;
+  border-color: #e23655 !important;
 }
 </style>

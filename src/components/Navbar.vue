@@ -133,16 +133,6 @@ body {
   background: #fe3d61;
 }
 
-.btn-danger {
-  background: #fe3d61;
-  border-color: #fe3d61;
-}
-
-.btn-danger:hover {
-  background: #e23655;
-  border-color: #e23655;
-}
-
 .btn-light {
   color: #fd4260;
   font-weight: bold;
