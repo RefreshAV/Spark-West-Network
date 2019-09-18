@@ -17,10 +17,7 @@
           <!-- Image Slide -->
           <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
             <div class="col-auto">
-              <router-link
-                to="/events/gallery"
-                class="btn btn-success my-5"
-              >Check Out The Gallery</router-link>
+              <router-link to="/events/gallery" class="btn btn-success my-5">Check Out The Gallery</router-link>
             </div>
           </div>
         </slide>
@@ -50,10 +47,7 @@
           <!-- Image Slide 2 -->
           <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
             <div class="col-auto">
-              <router-link
-                to="/events/gallery"
-                class="btn btn-success my-5"
-              >Check Out The Gallery</router-link>
+              <router-link to="/events/gallery" class="btn btn-success my-5">Check Out The Gallery</router-link>
             </div>
           </div>
         </slide>
@@ -75,10 +69,7 @@
             <!-- Image Slide -->
             <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
               <div class="col-auto">
-                <router-link
-                  to="/events/gallery"
-                  class="btn btn-success my-5"
-                >Check Out The Gallery</router-link>
+                <router-link to="/events/gallery" class="btn btn-success my-5">Check Out The Gallery</router-link>
               </div>
             </div>
           </slide>
@@ -108,10 +99,7 @@
             <!-- Image Slide 2 -->
             <div class="row w-100 h-100 d-flex justify-content-center align-items-end">
               <div class="col-auto">
-                <router-link
-                  to="/events/gallery"
-                  class="btn btn-success my-5"
-                >Check Out The Gallery</router-link>
+                <router-link to="/events/gallery" class="btn btn-success my-5">Check Out The Gallery</router-link>
               </div>
             </div>
           </slide>
@@ -122,7 +110,9 @@
         <h1 id="swn" class="text-center display-3 pb-5">
           Welcome To
           <br />
-          <b>Spark West Network</b>
+          <div class="bg-dark py-3 px-4 shadow">
+            <b>Spark West Network</b>
+          </div>
         </h1>
 
         <!-- Marketing Icons Section -->
@@ -396,18 +386,18 @@
 </template>
 
 <script>
-import { Carousel, Slide } from 'vue-carousel'
-import { Timeline } from 'vue-tweet-embed'
-import VueInstagram from 'vue-instagram'
-import db from '../../Firebase/firebaseInit'
+import { Carousel, Slide } from "vue-carousel";
+import { Timeline } from "vue-tweet-embed";
+import VueInstagram from "vue-instagram";
+import db from "../../Firebase/firebaseInit";
 
 export default {
-  data () {
+  data() {
     return {
       events: [],
       images: [],
       backgrounds: []
-    }
+    };
   },
   components: {
     Carousel,
@@ -416,55 +406,55 @@ export default {
     VueInstagram
   },
   metaInfo: {
-    title: 'Spark West Network',
+    title: "Spark West Network",
     // override the parent template and just use the above title only
     titleTemplate: null
   },
-  created () {
-    this.events = []
-    db.collection('events')
-      .orderBy('event.date')
+  created() {
+    this.events = [];
+    db.collection("events")
+      .orderBy("event.date")
       .limit(3)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          var day = doc.data().event.date.day
-          var month = doc.data().event.date.month
-          var year = doc.data().event.date.year
+          var day = doc.data().event.date.day;
+          var month = doc.data().event.date.month;
+          var year = doc.data().event.date.year;
           const data = {
             id: doc.id,
             title: doc.data().event.title,
-            date: year + '-' + month + '-' + day,
+            date: year + "-" + month + "-" + day,
             time: doc.data().event.time,
             email: doc.data().event.email,
             desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          }
-          this.events.push(data)
-        })
-      })
+          };
+          this.events.push(data);
+        });
+      });
   },
   watch: {
-    events: 'fetchImages'
+    events: "fetchImages"
   },
   methods: {
-    fetchImages () {
-      var images = []
+    fetchImages() {
+      var images = [];
       for (var i = 0; i < this.events.length; i++) {
         let url =
-          'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
+          "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
           this.events[i].imageKey +
-          '?alt=media&token'
-        images.push(url)
+          "?alt=media&token";
+        images.push(url);
       }
-      this.images = images
+      this.images = images;
       for (let j = 0; j < this.images.length; j++) {
-        let url = "url('" + this.images[j] + "')"
-        this.backgrounds.push(url)
+        let url = "url('" + this.images[j] + "')";
+        this.backgrounds.push(url);
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -490,6 +480,11 @@ export default {
   background-position: center;
   color: transparent;
   -webkit-text-fill-color: transparent;
+}
+
+#swn div {
+  border-radius: 12px;
+  display: inline-block;
 }
 
 .portfolio-item {
