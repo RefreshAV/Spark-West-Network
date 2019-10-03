@@ -702,7 +702,7 @@ export default {
   border-radius: 12px;
 }
 
-.event-img {
+/* .event-img {
   border-radius: 12px;
   margin-bottom: 16px;
   margin-right: 16px;
@@ -713,7 +713,7 @@ export default {
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-color: lightgray;
-}
+} */
 
 .event-info {
   position: absolute;
@@ -745,9 +745,9 @@ export default {
   height: 345px;
 }
 
-.gallery-img-sm {
+/* .gallery-img-sm {
   width: calc(100% - 16px);
-}
+} */
 
 .gallery-info {
   position: absolute;
@@ -758,14 +758,14 @@ export default {
 .gallery-info-sm {
   right: 16px;
 }
-
+/* 
 .social-stripe {
   position: absolute;
   z-index: -1000;
   width: 1110px;
   left: 0;
   bottom: calc(inherit/2);
-}
+} */
 
 .btn-social {
   width: 82px;
@@ -775,12 +775,12 @@ export default {
   justify-content: center;
 }
 
-/* .card-social {
+.card-social {
   border-radius: 12px !important;
   max-height: 440px;
   max-width: 100%;
   overflow: hidden;
-} */
+}
 
 .card-social .card-body {
   overflow-y: scroll;
