@@ -702,7 +702,7 @@ export default {
   border-radius: 12px;
 }
 
-/* .event-img {
+.event-img {
   border-radius: 12px;
   margin-bottom: 16px;
   margin-right: 16px;
@@ -713,7 +713,7 @@ export default {
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-color: lightgray;
-} */
+}
 
 .event-info {
   position: absolute;
