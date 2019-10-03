@@ -12,6 +12,7 @@ import NewEvent from './components/Events/NewEvent'
 import Contact from './components/Contact/Contact.vue'
 import FAQ from './components/FAQ/FAQ.vue'
 import Login from './components/Auth/Login.vue'
+import Forgot from './components/Auth/Forgot.vue'
 import SignUp from './components/Auth/SignUp.vue'
 import SignUpSuccess from './components/Auth/SignUpSuccess.vue'
 import LogOut from './components/Auth/LogOut.vue'
@@ -24,6 +25,7 @@ import UserList from './components/Profile/UserList.vue'
 import UserDetail from './components/Profile/UserDetail.vue'
 import EventMap from './components/Events/EventLocations.vue'
 import EventGallery from './components/Events/EventGallery.vue'
+
 import { auth } from 'firebase/app'
 
 Vue.use(Router)
@@ -108,6 +110,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+   {
+    path: '/forgot',
+    name: 'forgot',
+    component: Forgot
   },
   {
     path: '/signup',
