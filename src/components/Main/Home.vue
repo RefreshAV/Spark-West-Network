@@ -745,9 +745,9 @@ export default {
   height: 345px;
 }
 
-/* .gallery-img-sm {
+.gallery-img-sm {
   width: calc(100% - 16px);
-} */
+}
 
 .gallery-info {
   position: absolute;
