@@ -663,7 +663,7 @@ export default {
 </script>
 
 <style scoped>
-.background-stripe {
+/* .background-stripe {
   position: absolute;
   z-index: -1000;
   width: 1920px;
@@ -788,5 +788,5 @@ export default {
 
 .card-insta {
   text-decoration: none !important;
-}
+} */
 </style>
