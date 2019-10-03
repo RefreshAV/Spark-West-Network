@@ -222,13 +222,26 @@
     </div>
     <div class="row d-lg-none">
       <div class="col">
-        <div
-          style="background-image: url('https://picsum.photos/id/614/1000/500');"
-          class="img-fluid gallery-img gallery-img-sm shadow"
-        ></div>
+        <carousel
+          :per-page="1"
+          :scrollPerPage="true"
+          :adjustableHeight="true"
+          :loop="true"
+          :autoplay="true"
+          :autoplayTimeout="5000"
+          :paginationPosition="'top-overlay'"
+          class="gallery-carousel"
+        >
+          <slide v-for="(img,index) in gallerySize" :key="index">
+            <div
+              :style="'background: url(' + randImg(index) + ');'"
+              class="img-fluid gallery-img shadow"
+            ></div>
+          </slide>
+        </carousel>
         <router-link
           to="/events/gallery shadow"
-          class="btn btn-lg btn-success rounded-pill shadow gallery-info gallery-info-sm"
+          class="btn btn-lg btn-success rounded-pill shadow gallery-info"
         >Check Out the Gallery</router-link>
       </div>
     </div>
@@ -741,31 +754,26 @@ export default {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  width: 100%;
   height: 345px;
-}
-
-.gallery-img-sm {
-  width: calc(100% - 16px);
 }
 
 .gallery-info {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: 16px;
 }
 
 .gallery-info-sm {
   right: 16px;
 }
-/* 
+
 .social-stripe {
   position: absolute;
   z-index: -1000;
   width: 1110px;
   left: 0;
-  bottom: calc(inherit/2);
-} */
+  bottom: 50vh;
+}
 
 .btn-social {
   width: 82px;
