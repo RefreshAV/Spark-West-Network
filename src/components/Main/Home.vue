@@ -663,7 +663,7 @@ export default {
 </script>
 
 <style scoped>
-/* .background-stripe {
+.background-stripe {
   position: absolute;
   z-index: -1000;
   width: 1920px;
@@ -775,12 +775,12 @@ export default {
   justify-content: center;
 }
 
-.card-social {
+/* .card-social {
   border-radius: 12px !important;
   max-height: 440px;
   max-width: 100%;
   overflow: hidden;
-}
+} */
 
 .card-social .card-body {
   overflow-y: scroll;
@@ -788,5 +788,5 @@ export default {
 
 .card-insta {
   text-decoration: none !important;
-} */
+}
 </style>
