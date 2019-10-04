@@ -4,7 +4,6 @@
     <div class="container">
       <router-link id="logo" to="/" tag="a" active-class="navbar-brand">
         <img src="../assets/logoLG.svg" class="m-1" height="42" alt="logo">
-        <!-- <span class="badge badge-secondary">beta</span> -->
       </router-link>
       <button
         class="navbar-toggler navbar-toggler-right"
@@ -18,7 +17,6 @@
         <span class="navbar-toggler-icon"/>
       </button>
       <ul class="navbar-nav ml-auto bg-dark p-2 d-flex align-items-center rounded-pill">
-        <!--Do this in for loop-->
         <router-link :to="{name: 'about'}" tag="li" active-class="nav-item">
           <a id="about" class="nav-link">About</a>
         </router-link>
@@ -46,21 +44,6 @@
           class="nav-item btn btn-danger rounded-pill"
           type="submit"
         >Log Out</button>
-
-        <!-- <div class="dropdown">
-          <button
-            class="btn btn-danger dropdown-toggle"
-            type="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >Log Out</button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <p>Are you sure?</p>
-            <a class="dropdown-item" href="#">Yes</a>
-            <a class="dropdown-item" href="#">No/a>
-          </div>
-        </div>-->
       </ul>
     </div>
   </nav>
@@ -148,8 +131,8 @@ ul {
 }
 
 #logo:hover {
-  transform: translateY(-4px);
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+  transform: translateY(-3px);
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 .router-link-exact-active {
