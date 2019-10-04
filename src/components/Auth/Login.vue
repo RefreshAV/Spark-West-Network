@@ -69,7 +69,10 @@
                         autocomplete="off"
                       >
                     </div>
-                    <input type="submit" class="btn btn-primary" value="Login">
+                    
+                    <input type="submit" class="btn btn-primary mr-2" value="Login">
+                    <router-link to="/forgot">Forgot password?</router-link>
+
                   </form>
                 </div>
               </div>
