@@ -104,7 +104,14 @@
             <div class="form-group">
               <label class="font-weight-bold" for="message">Description:</label>
               <br />
-              <froala :tag="'textarea'" :config="config" v-model="editDesc"></froala>
+              <ckeditor
+                id="description"
+                :editor="editor"
+                v-model="editDesc"
+                @ready="loadDesc"
+                :config="editorConfig"
+                tag-name="textarea"
+              ></ckeditor>
             </div>
           </div>
         </div>
@@ -232,13 +239,26 @@
 import db from "../../Firebase/firebaseInit";
 import firebase from "firebase";
 import "firebase/firestore";
-import toolbarConfig from "../../toolbarConfig"
 import $ from "jquery";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "../../assets/ckeditor.css";
 
 export default {
   data() {
     return {
-      config: toolbarConfig,
+      editor: ClassicEditor,
+      editorConfig: {
+        toolbar: [
+          "heading",
+          "|",
+          "bold",
+          "italic",
+          "link",
+          "bulletedList",
+          "numberedList",
+          "blockQuote"
+        ]
+      },
       id: null,
       title: null,
       date: null,
@@ -361,6 +381,9 @@ export default {
     }
   },
   methods: {
+    loadDesc() {
+      this.editDesc = this.description;
+    },
     autoSuggest() {
       if (this.locationSearch) {
         if (this.clearSearch > 0) {
@@ -419,7 +442,6 @@ export default {
     },
     getChars() {
       this.characters = this.description.length;
-      this.editDesc = this.description;
     },
     fetchImage() {
       var ref = firebase.storage().ref("events/" + this.imageKey);
@@ -493,7 +515,7 @@ export default {
               });
             });
           })
-          .then(that.$router.push("/events/" + that.id));
+          .then(that.$router.push("/events/event/" + that.id));
       }
     },
     loadFile: function() {

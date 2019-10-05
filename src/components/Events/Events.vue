@@ -5,7 +5,7 @@
         src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Ajax_loader_metal_512.gif"
         class="loading mb-3"
         style="width:50px; height: 50px;"
-      >
+      />
     </div>
     <div v-if="events.length > 0">
       <div class="card border-0 shadow mb-3 bg-dark text-white animated fadeInLeft">
@@ -13,7 +13,7 @@
           <div class="col">
             <div class="card-block m-3 px-2">
               <h1 class="display-4">{{ events[0].title }}</h1>
-              <p class="my-3">{{ events[0].desc }}</p>
+              <div class="my-3" v-html="events[0].desc" v-line-clamp="8"></div>
               <router-link
                 :to="{name: 'event-detail', params: {id: events[0].id}}"
                 tag="a"
@@ -38,7 +38,7 @@
             <h1>{{ events[1].title }}</h1>
           </div>
           <div class="card-body">
-            <p class="my-3">{{ events[1].desc }}</p>
+            <p class="my-3" v-line-clamp="5" v-html="events[1].desc"></p>
           </div>
         </router-link>
         <router-link
@@ -51,7 +51,7 @@
             <h1>{{ events[2].title }}</h1>
           </div>
           <div class="card-body">
-            <p class="my-3">{{ events[2].desc }}</p>
+            <p class="my-3" v-line-clamp="5" v-html="events[2].desc"></p>
           </div>
         </router-link>
       </div>
@@ -106,90 +106,78 @@
 </template>
 
 <script scoped>
-import db from '../../Firebase/firebaseInit'
-import firebase from 'firebase'
+import db from "../../Firebase/firebaseInit";
+import firebase from "firebase";
 
 export default {
-  data () {
+  data() {
     return {
       events: [],
       images: [],
       isLoggedIn: false
-    }
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'Events'
+    title: "Events"
   },
-  created () {
-    db.collection('events')
-      .orderBy('likes', 'desc')
+  created() {
+    db.collection("events")
+      .orderBy("likes", "desc")
       .limit(3)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          // truncate description
-          var desc
-          if (
-            doc.data().event.description.length > 180 &&
-            this.events.length > 0
-          ) {
-            var trunc = doc.data().event.description
-            desc = trunc.substring(0, 181) + ' . . .'
-          } else {
-            desc = doc.data().event.description
-          }
-
           // compile and push data as object
-          var day = doc.data().event.date.day
-          var month = doc.data().event.date.month
-          var year = doc.data().event.date.year
+          var day = doc.data().event.date.day;
+          var month = doc.data().event.date.month;
+          var year = doc.data().event.date.year;
 
           const data = {
             id: doc.id,
             title: doc.data().event.title,
-            date: year + '-' + month + '-' + day,
+            date: year + "-" + month + "-" + day,
             time: doc.data().event.time,
             email: doc.data().event.email,
-            desc: desc,
+            desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
-          }
-          this.events.push(data)
-        })
-      })
-    var vm = this
-    firebase.auth().onAuthStateChanged(function (user) {
+          };
+          this.events.push(data);
+        });
+      });
+    var vm = this;
+    firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        vm.isLoggedIn = true
+        vm.isLoggedIn = true;
       } else {
-        vm.isLoggedIn = false
+        vm.isLoggedIn = false;
       }
-    })
+    });
   },
   watch: {
-    events: 'fetchImage',
+    events: "fetchImage",
     meta: [
       {
-        vmid: 'description',
-        name: 'description',
-        content: 'The top events on Spark West Network'
+        vmid: "description",
+        name: "description",
+        content: "The top events on Spark West Network"
       }
     ]
   },
   methods: {
-    fetchImage () {
-      var images = []
+    fetchImage() {
+      var images = [];
       for (var i = 0; i < this.events.length; i++) {
         var url =
-          'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
+          "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
           this.events[i].imageKey +
-          '?alt=media&token'
-        images.push(url)
+          "?alt=media&token";
+        images.push(url);
       }
-      this.images = images
+      this.images = images;
     }
   }
-}
+};
 </script>
 
 <style scoped>

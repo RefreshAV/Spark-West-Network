@@ -45,7 +45,7 @@
                 <h5>Description:</h5>
                 <div class="card bg-light border-0">
                   <div class="card-body">
-                    <froalaView v-model="desc"></froalaView>
+                    <div v-html="desc"></div>
                   </div>
                 </div>
                 <hr />

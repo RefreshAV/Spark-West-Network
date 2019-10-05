@@ -149,7 +149,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="card-body">{{ event.desc }}</div>
+                  <div class="card-body modal-desc" v-html="event.desc" v-line-clamp="3"></div>
                 </a>
               </div>
             </div>
@@ -259,17 +259,13 @@ export default {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            let end = "";
-            if (doc.data().event.description.length > 100) {
-              end = " . . .";
-            }
             const data = {
               id: doc.id,
               title: doc.data().event.title,
               date: doc.data().event.date,
               time: doc.data().event.time,
               email: doc.data().event.email,
-              desc: doc.data().event.description.substring(0, 100) + end,
+              desc: doc.data().event.description,
               imageKey: doc.data().event.imageKey
             };
             this.events.push(data);
@@ -318,10 +314,6 @@ export default {
           }
           var result = Math.ceil((lastDate - diff) / 7);
           var weeksInMonth = result + 1;
-          // console.log("===============================");
-          // console.log("days in month: " + daysInCurrent);
-          // console.log("weeks in month: " + weeksInMonth);
-          // console.log("First day of month: " + startDay);
 
           let count = 1;
           for (var i = 1; i < weeksInMonth + 1; i++) {
@@ -554,6 +546,11 @@ export default {
 
 .event {
   text-decoration: none !important;
+}
+
+.modal-desc {
+  max-height: 124px;
+  overflow-y: hidden;
 }
 
 @media only screen and (max-width: 800px) {

@@ -50,7 +50,7 @@
             <h1 class="card-header">{{ event.date.day }}</h1>
             <div class="card-body">
               <h5 class="card-title">{{ event.title }}</h5>
-              <p class="card-text">{{ event.desc }}</p>
+              <div class="card-text" v-html="event.desc" v-line-clamp="4"></div>
             </div>
           </router-link>
         </ul>

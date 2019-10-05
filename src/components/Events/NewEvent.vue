@@ -108,10 +108,17 @@
                 />
               </div>
 
+              <!-- Description -->
               <div class="form-group">
                 <label for="message">Description:</label>
                 <br />
-                <froala :tag="'textarea'" :config="config" v-model="event.description"></froala>
+                <ckeditor
+                  id="description"
+                  :editor="editor"
+                  v-model="event.description"
+                  :config="editorConfig"
+                  tag-name="textarea"
+                ></ckeditor>
               </div>
             </div>
           </div>
@@ -157,7 +164,7 @@
       <hr />
       <div class="row">
         <div class="col-auto">
-          <router-link to="/events/all" class="btn btn-danger btn-lg">Cancel</router-link>
+          <router-link to="/events/calendar" class="btn btn-danger btn-lg">Cancel</router-link>
         </div>
         <div class="col-auto">
           <input type="submit" class="btn btn-primary btn-lg" />
@@ -226,14 +233,27 @@
 import db from "../../Firebase/firebaseInit";
 import firebase from "firebase";
 import "firebase/firestore";
-import toolbarConfig from "../../toolbarConfig"
 import pushid from "pushid";
 import $ from "jquery";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "../../assets/ckeditor.css"
 
 export default {
   data() {
     return {
-      config: toolbarConfig,
+      editor: ClassicEditor,
+      editorConfig: {
+        toolbar: [
+          "heading",
+          "|",
+          "bold",
+          "italic",
+          "link",
+          "bulletedList",
+          "numberedList",
+          "blockQuote"
+        ]
+      },
       event: {
         title: "",
         date: "",
@@ -500,8 +520,9 @@ textarea {
   border-radius: 12px;
 }
 
-.card {
-  border-radius: 12px;
+.card,
+.ck-rounded-corners {
+  border-radius: 12px !important;
 }
 
 input[type="text"],

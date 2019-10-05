@@ -51,7 +51,7 @@
                       <div class="col">
                         <h4 class="badge-dark badge-pill d-inline">{{events[0].date}}</h4>
                         <h1 class="mt-2">{{event.title}}</h1>
-                        <p class="text-muted">{{event.desc}}</p>
+                        <div class="text-muted" v-html="event.desc" v-line-clamp="4"></div>
                       </div>
                     </div>
                   </div>
@@ -108,7 +108,7 @@
                       <div class="col">
                         <h4 class="badge-dark badge-pill d-inline">{{event.date}}</h4>
                         <h1 class="mt-2">{{event.title}}</h1>
-                        <p class="text-muted">{{event.desc}}</p>
+                        <div class="text-muted" v-html="event.desc" v-line-clamp="4"></div>
                       </div>
                     </div>
                   </div>
@@ -627,17 +627,13 @@ export default {
           var day = doc.data().event.date.day;
           var month = doc.data().event.date.month;
           var year = doc.data().event.date.year;
-          var description = doc.data().event.description;
-          if (description.length > 164) {
-            description = description.slice(0, 164) + " ...";
-          }
           const data = {
             id: doc.id,
             title: doc.data().event.title,
             date: year + "-" + month + "-" + day,
             time: doc.data().event.time,
             email: doc.data().event.email,
-            desc: description,
+            desc: doc.data().event.description,
             imageKey: doc.data().event.imageKey
           };
           this.events.push(data);
