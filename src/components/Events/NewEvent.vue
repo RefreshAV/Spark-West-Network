@@ -438,7 +438,7 @@ export default {
               likedBy: [firebase.auth().currentUser.uid]
             }
           })
-          .then(this.$router.push("/events/all"));
+          .then(this.$router.push("/events/calendar"));
       }
     },
     loadFile: function() {
