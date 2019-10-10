@@ -495,7 +495,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 .circular {
   width: 70px;
   height: 70px;
@@ -505,6 +505,10 @@ export default {
   justify-content: center;
   align-items: center;
   text-decoration: none;
+}
+
+.card {
+  border-radius: 12px;
 }
 
 #home {

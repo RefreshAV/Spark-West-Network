@@ -3,11 +3,16 @@ import App from './App.vue'
 import router from './router'
 import './registerServiceWorker'
 import VueDisqus from 'vue-disqus'
-import { auth } from 'firebase/app'
+import {
+  auth
+} from 'firebase/app'
 import VueScrollTo from 'vue-scrollto'
-import { firestorePlugin } from 'vuefire'
-import CKEditor from '@ckeditor/ckeditor5-vue';
+import {
+  firestorePlugin
+} from 'vuefire'
+import CKEditor from '@ckeditor/ckeditor5-vue'
 import lineClamp from 'vue-line-clamp'
+import VueLazyload from 'vue-lazyload'
 
 // Bootstrap
 import 'bootstrap'
@@ -18,6 +23,8 @@ Vue.use(VueDisqus)
 Vue.use(firestorePlugin)
 Vue.use(CKEditor)
 Vue.use(lineClamp)
+Vue.use(VueLazyload)
+
 
 // Router guard checks if AuthRequired
 router.beforeEach((to, from, next) => {

@@ -1,101 +1,96 @@
 <template>
-  <div class="container gallery-container">
-
-    <h1>Event Gallery</h1>
-
-    <div class="tz-gallery">
-
-      <div class="row">
-
-        <div
-          v-for="(event) in events"
-          :key="event.id"
-          class="col-sm-6 col-md-4">
-          <div
-            class="thumbnail"
-            data-toggle="modal"
-            :data-target="'#' + event.id">
-            <div class="lightbox">
-              <img
-                :src="event.url"
-                alt="Park"
-                style="height:auto; width:325px">
-            </div>
-            <router-link :to="{name: 'event-detail', params: {id: event.id}}">
-              <div class="caption">
-                <h3>{{ event.title }}</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              </div>
-            </router-link>
+  <div class="container">
+    <img src="../../assets/socialStripe.svg" class="stripe" />
+    <h1 class="my-4 text-center display-3">Gallery</h1>
+    <div class="row">
+      <div v-for="event in events" :key="event.id" class="col-lg-4 col-md-6 col-sm-12 mb-3">
+        <a href @click.prevent="modal(event)" class="card bg-light shadow thumbnail w-100">
+          <img v-lazy="event.url" alt="event img" class="bg-light card-img-top" />
+          <div class="card-body text-dark">
+            <h4 v-line-clamp="1" class="m-0">{{event.title}}</h4>
           </div>
-        </div>
-
-        <div
-          v-for="event in events"
-          :key="event.id">
-          <div
-            class="modal fade"
-            :id="event.id"
-            tabindex="-1"
-            role="dialog"
-            aria-hidden="true">
-            <div
-              class="modal-dialog modal-lg"
-              role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5
-                    class="modal-title"
-                    id="exampleModalLabel">{{ event.title }}</h5>
-                  <button
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close">
-                    <i class="fa fa-times"/>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <img
-                    :src="event.url"
-                    alt="">
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        </a>
       </div>
-
     </div>
 
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="imageModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 12px;">
+          <div class="modal-header">
+            <h2 class="modal-title" id="exampleModalCenterTitle">{{show.title}}</h2>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="row mb-3">
+              <div class="col d-flex justify-content-center">
+                <img :src="show.img" alt="event img" class="img-fluid rounded" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col" v-line-clamp="4">
+                <a
+                  href
+                  @click.prevent="goTo(show.id)"
+                  class="card bg-light text-dark border-0"
+                  style="text-decoration:none;"
+                >
+                  <div class="card-body">
+                    <div v-html="show.desc"></div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import db from '../../Firebase/firebaseInit'
+import db from "../../Firebase/firebaseInit";
+import $ from "jquery";
+import VueInstagram from "vue-instagram";
+import * as https from "https";
+import { type } from "os";
+
 export default {
-  data () {
+  data() {
     return {
       events: [],
-      images: []
-    }
+      instagram: [],
+      show: {
+        img: null,
+        title: null,
+        id: null,
+        desc: null
+      }
+    };
   },
   metaInfo: {
     // title will be injected into parent titleTemplate
-    title: 'Gallery',
+    title: "Gallery",
     meta: [
-      { vmid: 'description', name: 'description', content: 'A collection of pictures from events on Spark West Network' }
+      {
+        vmid: "gallery",
+        name: "gallery",
+        content: "A collection of pictures from events on Spark West Network"
+      }
     ]
   },
-  created () {
-    db
-      .collection('events')
+  created() {
+    db.collection("events")
+      // .orderBy("event.likes")
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -107,84 +102,76 @@ export default {
             email: doc.data().event.email,
             desc: doc.data().event.description,
             url:
-              'https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F' +
+              "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
               doc.data().event.imageKey +
-              '?alt=media&token'
-          }
-          this.events.push(data)
-        })
+              "?alt=media&token"
+          };
+          this.events.push(data);
+        });
       })
-    baguetteBox.run('.tz-gallery')
+      .then(() => {
+        var token = "10717756500.1677ed0.fbf63b282dac4d59a22d2abd141c7320",
+          userid = 1362124742,
+          num_photos = 20;
+
+        let that = this;
+
+        $.ajax({
+          url: "https://api.instagram.com/v1/users/self/media/recent",
+          dataType: "json",
+          type: "GET",
+          data: { access_token: token, count: num_photos },
+          success: that.getInsta(res),
+          error: function(data) {
+            console.error(data);
+          }
+        });
+      });
+  },
+  methods: {
+    modal(ev) {
+      this.show.img = ev.url;
+      this.show.title = ev.title;
+      this.show.id = ev.id;
+      this.show.desc = ev.desc;
+
+      $("#imageModal").modal("show");
+    },
+    goTo(id) {
+      $("#imageModal").modal("toggle");
+      $("#imageModal").on("hidden.bs.modal", () => {
+        this.$router.push("event/" + id);
+      });
+    },
+    getInsta(data) {
+      console.log("Got data");
+      console.log(data);
+    }
   }
-}
+};
 </script>
 
 <style scoped>
-/* .container {
-  background-image: linear-gradient(to top, #cccccc 0%, #eeeeee 100%);
-  /* min-height: 100vh;
-  font: normal 16px sans-serif;
-} */
-
-.modal-body img {
-    max-width: 100%;
+.stripe {
+  position: absolute;
+  width: 100vw;
+  left: 0;
+  bottom: 5vh;
+  z-index: -1000;
 }
 
-.gallery-container h1 {
-  padding-top: 6px;
-  text-align: center;
-  font-family: "Droid Sans", sans-serif;
-  font-weight: bold;
-  color: #58595a;
+.thumbnail {
+  transition: 0.5s all;
+  border-radius: 12px !important;
+  text-decoration: none;
 }
 
-.gallery-container p.page-description {
-  text-align: center;
-  margin: 30px auto;
-  font-size: 18px;
-  color: #85878c;
+.thumbnail img {
+  border-radius: 12px;
 }
 
-.tz-gallery {
-  padding: 40px;
-}
-
-.tz-gallery .thumbnail {
-  padding: 0;
-  margin-bottom: 30px;
-  background-color: #fff;
-  border-radius: 4px;
-  border: none;
-  transition: 0.15s ease-in-out;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.06);
-}
-
-.tz-gallery .thumbnail:hover {
-  transform: translateY(-10px) scale(1.02);
-}
-
-.tz-gallery .lightbox img {
-  border-radius: 4px 4px 0 0;
-}
-
-.tz-gallery .caption {
-  padding: 26px 30px;
-  text-align: center;
-}
-
-.tz-gallery .caption h3 {
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 0;
-}
-
-.tz-gallery .caption p {
-  font-size: 12px;
-  color: #7b7d7d;
-  margin: 0;
-}
-
-.baguetteBox-button {
-  background-color: transparent !important;
+.thumbnail:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.07) !important;
 }
 </style>

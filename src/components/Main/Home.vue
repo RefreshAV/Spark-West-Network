@@ -191,7 +191,7 @@
           </slide>
         </carousel>
         <router-link
-          to="/events/gallery shadow"
+          to="/events/gallery"
           class="btn btn-lg btn-success rounded-pill shadow gallery-info"
         >Check Out the Gallery</router-link>
       </div>
