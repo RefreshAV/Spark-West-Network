@@ -1,10 +1,14 @@
 <template>
   <div class="container">
     <div class="row mt-5 mb-3 d-flex justify-content-center">
-      <div v-if="num.month != currentMonth || num.year != currentYear" class="col p-0" style="max-width:40px;"></div>
+      <div
+        v-if="date.month != now.c.month || date.year != now.c.year"
+        class="col p-0"
+        style="max-width:40px;"
+      ></div>
       <div class="col-auto">
         <div class="row">
-          <div class="col text-center">{{ num.year }}</div>
+          <div class="col text-center">{{ date.year }}</div>
         </div>
         <div class="row">
           <div class="col">
@@ -13,7 +17,7 @@
             </button>
           </div>
           <div class="col">
-            <h1>{{ monthName }}</h1>
+            <h1>{{ monthName(date.month) }}</h1>
           </div>
           <div class="col">
             <button class="btn btn-primary" @click="nextMonth">
@@ -22,8 +26,11 @@
           </div>
         </div>
       </div>
-      <div v-if="num.month != currentMonth || num.year != currentYear" class="col-auto p-0 d-flex align-items-center">
-        <button @click="home()" id="home" class="btn btn-warning">
+      <div
+        v-if="date.month != now.c.month || date.year != now.c.year"
+        class="col-auto p-0 d-flex align-items-center"
+      >
+        <button @click="home()" id="home" class="btn btn-warning animated fadeIn">
           <i class="fas fa-calendar-alt"></i>
         </button>
       </div>
@@ -65,7 +72,7 @@
           data-toggle="modal"
           data-target="#dayDetails"
           @click="displayDay(calendarNum(day.num), day.events)"
-          class="card h-100 bg-dark text-light day-action"
+          class="card h-100 bg-dark text-light day-action animated fadeIn"
           v-if="day.currentMonth"
         >
           <div class="card-body">
@@ -73,22 +80,17 @@
               <div class="col p-0">{{ calendarNum(day.num) }}</div>
             </div>
             <hr class="mt-1 mb-2" />
-            <div v-for="dayEvent in day.events" :key="dayEvent.id" class="row w-100 m-0">
+            <div v-for="dayEvent in day.events" :key="dayEvent.id" class="row w-100 m-0 animated fadeIn">
               <div class="col p-0">
                 <span
-                  v-if="!checkArchive(dayEvent.date.day,dayEvent.date.month,dayEvent.date.year)"
-                  class="badge badge-warning badge-pill text-truncate w-100"
-                >{{ dayEvent.title }}</span>
-                <span
-                  v-else
-                  :class="{ 'badge':true, 'badge-primary':(checkArchive(dayEvent.date.day,dayEvent.date.month,dayEvent.date.year) == 2), 'badge-info':(checkArchive(dayEvent.date.day,dayEvent.date.month,dayEvent.date.year) == 1), 'badge-pill':true, 'text-truncate':true, 'w-100':true }"
+                  :class="{ 'badge':true, 'badge-warning':archive(dayEvent) == 0, 'badge-primary':archive(dayEvent) == 1, 'badge-info':archive(dayEvent) == 2, 'badge-pill':true, 'text-truncate':true, 'w-100':true }"
                 >{{ dayEvent.title }}</span>
               </div>
             </div>
           </div>
         </a>
 
-        <div class="card h-100 bg-secondary text-light" v-if="!day.currentMonth">
+        <div class="card h-100 bg-secondary text-light animated fadeIn" v-if="!day.currentMonth">
           <div class="card-body">
             <div class="row">
               <div class="col">{{ calendarNum(day.num) }}</div>
@@ -117,7 +119,13 @@
       <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title">{{ monthName }} {{ dayNum }}</h2>
+            <h2 class="modal-title">
+              {{ monthName(now.c.month) }} {{ modalNum }}
+              <span
+                v-if="archive({date: {day: modalNum, month: now.c.month, year: now.c.year}}) == 0"
+                class="badge badge-pill badge-warning"
+              >Archived</span>
+            </h2>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">
                 <i class="fa fa-times"></i>
@@ -125,11 +133,10 @@
             </button>
           </div>
           <div class="modal-body">
-            <!-- Events -->
             <div
-              v-for="(event, index) in dayEvents"
+              v-for="(event, index) in modalEvents"
               :key="event.id"
-              :class="{ 'row':true, 'mb-2':(index < dayEvents.length - 1) }"
+              :class="{ 'row':true, 'mb-2':(index < modalEvents.length - 1) }"
             >
               <div class="col">
                 <a href="#" @click="goTo(event.id)" class="card bg-dark text-light event">
@@ -140,11 +147,7 @@
                       </div>
                       <div class="col-auto d-flex align-items-center">
                         <h4 class="m-0">
-                          <span
-                            v-if="!checkArchive(event.date.day,event.date.month,event.date.year)"
-                            class="badge badge-pill badge-warning"
-                          >Archived</span>
-                          <span v-else class="badge badge-pill badge-secondary">{{ event.time }}</span>
+                          <span class="badge badge-pill badge-secondary">{{ event.time }}</span>
                         </h4>
                       </div>
                     </div>
@@ -176,6 +179,7 @@
 import db from "../../Firebase/firebaseInit";
 import $ from "jquery";
 import { parse } from "path";
+import { DateTime } from "luxon";
 
 export default {
   data() {
@@ -183,16 +187,13 @@ export default {
       events: [],
       images: [],
       month: [],
-      monthName: null,
-      currentDay: null,
-      currentMonth: null,
-      currentYear: null,
-      num: {
+      date: {
         month: null,
         year: null
       },
-      dayNum: null,
-      dayEvents: []
+      now: null,
+      modalNum: null,
+      modalEvents: []
     };
   },
   metaInfo: {
@@ -207,27 +208,15 @@ export default {
       }
     ]
   },
-  // generates array of event data objects from firebase when the component is created
   created() {
-    let d = new Date();
-
-    let month;
-    this.num.month = d.getMonth();
-    this.num.year = d.getFullYear();
-    this.currentDay = d.getDate();
-    this.currentMonth = d.getMonth();
-    this.currentYear = d.getFullYear();
-  },
-  computed: {
-    combined() {
-      return this.num.year && this.num.month;
-    }
+    var now = DateTime.local();
+    this.now = now;
+    this.date.month = now.month;
+    this.date.year = now.year;
+    this.getMonth(this.date.month, this.date.year);
   },
   watch: {
-    events: "fetchImages",
-    combined() {
-      this.getMonth(this.num.year, this.num.month);
-    }
+    events: "fetchImages"
   },
   methods: {
     fetchImages() {
@@ -242,19 +231,24 @@ export default {
       }
       this.images = images;
     },
-    getMonth(year, month) {
-      // get date
+    getMonth(month, year) {
+      // clear
+      this.events = [];
+
+      let daysInMonth;
+      let weeksInMonth;
+
+      let daysInPrev;
+
       let searchMonth;
-      if (month + 1 < 10) {
-        searchMonth = "0" + (month + 1);
-      } else {
-        searchMonth = (month + 1).toString();
+      if (month < 10) {
+        searchMonth = "0" + month;
       }
 
-      this.events = [];
+      // Get months events from firebase
       db.collection("events")
         .where("event.date.year", "==", year.toString())
-        .where("event.date.month", "==", searchMonth)
+        .where("event.date.month", "==", searchMonth || month.toString())
         .orderBy("event.date.day")
         .get()
         .then(querySnapshot => {
@@ -262,7 +256,11 @@ export default {
             const data = {
               id: doc.id,
               title: doc.data().event.title,
-              date: doc.data().event.date,
+              date: {
+                day: parseInt(doc.data().event.date.day),
+                month: parseInt(doc.data().event.date.month),
+                year: parseInt(doc.data().event.date.year)
+              },
               time: doc.data().event.time,
               email: doc.data().event.email,
               desc: doc.data().event.description,
@@ -272,181 +270,97 @@ export default {
           });
         })
         .then(() => {
-          var monthNames = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-          ];
+          // Clear old data
+          this.month = [];
+          this.images = [];
 
-          var allDays = [];
+          // Setup DateTimes
+          let DT = DateTime.local(year, month);
+          let pDT = DateTime.local(year, month).plus({ months: -1 });
 
-          let daysInPrevious;
-          if (month - 1 < 0) {
-            daysInPrevious = new Date(year - 1, 12, 0).getDate();
-          } else {
-            daysInPrevious = new Date(year, month, 0).getDate();
-          }
+          // Compute number of days in next and previous month displayed
+          let daysOfPrev = DT.weekday;
+          let daysOfNext =
+            DateTime.local(year, month, DT.daysInMonth).weekday + 1;
 
-          var d = new Date(year, month + 1, 0);
-          const daysInCurrent = d.getDate();
-          var startDay = d.getDay();
+          if (daysOfPrev == 7) daysOfPrev = 0;
+          if (daysOfNext == 8) daysOfNext = 1;
 
-          var firstOfMonth = new Date(year, month - 1, 1);
-          var day = firstOfMonth.getDay() || 6;
-          day = day === 1 ? 0 : day;
-          if (day) {
-            day--;
-          }
-          var diff = 7 - day;
-          var lastOfMonth = new Date(year, month, 0);
-          var lastDate = lastOfMonth.getDate();
-          if (lastOfMonth.getDay() === 1) {
-            diff--;
-          }
-          var result = Math.ceil((lastDate - diff) / 7);
-          var weeksInMonth = result + 1;
+          daysOfNext = 7 - daysOfNext;
 
-          let count = 1;
-          for (var i = 1; i < weeksInMonth + 1; i++) {
-            let week = { key: i + "w", days: [] };
-            let emptyWeek = false;
-            let lmCount = 0;
-            let lm = false;
-            for (var k = 1; k < 8; k++) {
-              if (i == 1) {
-                // First week logic
-                if (startDay == 0) {
-                  // Month starts on 0
-                  if (i * k != 7) {
-                    week.days.push({
-                      key: i * k + "d",
-                      num: "lastMonth",
-                      currentMonth: false
-                    });
-                    lm = true;
-                    lmCount++;
-                  } else {
-                    let events = this.events.filter(ev => {
-                      if (count < 10) {
-                        return ev.date.day === this.calendarNum(count);
-                      } else {
-                        return ev.date.day === count.toString();
-                      }
-                    });
-                    week.days.push({
-                      key: i * k + "d",
-                      num: count,
-                      currentMonth: true,
-                      events: events
-                    });
-                    count++;
-                  }
-                } else {
-                  if (i * k < startDay - 1) {
-                    week.days.push({
-                      key: i * k + "d",
-                      num: "lastMonth",
-                      currentMonth: false
-                    });
-                    lm = true;
-                    lmCount++;
-                  } else {
-                    let events = this.events.filter(ev => {
-                      if (count < 10) {
-                        return ev.date.day === this.calendarNum(count);
-                      } else {
-                        return ev.date.day === count.toString();
-                      }
-                    });
-                    week.days.push({
-                      key: i * k + "d",
-                      num: count,
-                      currentMonth: true,
-                      events: events
-                    });
-                    count++;
-                  }
-                }
-              } else if (count > daysInCurrent) {
-                week.days.push({
-                  key: i * k + "d",
-                  num: count - daysInCurrent,
-                  currentMonth: false
+          // Compute total number of days displayed
+          let totalDays = DT.daysInMonth + daysOfPrev + daysOfNext;
+
+          // Compute number of weeks displayed
+          let weeksInMonth = totalDays / 7;
+
+          // Iterate through every day displayed
+          let day = 0;
+          for (let w = 0; w < weeksInMonth; w++) {
+            let week = [];
+            for (let d = 0; d < 7; d++) {
+              // If day is previous month
+              if (day < daysOfPrev) {
+                week.push({
+                  currentMonth: false,
+                  num: pDT.daysInMonth - (daysOfPrev - day) + 1,
+                  key: "d" + day
                 });
-
-                count++;
-                if (k == 1) {
-                  emptyWeek = true;
-                }
-              } else {
+              }
+              // If day is next month
+              else if (totalDays - day <= daysOfNext) {
+                week.push({
+                  currentMonth: false,
+                  num: day + 1 - (totalDays - daysOfNext),
+                  key: "d" + day
+                });
+              }
+              // If day is this month
+              else {
+                // Get days events
                 let events = this.events.filter(ev => {
-                  if (count < 10) {
-                    return ev.date.day === this.calendarNum(count);
-                  } else {
-                    return ev.date.day === count.toString();
-                  }
+                  return ev.date.day == day + 1 - daysOfPrev;
                 });
-                week.days.push({
-                  key: i * k + "d",
-                  num: count,
+
+                week.push({
                   currentMonth: true,
+                  num: day - daysOfPrev + 1,
+                  key: "d" + day,
                   events: events
                 });
-                count++;
               }
+              day += 1;
             }
-            if (lm) {
-              for (let j = 0; j < lmCount; j++) {
-                week.days[j].num = daysInPrevious - (lmCount - j) + 1;
-              }
-            }
-            if (!emptyWeek) {
-              allDays.push(week);
-            }
-          }
 
-          this.month = allDays;
-          this.monthName = monthNames[month];
+            this.month.push({ days: week, key: "w" + w });
+          }
         });
     },
+    home() {
+      let now = DateTime.local();
+
+      this.date.month = now.month;
+      this.date.year = now.year;
+
+      this.getMonth(this.date.month, this.date.year);
+    },
     nextMonth() {
-      var date;
-      if (this.num.month + 1 >= 12) {
-        date = {
-          year: this.num.year + 1,
-          month: 0
-        };
-      } else {
-        date = {
-          year: this.num.year,
-          month: this.num.month + 1
-        };
-      }
-      this.num = date;
+      let dt = DateTime.local(this.date.year, this.date.month).plus({
+        months: 1
+      });
+      this.date.month = dt.month;
+      this.date.year = dt.year;
+
+      this.getMonth(this.date.month, this.date.year);
     },
     prevMonth() {
-      var date;
-      if (this.num.month - 1 < 0) {
-        date = {
-          year: this.num.year - 1,
-          month: 11
-        };
-      } else {
-        date = {
-          year: this.num.year,
-          month: this.num.month - 1
-        };
-      }
-      this.num = date;
+      let dt = DateTime.local(this.date.year, this.date.month).plus({
+        months: -1
+      });
+      this.date.month = dt.month;
+      this.date.year = dt.year;
+
+      this.getMonth(this.date.month, this.date.year);
     },
     calendarNum(num) {
       if (num < 10) {
@@ -455,30 +369,45 @@ export default {
         return num;
       }
     },
-    displayDay(num, events) {
-      this.dayNum = num;
-      this.dayEvents = events;
+    monthName(num) {
+      let names = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
+
+      return names[num - 1];
     },
-    checkArchive(d, m, y) {
-      let day = parseInt(d);
-      let month = parseInt(m);
-      let year = parseInt(y);
-      if (month == this.currentMonth + 1 && year == this.currentYear) {
-        if (day == this.currentDay) {
-          return 2;
-        } else {
-          return 1;
-        }
+    displayDay(num, events) {
+      this.modalNum = num;
+      this.modalEvents = events;
+    },
+    archive(event) {
+      let day = event.date.day;
+      let month = event.date.month;
+      let year = event.date.year;
+      let now = DateTime.local();
+
+      if (year != now.year) {
+        if (year < now.year) return 0;
+        if (year > now.year) return 2;
+      } else if (month != now.month) {
+        if (month < now.month) return 0;
+        if (month > now.month) return 2;
+      } else if (day != now.day) {
+        if (day < now.day) return 0;
+        if (day > now.day) return 2;
       } else {
-        if (year < this.currentYear) {
-          return 0;
-        } else {
-          if (month < this.currentMonth + 1) {
-            return 0;
-          } else {
-            return 1;
-          }
-        }
+        return 1;
       }
     },
     goTo(id) {
@@ -486,10 +415,6 @@ export default {
       $("#dayDetails").on("hidden.bs.modal", () => {
         this.$router.push("event/" + id);
       });
-    },
-    home() {
-      this.num.year = this.currentYear
-      this.num.month = this.currentMonth
     }
   }
 };
