@@ -59,17 +59,17 @@ const routes = [
   {
     path: '/events/event/:id',
     name: 'event-detail',
-    component: EventDetail,
+    component: EventDetail
   },
   {
     path: '/events/list',
     name: 'events-list',
-    component: EventList,
+    component: EventList
   },
   {
     path: '/events/calendar',
     name: 'events-calendar',
-    component: EventCalendar,
+    component: EventCalendar
   },
   {
     path: '/contact',
@@ -104,14 +104,14 @@ const routes = [
   {
     path: '/events/gallery',
     name: 'EventGallery',
-    component: EventGallery,
+    component: EventGallery
   },
   {
     path: '/login',
     name: 'login',
     component: Login
   },
-   {
+  {
     path: '/forgot',
     name: 'forgot',
     component: Forgot

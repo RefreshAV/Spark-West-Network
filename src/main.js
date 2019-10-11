@@ -25,7 +25,6 @@ Vue.use(CKEditor)
 Vue.use(lineClamp)
 Vue.use(VueLazyload)
 
-
 // Router guard checks if AuthRequired
 router.beforeEach((to, from, next) => {
   let currentUser = auth().currentUser
