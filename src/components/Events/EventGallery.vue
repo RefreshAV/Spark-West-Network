@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <img src="../../assets/socialStripe.svg" class="stripe" />
+    <!-- <img src="../../assets/socialStripe.svg" class="stripe" /> -->
     <h1 class="my-4 text-center display-3">Gallery</h1>
     <div class="row">
       <div v-for="event in events" :key="event.id" class="col-lg-4 col-md-6 col-sm-12 mb-3">

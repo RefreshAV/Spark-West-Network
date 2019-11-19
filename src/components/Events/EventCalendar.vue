@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="row mt-5 mb-3 d-flex justify-content-center">
+    <!-- list navigation -->
+    <div class="row navigation mt-5 mb-3 d-none d-md-flex justify-content-center">
       <div
         v-if="date.month != now.c.month || date.year != now.c.year"
         class="col p-0"
@@ -12,7 +13,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <button class="btn btn-primary" @click="prevMonth">
+            <button id="prevWeek" class="btn btn-primary btn-circle-sm" @click="prevMonth()">
               <i class="fas fa-arrow-left"></i>
             </button>
           </div>
@@ -20,8 +21,8 @@
             <h1>{{ monthName(date.month) }}</h1>
           </div>
           <div class="col">
-            <button class="btn btn-primary" @click="nextMonth">
-              <i class="fas fa-arrow-right"></i>
+            <button class="btn btn-primary btn-circle-sm" @click="nextMonth()">
+              <i id="nextWeek" class="fas fa-arrow-right"></i>
             </button>
           </div>
         </div>
@@ -31,10 +32,77 @@
         class="col-auto p-0 d-flex align-items-center"
       >
         <button @click="home()" id="home" class="btn btn-warning animated fadeIn">
-          <i class="fas fa-calendar-alt"></i>
+          <i class="fas fa-home fa-lg text-light"></i>
         </button>
       </div>
+
+      <div class="view-btn">
+        <router-link to="/events/list/" class="btn btn-default border">
+          <i class="fas fa-list"></i>
+        </router-link>
+      </div>
     </div>
+
+    <!-- list navigation mobile -->
+    <div class="navigation row mt-5 mb-3 mx-1 d-block d-md-none">
+      <div class="col">
+        <div class="row">
+          <div class="col text-center">{{ date.year }}</div>
+        </div>
+        <div class="row">
+          <div class="col text-center">
+            <h1>{{ monthName(date.month) }}</h1>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+          <div class="col-auto">
+            <div class="row">
+              <div class="col-auto">
+                <div class="row">
+                  <div class="col">
+                    <button
+                      id="prevWeek-sm"
+                      class="btn btn-primary btn-circle-sm"
+                      @click="prevMonth()"
+                    >
+                      <i class="fas fa-arrow-left"></i>
+                    </button>
+                  </div>
+
+                  <div class="col">
+                    <button
+                      id="nextWeek-sm"
+                      class="btn btn-primary btn-circle-sm"
+                      @click="nextMonth()"
+                    >
+                      <i class="fas fa-arrow-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="view-btn">
+        <div v-if="date.month != now.c.month || date.year != now.c.year" class="row mb-2">
+          <div class="col-auto d-flex align-items-center">
+            <button @click="home()" id="home" class="btn btn-warning animated fadeIn">
+              <i class="fas fa-home text-light"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <router-link to="/events/list/" class="btn btn-default border">
+              <i class="fas fa-list"></i>
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col text-center">
         <span class="d-inline d-md-none">S</span>
@@ -80,7 +148,11 @@
               <div class="col p-0">{{ calendarNum(day.num) }}</div>
             </div>
             <hr class="mt-1 mb-2" />
-            <div v-for="dayEvent in day.events" :key="dayEvent.id" class="row w-100 m-0 animated fadeIn">
+            <div
+              v-for="dayEvent in day.events"
+              :key="dayEvent.id"
+              class="row w-100 m-0 animated fadeIn"
+            >
               <div class="col p-0">
                 <span
                   :class="{ 'badge':true, 'badge-warning':archive(dayEvent) == 0, 'badge-primary':archive(dayEvent) == 1, 'badge-info':archive(dayEvent) == 2, 'badge-pill':true, 'text-truncate':true, 'w-100':true }"
@@ -99,10 +171,15 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col p-0">
-        <router-link to="/events/new" class="btn btn-primary circular my-3">
-          <i class="fa fa-plus" />
+    <div class="row my-3">
+      <div class="col p-0 d-none d-md-flex">
+        <router-link to="new/" href class="btn btn-success btn-circle">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </router-link>
+      </div>
+      <div class="col d-block d-md-none">
+        <router-link to="new/" href class="btn btn-success btn-lg btn-block">
+          <i class="fa fa-plus" aria-hidden="true"></i>
         </router-link>
       </div>
     </div>
@@ -138,22 +215,35 @@
               :key="event.id"
               :class="{ 'row':true, 'mb-2':(index < modalEvents.length - 1) }"
             >
-              <div class="col">
-                <a href="#" @click="goTo(event.id)" class="card bg-dark text-light event">
-                  <div class="card-header">
-                    <div class="row">
-                      <div class="col d-flex align-items-center">
-                        <h4 class="m-0">{{ event.title }}</h4>
+              <div class="col mb-3">
+                <div class="card event">
+                  <a
+                    href="#"
+                    @click="goTo(event.id)"
+                    class="card-body p-0 bg-dark shadow text-light animated fadeIn"
+                  >
+                    <div class="row h-100 w-100 m-0">
+                      <div class="col py-3">
+                        <h5 class="m-0 d-sm-flex d-md-none mb-3">
+                          <span
+                            :class="{'badge':true, 'badge-pill':true, 'shadow':true, 'badge-primary':archive(event) == 1, 'badge-info':archive(event) == 2, 'badge-warning':archive(event) == 0}"
+                          >{{event.time}}</span>
+                        </h5>
+                        <h5 class="m-0">{{ event.title }}</h5>
                       </div>
-                      <div class="col-auto d-flex align-items-center">
-                        <h4 class="m-0">
-                          <span class="badge badge-pill badge-secondary">{{ event.time }}</span>
-                        </h4>
+                      <div
+                        class="col-4 col-lg-3 event-img py-3 d-flex justify-content-end"
+                        :style="'background: url(' + event.image + ');'"
+                      >
+                        <h5 class="m-0 d-none d-md-inline">
+                          <span
+                            :class="{'badge':true, 'badge-pill':true, 'shadow':true, 'badge-primary':archive(event) == 1, 'badge-info':archive(event) == 2, 'badge-warning':archive(event) == 0}"
+                          >{{event.time}}</span>
+                        </h5>
                       </div>
                     </div>
-                  </div>
-                  <div class="card-body modal-desc" v-html="event.desc" v-line-clamp="3"></div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -264,7 +354,10 @@ export default {
               time: doc.data().event.time,
               email: doc.data().event.email,
               desc: doc.data().event.description,
-              imageKey: doc.data().event.imageKey
+              image:
+                "https://firebasestorage.googleapis.com/v0/b/spark-west.appspot.com/o/events%2F" +
+                doc.data().event.imageKey +
+                "?alt=media"
             };
             this.events.push(data);
           });
@@ -421,25 +514,36 @@ export default {
 </script>
 
 <style scoped>
-.circular {
-  width: 70px;
-  height: 70px;
-  border-radius: 100% !important;
-  padding: 0;
-  display: flex !important;
+.navigation {
+  position: relative;
+}
+
+.view-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.btn-circle {
+  border-radius: 100%;
+  height: 64px;
+  width: 64px;
+  display: flex;
   justify-content: center;
   align-items: center;
-  text-decoration: none;
+}
+
+.btn-circle-sm {
+  border-radius: 100%;
+  height: 42px;
+  width: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .card {
   border-radius: 12px;
-}
-
-#home {
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
 }
 
 #home-wrapper {
@@ -473,8 +577,34 @@ export default {
   border-radius: 12px !important;
 }
 
-.event {
+/* .event {
   text-decoration: none !important;
+} */
+
+.event {
+  transition: all 0.5s;
+}
+
+.event:hover {
+  transform: translateY(-5px);
+}
+
+.event * {
+  text-decoration: none !important;
+  border-radius: 12px !important;
+}
+
+.event .row {
+  min-height: 73px;
+}
+
+.event-img {
+  background: white;
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
 }
 
 .modal-desc {
