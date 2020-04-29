@@ -23,7 +23,7 @@
     "gravatar": "^1.8.0",
     "gravatar-url": "^2.0.0",
     "jimp": "^0.6.8",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jszip": "^3.2.2",
     "leaflet": "^1.6.0",
     "luxon": "^1.21.2",
